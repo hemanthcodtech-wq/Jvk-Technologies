@@ -50,12 +50,11 @@ router.get('/:classId/sdk-token', authenticateUser, async (req, res) => {
     // Verify Access Permissions
     let role = 0; // 0 = Attendee (student)
     const isInstructor = user.role === 'instructor' && (course?.instructorId?.toString() === user._id.toString() || user.assignedCourses?.includes(course?._id));
-    const isModerator = user.role === 'moderator' && (course?.moderatorId?.toString() === user._id.toString() || user.assignedCourses?.includes(course?._id));
     const isAdmin = user.role === 'admin' || user.role === 'superadmin';
 
     if (isInstructor || isAdmin) {
       role = 1; // 1 = Host / Teacher
-    } else if (!isModerator) {
+    } else {
       // Check student enrollment
       const enrollment = await Enrollment.findOne({
         studentEmail: user.emailOrPhone,

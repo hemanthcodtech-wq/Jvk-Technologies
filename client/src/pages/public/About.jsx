@@ -3,6 +3,7 @@ import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 import { useLanguage } from '../../context/LanguageContext';
+import { useSettings } from '../../context/SettingsContext';
 import { 
   FaLaptopCode, FaAward, FaUsers, FaGlobe, 
   FaBookOpen, FaShieldAlt, FaArrowRight,
@@ -13,36 +14,15 @@ import SEO from '../../components/common/SEO';
 
 const About = () => {
   const { t } = useLanguage();
-
-  const [siteStats, setSiteStats] = useState({
-    studentsCount: 10000,
-    studentsSuffix: '+',
-    coursesCount: 20,
-    coursesSuffix: '+',
-    lineageRate: 98,
-    lineageSuffix: '%',
-    communitiesCount: 150,
-    communitiesSuffix: '+'
-  });
-
-  useEffect(() => {
-    axios.get(`${import.meta.env.VITE_API_BASE_URL}/admin/settings/stats`)
-      .then(res => {
-        if (res.data.success && res.data.data) {
-          setSiteStats(prev => ({
-            ...prev,
-            ...res.data.data
-          }));
-        }
-      })
-      .catch(() => {});
-  }, []);
+  const { settings } = useSettings();
+  const { stats: siteStats, contact } = settings;
+  const cleanWhatsapp = contact.whatsappNumber.replace(/[^0-9]/g, '');
 
   const stats = [
     { value: `${(siteStats.studentsCount || 10000).toLocaleString('en-IN')}${siteStats.studentsSuffix || '+'}`, label: 'Students Trained', icon: FaUsers },
     { value: `${siteStats.coursesCount || 20}${siteStats.coursesSuffix || '+'}`, label: 'Tech Specializations', icon: FaLaptopCode },
-    { value: `${siteStats.lineageRate || 98}%`, label: 'Placement Success Rate', icon: FaAward },
-    { value: `${siteStats.communitiesCount || 150}+`, label: 'Hiring MNC Partners', icon: FaBuilding }
+    { value: `${siteStats.satisfactionRate || 98}%`, label: 'Placement Success Rate', icon: FaAward },
+    { value: `150+`, label: 'Hiring MNC Partners', icon: FaBuilding }
   ];
 
   const pillars = [
@@ -100,14 +80,14 @@ const About = () => {
 
           <div className="flex flex-wrap items-center justify-center gap-4">
             <a 
-              href="tel:+919059519151" 
+              href={`tel:${contact.callNumber}`} 
               className="px-6 py-3.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-bold font-outfit text-sm transition-all shadow-sm flex items-center gap-2"
             >
               <FaPhoneAlt size={13} className="text-white" />
-              <span>Call Admissions: +91-9059519151</span>
+              <span>Call Admissions: {contact.callNumber}</span>
             </a>
             <a 
-              href="https://wa.me/919059519151?text=Hello%20JVK%20Technologies,%20I%20would%20like%20to%20learn%20more%20about%20your%20training%20methodology." 
+              href={`https://wa.me/${cleanWhatsapp}?text=Hello%20JVK%20Technologies,%20I%20would%20like%20to%20learn%20more%20about%20your%20training%20methodology.`} 
               target="_blank" 
               rel="noreferrer" 
               className="px-6 py-3.5 rounded-xl bg-emerald-50 hover:bg-emerald-100 border border-emerald-200 text-emerald-700 font-bold font-outfit text-sm transition-all flex items-center gap-2"

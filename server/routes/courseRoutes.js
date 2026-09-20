@@ -12,7 +12,7 @@ router.get('/', protect, admin, async (req, res) => {
   try {
     const courses = await Course.find()
       .populate('instructorId', 'name emailOrPhone speciality phone')
-      .populate('moderatorId', 'name emailOrPhone phone')
+
       .sort('-createdAt');
     res.json({ success: true, data: courses });
   } catch (error) {
@@ -38,7 +38,7 @@ router.get('/public', async (req, res) => {
   try {
     const courses = await Course.find({ isPublished: true })
       .populate('instructorId', 'name emailOrPhone speciality phone bio')
-      .populate('moderatorId', 'name emailOrPhone phone')
+
       .sort('-createdAt');
     res.json({ success: true, data: courses });
   } catch (error) {
@@ -57,14 +57,14 @@ router.get('/public/:slugOrId', async (req, res) => {
     if (mongoose.isValidObjectId(slugOrId)) {
       course = await Course.findById(slugOrId)
         .populate('instructorId', 'name emailOrPhone speciality phone bio')
-        .populate('moderatorId', 'name emailOrPhone phone');
+
     }
     
     // If not found by ID, try finding by slug
     if (!course) {
       course = await Course.findOne({ slug: slugOrId })
         .populate('instructorId', 'name emailOrPhone speciality phone bio')
-        .populate('moderatorId', 'name emailOrPhone phone');
+
     }
 
     if (!course) return res.status(404).json({ success: false, message: 'Course not found' });
@@ -79,7 +79,7 @@ router.post('/', protect, admin, upload.fields([{ name: 'thumbnail', maxCount: 1
   try {
     const { 
       title, description, category, durationMonths, startDate, endDate, level, language, 
-      accessValidity, startTime, endTime, price, instructorId, moderatorId, zoomMeetingLink,
+      accessValidity, startTime, endTime, price, instructorId, zoomMeetingLink,
       whatsappGroupLink
     } = req.body;
 
@@ -115,11 +115,7 @@ router.post('/', protect, admin, upload.fields([{ name: 'thumbnail', maxCount: 1
       if (instUser) instructorName = instUser.name || instUser.emailOrPhone;
     }
 
-    let moderatorName = '';
-    if (moderatorId) {
-      const modUser = await User.findById(moderatorId);
-      if (modUser) moderatorName = modUser.name || modUser.emailOrPhone;
-    }
+
 
     const course = await Course.create({
       title, slug, description, category, durationMonths, startDate, endDate, 
@@ -136,8 +132,7 @@ router.post('/', protect, admin, upload.fields([{ name: 'thumbnail', maxCount: 1
       contentUrl,
       instructorId: instructorId || undefined,
       instructor: instructorName,
-      moderatorId: moderatorId || undefined,
-      moderator: moderatorName,
+
       zoomMeetingLink: zoomMeetingLink || '',
       whatsappGroupLink: (whatsappGroupLink || '').trim()
     });
@@ -199,7 +194,7 @@ router.post('/', protect, admin, upload.fields([{ name: 'thumbnail', maxCount: 1
 
     const populatedCourse = await Course.findById(course._id)
       .populate('instructorId', 'name emailOrPhone speciality phone')
-      .populate('moderatorId', 'name emailOrPhone phone');
+
 
     res.status(201).json({ success: true, data: populatedCourse });
   } catch (error) {
@@ -215,7 +210,7 @@ router.put('/:id', protect, admin, upload.fields([{ name: 'thumbnail', maxCount:
 
     const { 
       title, description, category, durationMonths, startDate, endDate, timings, level, 
-      language, accessValidity, price, startTime, endTime, instructorId, moderatorId, zoomMeetingLink,
+      language, accessValidity, price, startTime, endTime, instructorId, zoomMeetingLink,
       whatsappGroupLink
     } = req.body;
     
@@ -273,15 +268,7 @@ router.put('/:id', protect, admin, upload.fields([{ name: 'thumbnail', maxCount:
       }
     }
 
-    if (moderatorId !== undefined) {
-      updateData.moderatorId = moderatorId || null;
-      if (moderatorId) {
-        const modUser = await User.findById(moderatorId);
-        if (modUser) updateData.moderator = modUser.name || modUser.emailOrPhone;
-      } else {
-        updateData.moderator = '';
-      }
-    }
+
 
     if (req.files) {
       if (req.files.thumbnail) updateData.thumbnailUrl = req.files.thumbnail[0].location || req.files.thumbnail[0].path;
@@ -295,8 +282,7 @@ router.put('/:id', protect, admin, upload.fields([{ name: 'thumbnail', maxCount:
     }
 
     const updatedCourse = await Course.findByIdAndUpdate(req.params.id, updateData, { new: true })
-      .populate('instructorId', 'name emailOrPhone speciality phone')
-      .populate('moderatorId', 'name emailOrPhone phone');
+      .populate('instructorId', 'name emailOrPhone speciality phone');
 
     // If new session dates are supplied in update, create any missing sessions
     if (req.body.selectedSessionDates) {

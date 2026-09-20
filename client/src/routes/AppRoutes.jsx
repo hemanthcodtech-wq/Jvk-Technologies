@@ -30,7 +30,6 @@ import AdminProtectedRoute from '../components/admin/AdminProtectedRoute';
 import AdminDashboard from '../pages/admin/AdminDashboard';
 import CourseManagement from '../pages/admin/CourseManagement';
 import InstructorManagement from '../pages/admin/InstructorManagement';
-import ModeratorManagement from '../pages/admin/ModeratorManagement';
 import UserManagement from '../pages/admin/UserManagement';
 import MaterialManagement from '../pages/admin/MaterialManagement';
 import AdminRecords from '../pages/admin/AdminRecords';
@@ -41,11 +40,6 @@ import InstructorProtectedRoute from '../components/instructor/InstructorProtect
 import InstructorLayout from '../components/instructor/InstructorLayout';
 import InstructorDashboard from '../pages/instructor/InstructorDashboard';
 
-// Moderator
-import ModeratorLogin from '../pages/moderator/ModeratorLogin';
-import ModeratorProtectedRoute from '../components/moderator/ModeratorProtectedRoute';
-import ModeratorLayout from '../components/moderator/ModeratorLayout';
-import ModeratorDashboard from '../pages/moderator/ModeratorDashboard';
 
 // Dashboard / Course
 import DashboardHome from '../pages/dashboard/Home';
@@ -95,7 +89,6 @@ const AppRoutes = () => {
             <Route path="dashboard" element={<AdminDashboard />} />
             <Route path="courses" element={<CourseManagement />} />
             <Route path="instructors" element={<InstructorManagement />} />
-            <Route path="moderators" element={<ModeratorManagement />} />
             <Route path="materials" element={<MaterialManagement />} />
             <Route path="records" element={<AdminRecords />} />
             <Route path="users" element={<UserManagement />} />
@@ -111,20 +104,14 @@ const AppRoutes = () => {
           </Route>
         </Route>
 
-        {/* Moderator Login & Protected Workspace */}
-        <Route path="/moderator/login" element={<ModeratorLogin />} />
-        <Route element={<ModeratorProtectedRoute />}>
-          <Route path="/moderator" element={<ModeratorLayout />}>
-            <Route index element={<Navigate to="/moderator/dashboard" replace />} />
-            <Route path="dashboard" element={<ModeratorDashboard />} />
-          </Route>
-        </Route>
 
         {/* Protected User Dashboard Routes */}
         <Route element={<ProtectedRoute />}>
           <Route path="/dashboard" element={<DashboardLayout />}>
             {/* The base path for Dashboard is now /dashboard/... */}
             <Route index element={<DashboardHome />} />
+            <Route path="courses" element={<CourseList />} />
+            <Route path="courses/:slug" element={<CourseDetails />} />
             <Route path="learning" element={<MyLearning />} />
             <Route path="learning/:courseId" element={<StudentClasses />} />
             <Route path="profile" element={<Profile />} />

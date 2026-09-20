@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useParams, useNavigate, Link } from 'react-router-dom';
+import { useParams, useNavigate, Link, useLocation } from 'react-router-dom';
 import axios from 'axios';
 import { motion } from 'framer-motion';
 import { 
@@ -8,6 +8,7 @@ import {
   FaProjectDiagram, FaDownload, FaRocket, FaBuilding, FaGraduationCap
 } from 'react-icons/fa';
 import { useLanguage, useAutoTranslate } from '../../context/LanguageContext';
+import { useSettings } from '../../context/SettingsContext';
 import SEO from '../../components/common/SEO';
 
 const fallbackCourseData = {
@@ -148,7 +149,11 @@ const fallbackCourseData = {
 const CourseDetails = () => {
   const { slug } = useParams();
   const navigate = useNavigate();
+  const location = useLocation();
   const { t } = useLanguage();
+  const { settings } = useSettings();
+  const { contact } = settings;
+  const cleanWhatsapp = contact.whatsappNumber.replace(/[^0-9]/g, '');
 
   const [course, setCourse] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -202,7 +207,7 @@ const CourseDetails = () => {
     return (
       <div className="min-h-[60vh] bg-slate-50 flex flex-col items-center justify-center p-6">
         <h2 className="text-xl font-bold text-slate-800">Program Not Found</h2>
-        <Link to="/courses" className="mt-4 px-5 py-2.5 bg-blue-600 text-white rounded-xl font-bold">
+        <Link to={location.pathname.startsWith('/dashboard') ? "/dashboard/courses" : "/courses"} className="mt-4 px-5 py-2.5 bg-blue-600 text-white rounded-xl font-bold">
           View All Software Tracks
         </Link>
       </div>
@@ -221,7 +226,7 @@ const CourseDetails = () => {
       <div className="bg-white border-b border-slate-200/80 py-3 px-4 sm:px-6 lg:px-8">
         <div className="max-w-7xl mx-auto flex items-center justify-between">
           <button 
-            onClick={() => navigate('/courses')} 
+            onClick={() => navigate(location.pathname.startsWith('/dashboard') ? '/dashboard/courses' : '/courses')} 
             className="inline-flex items-center gap-2 text-xs sm:text-sm font-bold text-slate-600 hover:text-blue-600 transition-colors"
           >
             <FaArrowLeft size={12} />
@@ -230,8 +235,8 @@ const CourseDetails = () => {
           
           <div className="flex items-center gap-2 text-xs font-semibold text-slate-500">
             <span className="hidden sm:inline">Admissions Support:</span>
-            <a href="tel:+919059519151" className="text-blue-600 font-bold hover:underline flex items-center gap-1">
-              <FaPhoneAlt size={10} /> +91-9059519151
+            <a href={`tel:${contact.callNumber}`} className="text-blue-600 font-bold hover:underline flex items-center gap-1">
+              <FaPhoneAlt size={10} /> {contact.callNumber}
             </a>
           </div>
         </div>
@@ -315,7 +320,7 @@ const CourseDetails = () => {
 
             <div className="mt-5 space-y-2.5">
               <a 
-                href={`https://wa.me/919059519151?text=${encodeURIComponent(`Hello JVK Technologies, I want to enroll in ${course.title}. Please share batch dates and syllabus.`)}`}
+                href={`https://wa.me/${cleanWhatsapp}?text=${encodeURIComponent(`Hello JVK Technologies, I want to enroll in ${course.title}. Please share batch dates and syllabus.`)}`}
                 target="_blank"
                 rel="noreferrer"
                 className="w-full py-3 px-4 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-sm flex items-center justify-center gap-2 shadow-md transition-all"
@@ -324,10 +329,10 @@ const CourseDetails = () => {
               </a>
 
               <a 
-                href="tel:+919059519151"
+                href={`tel:${contact.callNumber}`}
                 className="w-full py-3 px-4 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-bold text-sm flex items-center justify-center gap-2 shadow-md transition-all"
               >
-                <FaPhoneAlt size={13} /> Call Counseling: +91-9059519151
+                <FaPhoneAlt size={13} /> Call Counseling: {contact.callNumber}
               </a>
 
               <button 
@@ -383,7 +388,7 @@ const CourseDetails = () => {
                     <p className="text-xs text-slate-500 mt-0.5">Engineered to match real job role requirements in top IT companies</p>
                   </div>
                   <a 
-                    href="https://wa.me/919059519151?text=Please%20send%20the%20detailed%20syllabus%20PDF."
+                    href={`https://wa.me/${cleanWhatsapp}?text=Please%20send%20the%20detailed%20syllabus%20PDF.`}
                     target="_blank" 
                     rel="noreferrer"
                     className="inline-flex items-center gap-2 text-xs font-bold text-blue-600 bg-blue-50 px-3 py-1.5 rounded-xl hover:bg-blue-100 transition-colors w-max"
@@ -479,7 +484,7 @@ const CourseDetails = () => {
                   .map((item) => (
                     <Link
                       key={item.slug}
-                      to={`/courses/${item.slug}`}
+                      to={location.pathname.startsWith('/dashboard') ? `/dashboard/courses/${item.slug}` : `/courses/${item.slug}`}
                       className="block p-3 rounded-xl border border-slate-100 hover:border-blue-300 hover:bg-blue-50/40 transition-all group"
                     >
                       <span className="text-xs font-bold text-slate-800 group-hover:text-blue-600 transition-colors block">

@@ -1,11 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { 
-  FaHome, FaLaptopCode, FaInfoCircle, FaEnvelope, FaGlobe, 
-  FaArrowLeft, FaPhoneAlt, FaWhatsapp, FaBolt
-} from 'react-icons/fa';
+import { FaHome, FaLaptopCode, FaInfoCircle, FaEnvelope, FaGlobe, FaArrowLeft, FaPhoneAlt, FaWhatsapp, FaBolt } from 'react-icons/fa';
 import { useLanguage } from '../../context/LanguageContext';
+import { useSettings } from '../../context/SettingsContext';
 
 const PublicNavbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -16,6 +14,9 @@ const PublicNavbar = () => {
   const userStr = localStorage.getItem('user');
   const user = userStr ? JSON.parse(userStr) : null;
   const { lang, setLang, t } = useLanguage();
+  const { settings } = useSettings();
+  const { contact, categories } = settings;
+  const cleanWhatsapp = contact.whatsappNumber.replace(/[^0-9]/g, '');
 
   const isCourseDetails = location.pathname.startsWith('/courses/') && location.pathname !== '/courses';
   const isCourseList = location.pathname === '/courses';
@@ -49,7 +50,7 @@ const PublicNavbar = () => {
               <FaBolt className="text-amber-400" /> Admissions Open
             </span>
             <span className="text-xs text-slate-200 hidden sm:inline font-medium">
-              Software Training Tracks: <strong>Java Full Stack • Python & AI • MERN • Cloud & DevOps</strong>
+              Software Training Tracks: <strong>{categories.join(' • ')}</strong>
             </span>
             <span className="text-xs text-slate-200 sm:hidden truncate font-medium">
               Software Training Admissions Open! Call Now
@@ -58,17 +59,17 @@ const PublicNavbar = () => {
 
           <div className="flex items-center gap-4 shrink-0 text-xs font-semibold">
             <a 
-              href="tel:+919059519151" 
+              href={`tel:${contact.callNumber}`} 
               className="flex items-center gap-1.5 text-blue-200 hover:text-white transition-colors"
               title="Direct Call"
             >
               <FaPhoneAlt className="text-amber-400 text-[11px]" />
-              <span className="hidden md:inline">+91-9059519151</span>
+              <span className="hidden md:inline">{contact.callNumber}</span>
               <span className="md:hidden font-bold">Call</span>
             </a>
             <span className="text-blue-400/40">|</span>
             <a 
-              href="https://wa.me/919059519151?text=Hello%20JVK%20Technologies,%20I%20want%20to%20know%20about%20software%20programs%20and%20course%20details." 
+              href={`https://wa.me/${cleanWhatsapp}?text=Hello%20JVK%20Technologies,%20I%20want%20to%20know%20about%20software%20programs%20and%20course%20details.`} 
               target="_blank" 
               rel="noreferrer"
               className="flex items-center gap-1.5 text-emerald-400 hover:text-emerald-300 transition-colors"
@@ -144,7 +145,7 @@ const PublicNavbar = () => {
 
               {/* Book Free Demo Button */}
               <a
-                href="https://wa.me/919059519151?text=Hello%20JVK%20Technologies,%20I%20would%20like%20to%20register%20for%20the%20Free%20Demo%20Session."
+                href={`https://wa.me/${cleanWhatsapp}?text=Hello%20JVK%20Technologies,%20I%20would%20like%20to%20register%20for%20the%20Free%20Demo%20Session.`}
                 target="_blank"
                 rel="noreferrer"
                 className="relative group overflow-hidden px-5 py-2.5 rounded-xl bg-gradient-to-r from-amber-500 to-amber-600 text-slate-950 font-bold font-outfit text-sm shadow-[0_4px_15px_rgba(245,158,11,0.25)] hover:shadow-[0_6px_20px_rgba(245,158,11,0.4)] hover:-translate-y-0.5 transition-all duration-200"
@@ -231,15 +232,15 @@ const PublicNavbar = () => {
 
               <div className="pt-4 border-t border-slate-100 flex flex-col space-y-2.5">
                 <a
-                  href="tel:+919059519151"
+                  href={`tel:${contact.callNumber}`}
                   className="w-full flex items-center justify-center gap-2 py-3 rounded-xl bg-blue-50 border border-blue-200 text-blue-700 font-bold font-outfit text-sm"
                 >
                   <FaPhoneAlt className="text-blue-600" />
-                  <span>Call: +91-9059519151</span>
+                  <span>Call: {contact.callNumber}</span>
                 </a>
 
                 <a
-                  href="https://wa.me/919059519151?text=Hello%20JVK%20Technologies,%20I%20want%20to%20register%20for%20the%20Free%20Demo%20Session."
+                  href={`https://wa.me/${cleanWhatsapp}?text=Hello%20JVK%20Technologies,%20I%20want%20to%20register%20for%20the%20Free%20Demo%20Session.`}
                   target="_blank"
                   rel="noreferrer"
                   className="w-full flex items-center justify-center gap-2 py-3 rounded-xl bg-gradient-to-r from-amber-500 to-amber-600 text-slate-950 font-black font-outfit text-sm shadow-md"

@@ -3,15 +3,16 @@ import axios from 'axios';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
   FaPlus, FaEdit, FaTrash, FaTimes, FaCloudUploadAlt, 
-  FaImage, FaChalkboardTeacher, FaShieldAlt, FaClock, 
+  FaImage, FaChalkboardTeacher, FaClock, 
   FaCheckCircle, FaUserCheck, FaCalendarAlt, FaHistory,
   FaPlayCircle, FaExternalLinkAlt, FaSyncAlt, FaWhatsapp
 } from 'react-icons/fa';
+import { useSettings } from '../../context/SettingsContext';
 
 const CourseManagement = () => {
+  const { settings } = useSettings();
   const [courses, setCourses] = useState([]);
   const [instructors, setInstructors] = useState([]);
-  const [moderators, setModerators] = useState([]);
   const [loading, setLoading] = useState(true);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingCourse, setEditingCourse] = useState(null);
@@ -34,7 +35,6 @@ const CourseManagement = () => {
     accessValidity: '2 Months', 
     whatYouWillLearn: '',
     instructorId: '',
-    moderatorId: '',
     whatsappGroupLink: ''
   });
 
@@ -78,16 +78,10 @@ const CourseManagement = () => {
   const fetchStaffList = async () => {
     try {
       const headers = { Authorization: `Bearer ${localStorage.getItem('adminToken')}` };
-      const [instRes, modRes] = await Promise.allSettled([
-        axios.get(`${import.meta.env.VITE_API_BASE_URL}/admin/instructors`, { headers }),
-        axios.get(`${import.meta.env.VITE_API_BASE_URL}/admin/moderators`, { headers })
-      ]);
-
-      if (instRes.status === 'fulfilled' && instRes.value.data?.success) {
-        setInstructors(instRes.value.data.data.filter(i => i.status !== 'inactive'));
-      }
-      if (modRes.status === 'fulfilled' && modRes.value.data?.success) {
-        setModerators(modRes.value.data.data.filter(m => m.status !== 'inactive'));
+      const instRes = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/admin/instructors`, { headers });
+      
+      if (instRes.data?.success) {
+        setInstructors(instRes.data.data.filter(i => i.status !== 'inactive'));
       }
     } catch (err) {
       console.error('Error fetching staff list for assignments:', err);
@@ -132,12 +126,11 @@ const CourseManagement = () => {
     if (course) {
       setEditingCourse(course);
       const instId = course.instructorId?._id || course.instructorId || '';
-      const modId = course.moderatorId?._id || course.moderatorId || '';
 
       setFormData({
         title: course.title || '',
         description: course.description || '',
-        category: course.category || 'Yoga',
+        category: course.category || (settings.categories.length > 0 ? settings.categories[0] : 'Yoga'),
         price: course.price !== undefined ? course.price : 0,
         duration: course.duration || '',
         durationMonths: course.durationMonths || 1,
@@ -152,7 +145,6 @@ const CourseManagement = () => {
         accessValidity: course.accessValidity || '2 Months',
         whatYouWillLearn: course.whatYouWillLearn ? course.whatYouWillLearn.join('\n') : '',
         instructorId: instId,
-        moderatorId: modId,
         whatsappGroupLink: course.whatsappGroupLink || ''
       });
     } else {
@@ -160,7 +152,7 @@ const CourseManagement = () => {
       setFormData({ 
         title: '', 
         description: '', 
-        category: 'Yoga', 
+        category: settings.categories.length > 0 ? settings.categories[0] : 'Yoga', 
         price: '', 
         duration: '', 
         durationMonths: 1, 
@@ -175,7 +167,6 @@ const CourseManagement = () => {
         accessValidity: '2 Months', 
         whatYouWillLearn: '',
         instructorId: instructors.length > 0 ? instructors[0]._id : '',
-        moderatorId: moderators.length > 0 ? moderators[0]._id : '',
         whatsappGroupLink: ''
       });
     }
@@ -358,7 +349,7 @@ const CourseManagement = () => {
           </div>
           <h1 className="text-2xl lg:text-3xl font-black text-gray-900 tracking-tight">Course Management</h1>
           <p className="text-gray-500 text-sm mt-1">
-            Configure programs, assign lead instructors & moderators, manage daily class timetables, and reschedule sessions with Zoom.
+            Configure programs, assign lead instructors, manage daily class timetables, and reschedule sessions with Zoom.
           </p>
         </div>
         
@@ -380,7 +371,6 @@ const CourseManagement = () => {
           {courses.map(course => {
             const assignedInstructorName = course.instructorId?.name || course.instructor;
             const assignedInstructorSpeciality = course.instructorId?.speciality;
-            const assignedModeratorName = course.moderatorId?.name || course.moderator;
 
             return (
               <motion.div 
@@ -419,7 +409,6 @@ const CourseManagement = () => {
                     </h3>
                   </div>
 
-                  {/* Assigned Faculty and Moderator Badges */}
                   <div className="space-y-2 mb-4">
                     <div className="p-2.5 rounded-xl bg-emerald-50/90 border border-emerald-200/80 flex items-center justify-between gap-2 text-xs">
                       <div className="flex items-center gap-2 min-w-0">
@@ -439,20 +428,6 @@ const CourseManagement = () => {
                         Faculty
                       </span>
                     </div>
-
-                    {assignedModeratorName && (
-                      <div className="p-2 rounded-xl bg-teal-50/80 border border-teal-200/60 flex items-center justify-between gap-2 text-xs">
-                        <div className="flex items-center gap-2 min-w-0">
-                          <FaShieldAlt className="text-teal-700 shrink-0" size={12} />
-                          <span className="font-bold text-teal-950 truncate">
-                            Moderator: {assignedModeratorName}
-                          </span>
-                        </div>
-                        <span className="text-[9px] font-bold px-1.5 py-0.5 rounded-md bg-teal-200/60 text-teal-900 shrink-0">
-                          Supervision
-                        </span>
-                      </div>
-                    )}
                   </div>
                   
                   <div className="grid grid-cols-2 gap-2 text-xs text-gray-600 mb-6 bg-[#FAF7F2] p-3.5 rounded-2xl border border-gray-200/50">
@@ -850,25 +825,6 @@ const CourseManagement = () => {
                     </select>
                   </div>
 
-                  {/* ASSIGN MODERATOR SELECTOR */}
-                  <div>
-                    <label className="block text-sm font-semibold text-gray-700 mb-1.5 flex items-center gap-1.5">
-                      <FaShieldAlt className="text-brand-green" /> Assign Platform Moderator
-                    </label>
-                    <select 
-                      value={formData.moderatorId} 
-                      onChange={e => setFormData({...formData, moderatorId: e.target.value})} 
-                      className="w-full p-3.5 bg-white/50 backdrop-blur-md border border-white/60 rounded-xl outline-none focus:bg-white/70 focus:border-brand-green transition-all shadow-[inset_0_2px_4px_rgba(0,0,0,0.02)] font-medium"
-                    >
-                      <option value="">-- Optional: Assign Platform Moderator --</option>
-                      {moderators.map(mod => (
-                        <option key={mod._id} value={mod._id}>
-                          {mod.name} ({mod.emailOrPhone})
-                        </option>
-                      ))}
-                    </select>
-                  </div>
-
                   {/* WHATSAPP BATCH GROUP LINK */}
                   <div className="col-span-full">
                     <label className="block text-sm font-semibold text-gray-700 mb-1.5 flex items-center gap-1.5">
@@ -907,7 +863,10 @@ const CourseManagement = () => {
                   <div>
                     <label className="block text-sm font-semibold text-gray-700 mb-1.5">Category *</label>
                     <select value={formData.category} onChange={e => setFormData({...formData, category: e.target.value})} className="w-full p-3.5 bg-white/50 backdrop-blur-md border border-white/60 rounded-xl outline-none focus:bg-white/70 focus:border-brand-green transition-all shadow-[inset_0_2px_4px_rgba(0,0,0,0.02)] font-medium">
-                      <option>Yoga</option><option>Meditation</option><option>Nutrition</option><option>Ayurveda</option><option>Other</option>
+                      {settings.categories.map((cat, idx) => (
+                        <option key={idx} value={cat}>{cat}</option>
+                      ))}
+                      {settings.categories.length === 0 && <option>Yoga</option>}
                     </select>
                   </div>
 

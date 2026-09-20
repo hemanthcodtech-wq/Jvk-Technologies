@@ -9,10 +9,9 @@ import {
   FaBriefcase, FaUserTie, FaRocket, FaShieldAlt, FaBuilding,
   FaJava, FaPython, FaReact, FaNodeJs, FaDocker, FaAws
 } from 'react-icons/fa';
-import { 
-  SiSpringboot, SiMongodb, SiPostgresql, SiKubernetes
-} from 'react-icons/si';
+import { SiSpringboot, SiMongodb, SiPostgresql, SiKubernetes } from 'react-icons/si';
 import { useLanguage, useAutoTranslate } from '../../context/LanguageContext';
+import { useSettings } from '../../context/SettingsContext';
 import SEO from '../../components/common/SEO';
 
 // --- Typewriter Component ---
@@ -137,31 +136,11 @@ const TiltedCard = ({ children, className }) => {
 const Home = () => {
   const navigate = useNavigate();
   const { t } = useLanguage();
+  const { settings } = useSettings();
   const [activeTab, setActiveTab] = useState('all');
 
-  const [platformStats, setPlatformStats] = useState({
-    studentsCount: 10000,
-    studentsSuffix: '+',
-    coursesCount: 20,
-    coursesSuffix: '+',
-    instructorsCount: 15,
-    instructorsSuffix: '+',
-    satisfactionRate: 98,
-    satisfactionSuffix: '%'
-  });
-
-  useEffect(() => {
-    axios.get(`${import.meta.env.VITE_API_BASE_URL}/admin/settings/stats`)
-      .then(res => {
-        if (res.data?.success && res.data?.data) {
-          setPlatformStats(prev => ({
-            ...prev,
-            ...res.data.data
-          }));
-        }
-      })
-      .catch(() => {});
-  }, []);
+  const { stats, contact } = settings;
+  const cleanWhatsapp = contact.whatsappNumber.replace(/[^0-9]/g, '');
 
   // Hot technologies for marquee
   const techMarquee = [
@@ -337,7 +316,7 @@ const Home = () => {
           >
             {/* Free Demo CTA */}
             <a 
-              href="https://wa.me/919059519151?text=Hello%20JVK%20Technologies,%20I%20want%20to%20reserve%20a%20seat%20for%20the%20Free%20Live%20Demo%20Session."
+              href={`https://wa.me/${cleanWhatsapp}?text=Hello%20JVK%20Technologies,%20I%20want%20to%20reserve%20a%20seat%20for%20the%20Free%20Live%20Demo%20Session.`}
               target="_blank"
               rel="noreferrer"
               className="w-full sm:w-auto relative group overflow-hidden bg-gradient-to-r from-amber-500 to-amber-600 text-slate-950 px-8 py-4 rounded-2xl font-black font-outfit text-base md:text-lg hover:brightness-105 transition-all duration-300 transform hover:scale-105 shadow-[0_4px_20px_rgba(245,158,11,0.3)] flex items-center justify-center gap-2.5"
@@ -348,7 +327,7 @@ const Home = () => {
 
             {/* Direct Call Button */}
             <a 
-              href="tel:+919059519151" 
+              href={`tel:${contact.callNumber}`} 
               className="w-full sm:w-auto px-7 py-4 rounded-2xl bg-blue-600 hover:bg-blue-700 text-white font-bold font-outfit text-base md:text-lg transition-all duration-300 transform hover:scale-105 shadow-[0_4px_20px_rgba(37,99,235,0.25)] flex items-center justify-center gap-2.5"
             >
               <FaPhoneAlt size={15} className="text-white" />
@@ -357,7 +336,7 @@ const Home = () => {
 
             {/* WhatsApp CTA */}
             <a 
-              href="https://wa.me/919059519151?text=Hello%20JVK%20Technologies,%20please%20share%20all%20course%20details." 
+              href={`https://wa.me/${cleanWhatsapp}?text=Hello%20JVK%20Technologies,%20please%20share%20all%20course%20details.`}
               target="_blank" 
               rel="noreferrer" 
               className="w-full sm:w-auto px-6 py-4 rounded-2xl bg-emerald-50 hover:bg-emerald-100 text-emerald-700 font-bold font-outfit text-base transition-all duration-300 flex items-center justify-center gap-2 border border-emerald-200"
@@ -376,7 +355,7 @@ const Home = () => {
           >
             <div className="p-5 md:p-6 rounded-2xl bg-white border border-slate-200/80 shadow-[0_4px_20px_rgba(0,0,0,0.03)] hover:shadow-md hover:border-blue-300 transition-all text-center">
               <div className="text-3xl md:text-4xl font-black text-slate-900 mb-1 font-outfit">
-                <AnimatedCounter from={0} to={platformStats.studentsCount || 10000} suffix={platformStats.studentsSuffix || '+'} duration={2.5} />
+                <AnimatedCounter from={0} to={stats.studentsCount || 10000} suffix={stats.studentsSuffix || '+'} duration={2.5} />
               </div>
               <div className="text-xs md:text-sm font-bold text-slate-500 uppercase tracking-wider">
                 Students Trained
@@ -385,7 +364,7 @@ const Home = () => {
 
             <div className="p-5 md:p-6 rounded-2xl bg-white border border-slate-200/80 shadow-[0_4px_20px_rgba(0,0,0,0.03)] hover:shadow-md hover:border-blue-300 transition-all text-center">
               <div className="text-3xl md:text-4xl font-black text-blue-600 mb-1 font-outfit">
-                <AnimatedCounter from={0} to={platformStats.satisfactionRate || 98} suffix={platformStats.satisfactionSuffix || '%'} duration={2} />
+                <AnimatedCounter from={0} to={stats.satisfactionRate || 98} suffix={stats.satisfactionSuffix || '%'} duration={2} />
               </div>
               <div className="text-xs md:text-sm font-bold text-slate-500 uppercase tracking-wider">
                 Placement Success Rate
@@ -394,16 +373,16 @@ const Home = () => {
 
             <div className="p-5 md:p-6 rounded-2xl bg-white border border-slate-200/80 shadow-[0_4px_20px_rgba(0,0,0,0.03)] hover:shadow-md hover:border-blue-300 transition-all text-center">
               <div className="text-3xl md:text-4xl font-black text-amber-600 mb-1 font-outfit">
-                <AnimatedCounter from={0} to={150} suffix="+" duration={2} />
+                <AnimatedCounter from={0} to={stats.coursesCount || 150} suffix={stats.coursesSuffix || '+'} duration={2} />
               </div>
               <div className="text-xs md:text-sm font-bold text-slate-500 uppercase tracking-wider">
-                Hiring MNC Partners
+                Courses Available
               </div>
             </div>
 
             <div className="p-5 md:p-6 rounded-2xl bg-white border border-slate-200/80 shadow-[0_4px_20px_rgba(0,0,0,0.03)] hover:shadow-md hover:border-blue-300 transition-all text-center">
               <div className="text-3xl md:text-4xl font-black text-emerald-600 mb-1 font-outfit">
-                <AnimatedCounter from={0} to={platformStats.instructorsCount || 15} suffix={platformStats.instructorsSuffix || '+'} duration={2} />
+                <AnimatedCounter from={0} to={stats.instructorsCount || 15} suffix={stats.instructorsSuffix || '+'} duration={2} />
               </div>
               <div className="text-xs md:text-sm font-bold text-slate-500 uppercase tracking-wider">
                 Corporate Mentors
@@ -520,7 +499,7 @@ const Home = () => {
                     {track.callout}
                   </div>
                   <a
-                    href={`https://wa.me/919059519151?text=Hello%20JVK%20Technologies,%20please%20send%20me%20the%20detailed%20syllabus%20for%20${encodeURIComponent(track.title)}`}
+                    href={`https://wa.me/${cleanWhatsapp}?text=Hello%20JVK%20Technologies,%20please%20send%20me%20the%20detailed%20syllabus%20for%20${encodeURIComponent(track.title)}`}
                     target="_blank"
                     rel="noreferrer"
                     className="w-full flex items-center justify-center gap-2 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs font-outfit shadow-sm transition-all"
@@ -607,7 +586,7 @@ const Home = () => {
 
                 <div className="flex items-center gap-3 pt-2">
                   <a
-                    href={`https://wa.me/919059519151?text=Hello%20JVK%20Technologies,%20I%20want%20to%20reserve%20a%20seat%20for%20the%20upcoming%20batch%20of%20${encodeURIComponent(batch.course)}.`}
+                    href={`https://wa.me/${cleanWhatsapp}?text=Hello%20JVK%20Technologies,%20I%20want%20to%20reserve%20a%20seat%20for%20the%20upcoming%20batch%20of%20${encodeURIComponent(batch.course)}.`}
                     target="_blank"
                     rel="noreferrer"
                     className="flex-1 text-center py-3 rounded-xl bg-gradient-to-r from-amber-500 to-amber-600 hover:brightness-105 text-slate-950 font-black font-outfit text-xs shadow-sm transition-all flex items-center justify-center gap-1.5"
@@ -617,7 +596,7 @@ const Home = () => {
                   </a>
 
                   <a
-                    href="tel:+919059519151"
+                    href={`tel:${contact.callNumber}`}
                     className="p-3 rounded-xl bg-blue-50 border border-blue-200 hover:bg-blue-600 hover:text-white text-blue-700 transition-colors"
                     title="Call for batch confirmation"
                   >
@@ -640,10 +619,10 @@ const Home = () => {
               </div>
             </div>
             <a
-              href="tel:+919059519151"
+              href={`tel:${contact.callNumber}`}
               className="px-5 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs font-outfit shrink-0 transition-colors shadow-xs"
             >
-              Call +91-9059519151
+              Call {contact.callNumber}
             </a>
           </div>
 
@@ -834,15 +813,15 @@ const Home = () => {
 
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
             <a 
-              href="tel:+919059519151" 
+              href={`tel:${contact.callNumber}`} 
               className="w-full sm:w-auto px-8 py-4 rounded-2xl bg-white hover:bg-slate-50 text-blue-700 font-black font-outfit text-base shadow-xl transition-all flex items-center justify-center gap-2.5"
             >
               <FaPhoneAlt />
-              <span>Call Admissions: +91-9059519151</span>
+              <span>Call Admissions: {contact.callNumber}</span>
             </a>
 
             <a 
-              href="https://wa.me/919059519151?text=Hello%20JVK%20Technologies,%20I%20would%20like%20to%20join%20the%20next%20batch."
+              href={`https://wa.me/${cleanWhatsapp}?text=Hello%20JVK%20Technologies,%20I%20would%20like%20to%20join%20the%20next%20batch.`}
               target="_blank"
               rel="noreferrer"
               className="w-full sm:w-auto px-8 py-4 rounded-2xl bg-emerald-500 hover:bg-emerald-600 text-white font-black font-outfit text-base shadow-xl transition-all flex items-center justify-center gap-2.5"
@@ -853,7 +832,7 @@ const Home = () => {
           </div>
 
           <p className="text-xs text-blue-200 mt-6">
-            📍 Campus: Plot No 42, Tech Cyber Zone, Near Cyber Towers, HITEC City, Madhapur, Hyderabad
+            📍 Campus: {contact.address}
           </p>
 
         </div>

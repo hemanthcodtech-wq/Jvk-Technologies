@@ -403,8 +403,6 @@ exports.forgotPassword = async (req, res, next) => {
     let resetLink = `${clientOrigin}/forgot-password?email=${encodeURIComponent(user.emailOrPhone)}`;
     if (user.role === 'instructor') {
       resetLink = `${clientOrigin}/instructor/login?forgot=true&email=${encodeURIComponent(user.emailOrPhone)}`;
-    } else if (user.role === 'moderator') {
-      resetLink = `${clientOrigin}/moderator/login?forgot=true&email=${encodeURIComponent(user.emailOrPhone)}`;
     } else if (user.role === 'admin') {
       resetLink = `${clientOrigin}/admin/login?forgot=true&email=${encodeURIComponent(user.emailOrPhone)}`;
     }

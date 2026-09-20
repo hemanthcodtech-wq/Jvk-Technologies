@@ -7,12 +7,15 @@ import {
 import { motion, AnimatePresence } from 'framer-motion';
 import axios from 'axios';
 import { useLanguage } from '../context/LanguageContext';
+import { useSettings } from '../context/SettingsContext';
 import SEO from '../components/common/SEO';
 
 const Register = () => {
   const { t } = useLanguage();
   const navigate = useNavigate();
   const location = useLocation();
+  const { settings } = useSettings();
+  const { contact } = settings;
 
   const [step, setStep] = useState('FORM'); // 'FORM' | 'OTP'
   const [showPassword, setShowPassword] = useState(false);
@@ -179,7 +182,7 @@ const Register = () => {
         {/* Help Bar (Desktop) */}
         <div className="hidden sm:flex items-center justify-end mb-3">
           <span className="text-xs text-slate-500 font-medium">
-            Counseling: <a href="tel:+919059519151" className="text-blue-600 font-bold hover:underline">+91-9059519151</a>
+            Counseling: <a href={`tel:${contact.callNumber}`} className="text-blue-600 font-bold hover:underline">{contact.callNumber}</a>
           </span>
         </div>
 

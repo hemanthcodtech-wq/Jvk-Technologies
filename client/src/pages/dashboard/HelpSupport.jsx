@@ -3,6 +3,7 @@ import { motion } from 'framer-motion';
 import { FaArrowLeft, FaWhatsapp, FaEnvelope, FaPhoneAlt, FaChevronDown, FaPaperPlane, FaCheckCircle, FaQuestionCircle } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import { useSettings } from '../../context/SettingsContext';
 
 const HelpSupport = () => {
   const navigate = useNavigate();
@@ -10,6 +11,9 @@ const HelpSupport = () => {
   const [formData, setFormData] = useState({ name: '', email: '', queryType: 'General', message: '' });
   const [submitted, setSubmitted] = useState(false);
   const [loading, setLoading] = useState(false);
+  const { settings } = useSettings();
+  const { contact } = settings;
+  const cleanWhatsapp = contact.whatsappNumber.replace(/[^0-9]/g, '');
 
   const faqs = [
     {
@@ -79,7 +83,7 @@ const HelpSupport = () => {
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
         {/* WhatsApp Support */}
         <a
-          href="https://wa.me/919059519151?text=Hello%20JVK%20Technologies,%20I%20need%20assistance%20with%20my%20courses."
+          href={`https://wa.me/${cleanWhatsapp}?text=Hello%20JVK%20Technologies,%20I%20need%20assistance%20with%20my%20courses.`}
           target="_blank"
           rel="noreferrer"
           className="bg-[#25D366]/10 hover:bg-[#25D366]/20 border border-[#25D366]/30 p-6 rounded-3xl flex flex-col items-center text-center transition-all group shadow-sm"
@@ -89,7 +93,7 @@ const HelpSupport = () => {
           </div>
           <h3 className="font-bold text-gray-900 text-base">WhatsApp Support</h3>
           <p className="text-xs text-gray-500 mt-1">Instant chat with admissions & labs</p>
-          <span className="mt-3 text-xs font-bold text-[#1e9e4d] bg-white px-3 py-1 rounded-full shadow-xs">+91-9059519151 &rarr;</span>
+          <span className="mt-3 text-xs font-bold text-[#1e9e4d] bg-white px-3 py-1 rounded-full shadow-xs">{contact.whatsappNumber} &rarr;</span>
         </a>
 
         {/* Email Support */}
@@ -101,20 +105,20 @@ const HelpSupport = () => {
             <FaEnvelope />
           </div>
           <h3 className="font-bold text-gray-900 text-base">Email Support</h3>
-          <p className="text-xs text-gray-500 mt-1">contact@jvktechnologies.com</p>
+          <p className="text-xs text-gray-500 mt-1">{contact.email}</p>
           <span className="mt-3 text-xs font-bold text-blue-600 bg-white px-3 py-1 rounded-full shadow-xs">Send Email &rarr;</span>
         </a>
 
         {/* Helpline Support */}
         <a
-          href="tel:+919059519151"
+          href={`tel:${contact.callNumber}`}
           className="bg-amber-500/10 hover:bg-amber-500/20 border border-amber-500/30 p-6 rounded-3xl flex flex-col items-center text-center shadow-sm transition-all block"
         >
           <div className="w-14 h-14 bg-amber-500 text-white rounded-2xl flex items-center justify-center text-2xl mb-3 shadow-md mx-auto">
             <FaPhoneAlt />
           </div>
           <h3 className="font-bold text-gray-900 text-base">Helpline Desk</h3>
-          <p className="text-xs text-gray-500 mt-1">+91-9059519151</p>
+          <p className="text-xs text-gray-500 mt-1">{contact.callNumber}</p>
           <span className="mt-3 text-xs font-bold text-amber-700 bg-white px-3 py-1 rounded-full shadow-xs inline-block">Call Now &rarr;</span>
         </a>
       </div>

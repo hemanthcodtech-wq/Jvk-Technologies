@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import axios from 'axios';
 import { motion } from 'framer-motion';
 import { FaSearch, FaUserTie, FaClock, FaSignal, FaLaptopCode, FaHeart, FaRegHeart, FaCheckCircle } from 'react-icons/fa';
@@ -84,7 +84,7 @@ const CourseCard = ({ course, isEnrolled, isWishlisted, onToggleWishlist, onClic
             <span className="text-xs text-slate-400 block">Fee starts from</span>
             <span className="text-base md:text-lg font-black text-slate-900 tracking-tight">₹{course.price || '18,999'}</span>
           </div>
-          <span className="text-xs font-bold text-slate-950 bg-gradient-to-r from-amber-400 to-amber-500 px-3 py-1 rounded-xl shadow-xs">
+          <span className="text-xs font-bold text-white bg-gradient-to-r from-blue-600 to-cyan-500 px-3 py-1 rounded-xl shadow-xs">
             View Syllabus
           </span>
         </div>
@@ -159,6 +159,7 @@ const CourseList = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('All');
   const navigate = useNavigate();
+  const location = useLocation();
   const { lang, t } = useLanguage();
 
   useEffect(() => {
@@ -314,7 +315,13 @@ const CourseList = () => {
                 isEnrolled={enrolledCourseIds.includes(course._id)}
                 isWishlisted={wishlistIds.includes(course._id)}
                 onToggleWishlist={handleToggleWishlist}
-                onClick={() => navigate(`/courses/${course.slug || course._id}`)}
+                onClick={() => {
+                  if (location.pathname.startsWith('/dashboard')) {
+                    navigate(`/dashboard/courses/${course.slug || course._id}`);
+                  } else {
+                    navigate(`/courses/${course.slug || course._id}`);
+                  }
+                }}
               />
             ))}
           </div>

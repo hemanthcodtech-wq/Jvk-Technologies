@@ -132,12 +132,12 @@ const AdminLogin = () => {
   };
 
   return (
-    <div className="min-h-screen bg-[#FAF7F2] flex items-center justify-center p-4 md:p-8 font-inter relative overflow-hidden">
+    <div className="min-h-screen bg-[#F8FAFC] flex items-center justify-center p-4 md:p-8 font-inter relative overflow-hidden">
       
       {/* Background Ambient Liquid Orbs */}
-      <div className="absolute -top-32 -left-32 w-[550px] h-[550px] bg-[#0A4F2A]/10 rounded-full blur-[140px] pointer-events-none"></div>
-      <div className="absolute -bottom-32 -right-32 w-[550px] h-[550px] bg-[#B8860B]/10 rounded-full blur-[160px] pointer-events-none"></div>
-      <div className="absolute top-1/3 right-1/4 w-[400px] h-[400px] bg-[#2D6A4F]/8 rounded-full blur-[120px] pointer-events-none"></div>
+      <div className="absolute -top-32 -left-32 w-[550px] h-[550px] bg-blue-600/10 rounded-full blur-[140px] pointer-events-none"></div>
+      <div className="absolute -bottom-32 -right-32 w-[550px] h-[550px] bg-cyan-600/10 rounded-full blur-[160px] pointer-events-none"></div>
+      <div className="absolute top-1/3 right-1/4 w-[400px] h-[400px] bg-indigo-600/8 rounded-full blur-[120px] pointer-events-none"></div>
 
       {/* Main Container Grid */}
       <div className="w-full max-w-5xl z-10">
@@ -146,12 +146,12 @@ const AdminLogin = () => {
         <div className="mb-6 flex justify-between items-center px-2">
           <Link 
             to="/"
-            className="inline-flex items-center gap-2 text-xs font-bold text-gray-500 hover:text-[#0A4F2A] transition-colors bg-white/80 backdrop-blur-md px-4 py-2 rounded-xl border border-gray-200/80 shadow-xs"
+            className="inline-flex items-center gap-2 text-xs font-bold text-gray-500 hover:text-blue-600 transition-colors bg-white/80 backdrop-blur-md px-4 py-2 rounded-xl border border-gray-200/80 shadow-xs"
           >
             <FaArrowLeft size={11} /> Return to Public Portal
           </Link>
-          <div className="flex items-center gap-2 text-[11px] font-bold text-[#0A4F2A] bg-green-50 px-3 py-1.5 rounded-full border border-green-200/60">
-            <span className="w-2 h-2 rounded-full bg-green-500 animate-ping"></span>
+          <div className="flex items-center gap-2 text-[11px] font-bold text-blue-700 bg-blue-50 px-3 py-1.5 rounded-full border border-blue-200/60">
+            <span className="w-2 h-2 rounded-full bg-blue-500 animate-ping"></span>
             System Live & Verified
           </div>
         </div>
@@ -163,54 +163,54 @@ const AdminLogin = () => {
           className="bg-white/80 backdrop-blur-2xl border border-white shadow-[0_20px_70px_rgba(0,0,0,0.06)] rounded-[2.5rem] overflow-hidden grid grid-cols-1 lg:grid-cols-12"
         >
           {/* Left Institutional Branding Panel (Desktop Only) */}
-          <div className="lg:col-span-5 bg-gradient-to-br from-[#06331A] via-[#0A4F2A] to-[#125B34] p-8 lg:p-12 text-white relative overflow-hidden flex flex-col justify-between">
+          <div className="lg:col-span-5 bg-gradient-to-br from-blue-900 via-blue-800 to-indigo-900 p-8 lg:p-12 text-white relative overflow-hidden flex flex-col justify-between">
             {/* Background Texture Overlay */}
-            <div className="absolute inset-0 opacity-10 pointer-events-none bg-[radial-gradient(#D4AF37_1px,transparent_1px)] [background-size:16px_16px]"></div>
+            <div className="absolute inset-0 opacity-10 pointer-events-none bg-[radial-gradient(#60A5FA_1px,transparent_1px)] [background-size:16px_16px]"></div>
             
             {/* Top Brand Info */}
             <div className="relative z-10 space-y-6">
-              <div className="inline-flex items-center gap-2 px-3 py-1 bg-white/10 backdrop-blur-md border border-white/20 rounded-full text-[10px] font-extrabold tracking-widest uppercase text-[#D4AF37]">
+              <div className="inline-flex items-center gap-2 px-3 py-1 bg-white/10 backdrop-blur-md border border-white/20 rounded-full text-[10px] font-extrabold tracking-widest uppercase text-blue-200">
                 <FaShieldAlt /> Authorized Personnel Only
               </div>
 
               <div className="space-y-2">
                 <div className="bg-white p-3.5 rounded-2xl inline-block shadow-md mb-2">
-                  <img src="/logo.png" alt="SDF Logo" className="h-10 w-auto" />
+                  <img src="/logo.png" alt="JVK Logo" className="h-10 w-auto" />
                 </div>
                 <h2 className="text-xl lg:text-2xl font-black tracking-tight leading-tight">
-                  SWAMY DWIJA FOUNDATION
+                  JVK TECHNOLOGIES
                 </h2>
-                <p className="text-xs text-green-100/80 font-medium">
-                  Academy of Yoga, Pranayama & Vedic Wellness Sciences
+                <p className="text-xs text-blue-100/80 font-medium">
+                  Next-Generation IT Solutions & Enterprise Platforms
                 </p>
               </div>
 
-              <div className="pt-4 border-t border-white/10 space-y-3.5 text-xs text-green-50/90 font-medium">
+              <div className="pt-4 border-t border-white/10 space-y-3.5 text-xs text-blue-50/90 font-medium">
                 <div className="flex items-center gap-3">
-                  <div className="w-7 h-7 rounded-lg bg-white/10 flex items-center justify-center text-[#D4AF37] shrink-0">
+                  <div className="w-7 h-7 rounded-lg bg-white/10 flex items-center justify-center text-blue-300 shrink-0">
                     <FaLock size={12} />
                   </div>
                   <span>256-Bit Encrypted Administrative Session</span>
                 </div>
                 <div className="flex items-center gap-3">
-                  <div className="w-7 h-7 rounded-lg bg-white/10 flex items-center justify-center text-[#D4AF37] shrink-0">
+                  <div className="w-7 h-7 rounded-lg bg-white/10 flex items-center justify-center text-blue-300 shrink-0">
                     <FaAward size={12} />
                   </div>
-                  <span>Watermarked Certificate & Invoice Infrastructure</span>
+                  <span>Enterprise Grade Architecture</span>
                 </div>
                 <div className="flex items-center gap-3">
-                  <div className="w-7 h-7 rounded-lg bg-white/10 flex items-center justify-center text-[#D4AF37] shrink-0">
+                  <div className="w-7 h-7 rounded-lg bg-white/10 flex items-center justify-center text-blue-300 shrink-0">
                     <FaCloud size={12} />
                   </div>
-                  <span>Cloudinary Verified Master Vault</span>
+                  <span>Cloud Native Deployment</span>
                 </div>
               </div>
             </div>
 
             {/* Bottom Status */}
-            <div className="relative z-10 pt-8 mt-8 border-t border-white/10 flex items-center justify-between text-[11px] text-green-200/70">
-              <span>SDF Portal v2.4</span>
-              <span>Hyderabad Central Server</span>
+            <div className="relative z-10 pt-8 mt-8 border-t border-white/10 flex items-center justify-between text-[11px] text-blue-200/70">
+              <span>JVK Portal v3.0</span>
+              <span>Enterprise Cloud</span>
             </div>
           </div>
 
@@ -218,7 +218,7 @@ const AdminLogin = () => {
           <div className="lg:col-span-7 p-8 lg:p-12 flex flex-col justify-center relative">
             
             <div className="mb-8">
-              <div className="inline-flex items-center gap-2 px-3 py-1 bg-brand-green/10 text-brand-green-dark rounded-full text-xs font-bold uppercase tracking-wider mb-2">
+              <div className="inline-flex items-center gap-2 px-3 py-1 bg-blue-600/10 text-blue-800 rounded-full text-xs font-bold uppercase tracking-wider mb-2">
                 Executive Portal
               </div>
               <h1 className="text-2xl lg:text-3xl font-black text-gray-900 tracking-tight">System Sign In</h1>
@@ -258,8 +258,8 @@ const AdminLogin = () => {
                     value={formData.email}
                     onChange={handleChange}
                     required
-                    placeholder="Enter administrative email (e.g. admin@sdf.com)"
-                    className="w-full pl-11 pr-4 py-3.5 bg-gray-50/80 border border-gray-200 rounded-2xl text-sm font-medium text-gray-900 placeholder-gray-400 focus:bg-white focus:ring-2 focus:ring-[#0A4F2A]/20 focus:border-[#0A4F2A] outline-none transition-all shadow-xs"
+                    placeholder="Enter administrative email (e.g. admin@jvk.com)"
+                    className="w-full pl-11 pr-4 py-3.5 bg-gray-50/80 border border-gray-200 rounded-2xl text-sm font-medium text-gray-900 placeholder-gray-400 focus:bg-white focus:ring-2 focus:ring-blue-600/20 focus:border-blue-600 outline-none transition-all shadow-xs"
                   />
                 </div>
               </div>
@@ -273,7 +273,7 @@ const AdminLogin = () => {
                   <button
                     type="button"
                     onClick={handleOpenForgotModal}
-                    className="text-xs text-[#0A4F2A] font-extrabold hover:underline transition-colors cursor-pointer"
+                    className="text-xs text-blue-600 font-extrabold hover:underline transition-colors cursor-pointer"
                   >
                     Forgot Password?
                   </button>
@@ -287,7 +287,7 @@ const AdminLogin = () => {
                     onChange={handleChange}
                     required
                     placeholder="Enter administrative password"
-                    className="w-full pl-11 pr-12 py-3.5 bg-gray-50/80 border border-gray-200 rounded-2xl text-sm font-medium text-gray-900 placeholder-gray-400 focus:bg-white focus:ring-2 focus:ring-[#0A4F2A]/20 focus:border-[#0A4F2A] outline-none transition-all shadow-xs"
+                    className="w-full pl-11 pr-12 py-3.5 bg-gray-50/80 border border-gray-200 rounded-2xl text-sm font-medium text-gray-900 placeholder-gray-400 focus:bg-white focus:ring-2 focus:ring-blue-600/20 focus:border-blue-600 outline-none transition-all shadow-xs"
                   />
                   <button
                     type="button"
@@ -303,7 +303,7 @@ const AdminLogin = () => {
               <button
                 type="submit"
                 disabled={isLoading}
-                className="w-full bg-[#0A4F2A] hover:bg-[#06331A] text-white font-extrabold py-4 rounded-2xl shadow-lg shadow-[#0A4F2A]/25 hover:shadow-[#0A4F2A]/40 transition-all duration-300 disabled:opacity-60 flex items-center justify-center gap-2 text-sm tracking-wide mt-2 cursor-pointer"
+                className="w-full bg-blue-600 hover:bg-blue-700 text-white font-extrabold py-4 rounded-2xl shadow-lg shadow-blue-600/25 hover:shadow-blue-600/40 transition-all duration-300 disabled:opacity-60 flex items-center justify-center gap-2 text-sm tracking-wide mt-2 cursor-pointer"
               >
                 {isLoading ? (
                   <>
@@ -322,7 +322,7 @@ const AdminLogin = () => {
             {/* Bottom Security Notice */}
             <div className="mt-8 pt-6 border-t border-gray-100 flex items-center justify-between text-[11px] text-gray-400 font-medium">
               <span>Encrypted SSL Gateway</span>
-              <span>Swamy Dwija Foundation © 2026</span>
+              <span>JVK Technologies © 2026</span>
             </div>
 
           </div>
@@ -350,7 +350,7 @@ const AdminLogin = () => {
             >
               <div className="flex items-center justify-between pb-3 border-b border-gray-100 mb-5">
                 <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-2xl bg-brand-green/10 text-brand-green flex items-center justify-center text-lg">
+                  <div className="w-10 h-10 rounded-2xl bg-blue-600/10 text-blue-600 flex items-center justify-center text-lg">
                     <FaKey />
                   </div>
                   <div>
@@ -396,8 +396,8 @@ const AdminLogin = () => {
                         required
                         value={forgotEmail}
                         onChange={(e) => setForgotEmail(e.target.value)}
-                        placeholder="admin@sdf.com"
-                        className="w-full pl-11 pr-4 py-3 bg-gray-50 border border-gray-200 rounded-2xl text-sm font-medium focus:bg-white focus:ring-2 focus:ring-brand-green/20 focus:border-brand-green outline-none"
+                        placeholder="admin@jvk.com"
+                        className="w-full pl-11 pr-4 py-3 bg-gray-50 border border-gray-200 rounded-2xl text-sm font-medium focus:bg-white focus:ring-2 focus:ring-blue-600/20 focus:border-blue-600 outline-none"
                       />
                     </div>
                     <p className="text-[11px] text-gray-400">
@@ -408,7 +408,7 @@ const AdminLogin = () => {
                   <button
                     type="submit"
                     disabled={forgotLoading}
-                    className="w-full py-3.5 bg-brand-green hover:bg-brand-green-dark text-white font-extrabold text-xs rounded-2xl shadow-md disabled:opacity-60 transition-all flex justify-center items-center gap-2 cursor-pointer"
+                    className="w-full py-3.5 bg-blue-600 hover:bg-blue-700 text-white font-extrabold text-xs rounded-2xl shadow-md disabled:opacity-60 transition-all flex justify-center items-center gap-2 cursor-pointer"
                   >
                     {forgotLoading ? (
                       <>
@@ -436,7 +436,7 @@ const AdminLogin = () => {
                       value={forgotOtp}
                       onChange={(e) => setForgotOtp(e.target.value)}
                       placeholder="123456"
-                      className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-2xl text-center text-xl font-mono tracking-widest font-black text-brand-green-dark focus:bg-white focus:ring-2 focus:ring-brand-green/20 focus:border-brand-green outline-none"
+                      className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-2xl text-center text-xl font-mono tracking-widest font-black text-blue-800 focus:bg-white focus:ring-2 focus:ring-blue-600/20 focus:border-blue-600 outline-none"
                     />
                   </div>
 
@@ -451,7 +451,7 @@ const AdminLogin = () => {
                         value={forgotNewPassword}
                         onChange={(e) => setForgotNewPassword(e.target.value)}
                         placeholder="Min. 6 characters"
-                        className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-2xl text-sm font-medium focus:bg-white focus:ring-2 focus:ring-brand-green/20 focus:border-brand-green outline-none pr-10"
+                        className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-2xl text-sm font-medium focus:bg-white focus:ring-2 focus:ring-blue-600/20 focus:border-blue-600 outline-none pr-10"
                       />
                       <button
                         type="button"
@@ -473,7 +473,7 @@ const AdminLogin = () => {
                       value={forgotConfirmPassword}
                       onChange={(e) => setForgotConfirmPassword(e.target.value)}
                       placeholder="Repeat new password"
-                      className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-2xl text-sm font-medium focus:bg-white focus:ring-2 focus:ring-brand-green/20 focus:border-brand-green outline-none"
+                      className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-2xl text-sm font-medium focus:bg-white focus:ring-2 focus:ring-blue-600/20 focus:border-blue-600 outline-none"
                     />
                   </div>
 
@@ -490,7 +490,7 @@ const AdminLogin = () => {
                   <button
                     type="submit"
                     disabled={forgotLoading}
-                    className="w-full py-3.5 bg-brand-green hover:bg-brand-green-dark text-white font-extrabold text-xs rounded-2xl shadow-md disabled:opacity-60 transition-all flex justify-center items-center gap-2 cursor-pointer"
+                    className="w-full py-3.5 bg-blue-600 hover:bg-blue-700 text-white font-extrabold text-xs rounded-2xl shadow-md disabled:opacity-60 transition-all flex justify-center items-center gap-2 cursor-pointer"
                   >
                     {forgotLoading ? (
                       <>
@@ -507,7 +507,7 @@ const AdminLogin = () => {
               {/* STEP 3: Success Screen */}
               {forgotStep === 3 && (
                 <div className="text-center space-y-4 py-4">
-                  <div className="w-14 h-14 bg-emerald-100 rounded-full flex items-center justify-center mx-auto text-brand-green">
+                  <div className="w-14 h-14 bg-blue-100 rounded-full flex items-center justify-center mx-auto text-blue-600">
                     <FaCheckCircle size={28} />
                   </div>
                   <p className="text-xs text-gray-600">
@@ -519,7 +519,7 @@ const AdminLogin = () => {
                       setFormData({ email: forgotEmail, password: '' });
                       setIsForgotModalOpen(false);
                     }}
-                    className="w-full py-3.5 bg-brand-green hover:bg-brand-green-dark text-white text-xs font-bold rounded-2xl shadow-md transition-all cursor-pointer"
+                    className="w-full py-3.5 bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold rounded-2xl shadow-md transition-all cursor-pointer"
                   >
                     Sign In with New Password →
                   </button>

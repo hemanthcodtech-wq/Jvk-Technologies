@@ -21,7 +21,7 @@ router.get('/dashboard-stats', protect, instructor, async (req, res) => {
         { _id: { $in: instructorUser.assignedCourses || [] } }
       ]
     })
-    .populate('moderatorId', 'name emailOrPhone phone')
+
     .sort('-createdAt');
 
     const courseIds = assignedCourses.map(c => c._id);
@@ -88,8 +88,7 @@ router.get('/courses/:id/details', protect, instructor, async (req, res) => {
   try {
     const courseId = req.params.id;
     const course = await Course.findById(courseId)
-      .populate('instructorId', 'name emailOrPhone speciality phone bio')
-      .populate('moderatorId', 'name emailOrPhone phone');
+      .populate('instructorId', 'name emailOrPhone speciality phone bio');
 
     if (!course) {
       return res.status(404).json({ success: false, message: 'Course not found' });

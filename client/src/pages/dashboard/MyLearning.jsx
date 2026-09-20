@@ -75,37 +75,40 @@ const MyLearning = () => {
 
   const getCategoryColor = (category) => {
     const colors = {
-      'Yoga': 'bg-[#f4efe6] text-amber-800',
-      'Meditation': 'bg-[#e9f1e8] text-green-800',
-      'General': 'bg-[#e8ebf4] text-blue-800'
+      'Java Full Stack': 'bg-blue-50 text-blue-700 border-blue-100',
+      'Python & AI': 'bg-emerald-50 text-emerald-700 border-emerald-100',
+      'MERN Stack': 'bg-cyan-50 text-cyan-700 border-cyan-100',
+      'Cloud & DevOps': 'bg-violet-50 text-violet-700 border-violet-100',
+      'Software Testing': 'bg-rose-50 text-rose-700 border-rose-100',
+      'General': 'bg-slate-50 text-slate-700 border-slate-100'
     };
     return colors[category] || colors['General'];
   };
 
   return (
-    <div className="min-h-screen bg-[#F9F7F5] pb-24 md:pb-8 pt-20 md:pt-8">
+    <div className="min-h-screen bg-slate-50 pb-24 md:pb-8 pt-20 md:pt-8">
       <div className="max-w-7xl mx-auto px-4 lg:px-8 pt-6">
         
         {loading ? (
-           <div className="flex justify-center p-10"><div className="w-8 h-8 border-4 border-yellow-400 border-t-transparent rounded-full animate-spin"></div></div>
+           <div className="flex justify-center p-10"><div className="w-8 h-8 border-4 border-blue-600 border-t-transparent rounded-full animate-spin"></div></div>
         ) : error ? (
            <div className="text-center text-red-500 p-4">{error}</div>
         ) : (
           <div className="space-y-6">
             
             {/* Upcoming Class Card */}
-            <div className="bg-[#f5f4ef] rounded-2xl p-6 md:p-8 border border-[#e6e2d3] flex flex-col md:flex-row items-center justify-between shadow-sm relative overflow-hidden max-w-4xl mx-auto w-full gap-6">
-              <div className="absolute top-0 left-0 w-full md:w-2 md:h-full h-1 md:bg-gradient-to-b bg-gradient-to-r from-yellow-300 to-yellow-500"></div>
+            <div className="bg-white/90 backdrop-blur-sm rounded-3xl p-6 md:p-8 border border-slate-200 flex flex-col md:flex-row items-center justify-between shadow-[0_8px_30px_rgba(0,0,0,0.04)] relative overflow-hidden max-w-4xl mx-auto w-full gap-6">
+              <div className="absolute top-0 left-0 w-full md:w-2 md:h-full h-1 md:bg-gradient-to-b bg-gradient-to-r from-blue-600 to-cyan-400"></div>
               
               <div className="flex flex-col items-center md:items-start text-center md:text-left">
                 <h2 className="text-sm font-bold text-gray-500 mb-2 uppercase tracking-widest">Upcoming Class</h2>
                 {upcomingClass ? (
                   <>
-                    <h3 className="text-xl md:text-2xl font-black text-gray-800 line-clamp-1">{upcomingClass.title || upcomingClass.courseId?.title}</h3>
-                    <div className="flex items-center justify-center md:justify-start gap-2 mt-2 text-sm font-medium text-gray-600">
-                      <FaVideo className="text-yellow-500"/>
+                    <h3 className="text-xl md:text-2xl font-black text-slate-900 line-clamp-1">{upcomingClass.title || upcomingClass.courseId?.title}</h3>
+                    <div className="flex items-center justify-center md:justify-start gap-2 mt-2 text-sm font-medium text-slate-600">
+                      <FaVideo className="text-blue-500"/>
                       <span>{new Date(`${upcomingClass.date.split('T')[0]}T${upcomingClass.time}:00`).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}</span>
-                      <span className="w-px h-3 bg-gray-300 mx-1"></span>
+                      <span className="w-px h-3 bg-slate-300 mx-1"></span>
                       <span>{new Date(upcomingClass.date).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' })}</span>
                     </div>
                   </>
@@ -118,7 +121,7 @@ const MyLearning = () => {
                 <a 
                   href={upcomingClass.zoomLink || '#'} 
                   target={upcomingClass.zoomLink ? "_blank" : "_self"}
-                  className={`bg-[#fcd536] hover:bg-[#f6cd24] text-gray-900 font-bold px-8 py-3.5 rounded-full text-lg shadow-[0_4px_15px_rgba(252,213,54,0.3)] transition-all hover:scale-105 flex items-center gap-2 whitespace-nowrap ${!upcomingClass.zoomLink && 'opacity-70 cursor-not-allowed'}`}
+                  className={`bg-blue-600 hover:bg-blue-700 text-white font-bold px-8 py-3.5 rounded-full text-lg shadow-[0_4px_14px_rgba(37,99,235,0.3)] transition-all hover:scale-105 flex items-center gap-2 whitespace-nowrap ${!upcomingClass.zoomLink && 'opacity-70 cursor-not-allowed'}`}
                 >
                   Join Now
                 </a>
@@ -126,7 +129,7 @@ const MyLearning = () => {
             </div>
 
             <div className="pt-4">
-              <h2 className="text-xl font-bold text-gray-900 mb-6 flex items-center gap-2"><FaGraduationCap className="text-yellow-500" /> My Enrolled Courses</h2>
+              <h2 className="text-xl font-bold text-slate-900 mb-6 flex items-center gap-2"><FaGraduationCap className="text-blue-600" /> My Enrolled Courses</h2>
               {/* Course Cards Grid */}
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
                 {courses.map((course, index) => {
@@ -148,27 +151,27 @@ const MyLearning = () => {
                       {/* Content */}
                       <div className="p-6 flex-1 flex flex-col">
                         <div className="flex items-start gap-4 mb-4">
-                          <div className="w-14 h-14 rounded-xl bg-gray-50 shrink-0 overflow-hidden border border-gray-100 flex items-center justify-center">
-                            {course.image ? <img src={course.image.startsWith('http') ? course.image : `${import.meta.env.VITE_API_BASE_URL.replace('/api', '')}/${course.image.replace(/\\/g, '/')}`} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" /> : <FaGraduationCap className="text-gray-300 size-6" />}
+                          <div className="w-14 h-14 rounded-xl bg-slate-50 shrink-0 overflow-hidden border border-slate-100 flex items-center justify-center">
+                            {course.image ? <img src={course.image.startsWith('http') ? course.image : `${import.meta.env.VITE_API_BASE_URL.replace('/api', '')}/${course.image.replace(/\\/g, '/')}`} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" /> : <FaGraduationCap className="text-slate-300 size-6" />}
                           </div>
                           <div className="flex-1 min-w-0 pt-1">
-                            <h3 className="text-lg font-black text-gray-800 leading-snug line-clamp-2">{course.title}</h3>
+                            <h3 className="text-lg font-black text-slate-900 leading-snug line-clamp-2">{course.title}</h3>
                           </div>
                         </div>
 
-                        <div className="mt-auto pt-4 border-t border-gray-50">
+                        <div className="mt-auto pt-4 border-t border-slate-100">
                           <div className="flex justify-between items-center mb-2">
-                            <div className="text-xs font-bold text-gray-400 uppercase tracking-wider">Progress</div>
-                            <div className="text-sm font-bold text-gray-700">{course.progress}%</div>
+                            <div className="text-xs font-bold text-slate-400 uppercase tracking-wider">Progress</div>
+                            <div className="text-sm font-bold text-slate-700">{course.progress}%</div>
                           </div>
-                          <div className="w-full bg-gray-100 rounded-full h-1.5 mb-6">
-                            <div className="bg-[#fcd536] h-1.5 rounded-full" style={{ width: `${course.progress}%` }}></div>
+                          <div className="w-full bg-slate-100 rounded-full h-1.5 mb-6">
+                            <div className="bg-blue-600 h-1.5 rounded-full shadow-[0_0_8px_rgba(37,99,235,0.6)]" style={{ width: `${course.progress}%` }}></div>
                           </div>
 
                           <div className="flex gap-2">
                             <button 
                               onClick={() => navigate(`/dashboard/learning/${course.courseId}`)}
-                              className="flex-1 bg-[#fcd536] hover:bg-[#f6cd24] text-gray-900 font-bold px-3 py-3 rounded-xl text-xs sm:text-sm shadow-sm transition-transform active:scale-95 flex justify-center items-center gap-1.5 cursor-pointer"
+                              className="flex-1 bg-blue-50 hover:bg-blue-100 text-blue-700 font-bold px-3 py-3 rounded-xl text-xs sm:text-sm shadow-sm transition-transform active:scale-95 flex justify-center items-center gap-1.5 cursor-pointer"
                             >
                               <span>View Classes</span> <FaChevronRight className="text-[10px]" />
                             </button>

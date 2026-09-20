@@ -24,8 +24,7 @@ const courseSchema = new mongoose.Schema({
   },
   category: {
     type: String,
-    required: true,
-    enum: ['Full Stack Java', 'Python & AI', 'MERN Stack', 'Cloud & DevOps', 'Software Testing', 'Data Engineering', 'Software Development', 'Other']
+    required: true
   },
   instructorId: {
     type: mongoose.Schema.Types.ObjectId,
@@ -34,13 +33,7 @@ const courseSchema = new mongoose.Schema({
   instructor: {
     type: String
   },
-  moderatorId: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'User'
-  },
-  moderator: {
-    type: String
-  },
+
   durationMonths: {
     type: Number,
     required: true,

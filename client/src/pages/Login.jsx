@@ -5,12 +5,15 @@ import { FcGoogle } from 'react-icons/fc';
 import axios from 'axios';
 import { motion } from 'framer-motion';
 import { useLanguage } from '../context/LanguageContext';
+import { useSettings } from '../context/SettingsContext';
 import SEO from '../components/common/SEO';
 
 const GOOGLE_CLIENT_ID = import.meta.env.VITE_GOOGLE_CLIENT_ID;
 
 const Login = () => {
   const { t } = useLanguage();
+  const { settings } = useSettings();
+  const { contact } = settings;
   const [showPassword, setShowPassword] = useState(false);
   const [formData, setFormData] = useState({ emailOrPhone: '', password: '' });
   const [isLoading, setIsLoading] = useState(false);
@@ -139,7 +142,7 @@ const Login = () => {
         {/* Help Bar (Desktop) */}
         <div className="hidden sm:flex items-center justify-end mb-3">
           <span className="text-xs text-slate-500 font-medium">
-            Need help? <a href="tel:+919059519151" className="text-blue-600 font-bold hover:underline">+91-9059519151</a>
+            Need help? <a href={`tel:${contact.callNumber}`} className="text-blue-600 font-bold hover:underline">{contact.callNumber}</a>
           </span>
         </div>
 

@@ -20,7 +20,7 @@ const AdminLayout = () => {
     { name: 'Dashboard', path: '/admin/dashboard', icon: FaTachometerAlt },
     { name: 'Courses', path: '/admin/courses', icon: FaBook },
     { name: 'Instructors', path: '/admin/instructors', icon: FaChalkboardTeacher },
-    { name: 'Moderators', path: '/admin/moderators', icon: FaUserShield },
+
     { name: 'Materials', path: '/admin/materials', icon: FaFolderOpen },
     { name: 'Certificates & Invoices', path: '/admin/records', icon: FaAward },
     { name: 'Learners', path: '/admin/users', icon: FaUsers },
@@ -35,7 +35,7 @@ const AdminLayout = () => {
           <div className="flex items-center gap-3">
             <img src="/logo.png" alt="SDF Logo" className="h-9 w-auto object-contain drop-shadow-sm" />
             <div className="flex flex-col">
-              <span className="font-extrabold text-sm tracking-wider text-brand-green-dark">SDF ADMIN</span>
+              <span className="font-extrabold text-sm tracking-wider text-blue-700">JVK ADMIN</span>
               <span className="text-[10px] font-semibold text-gray-400 uppercase tracking-widest">Management Hub</span>
             </div>
           </div>
@@ -50,8 +50,8 @@ const AdminLayout = () => {
               className={({ isActive }) =>
                 `flex items-center gap-3.5 px-4 py-3.5 rounded-2xl transition-all duration-300 ${
                   isActive 
-                    ? 'bg-brand-green text-white shadow-[0_8px_20px_rgba(41,120,56,0.25)] font-bold' 
-                    : 'text-gray-600 hover:bg-white/80 hover:text-brand-green font-semibold hover:shadow-xs'
+                    ? 'bg-blue-600 text-white shadow-[0_8px_20px_rgba(37,99,235,0.25)] font-bold' 
+                    : 'text-gray-600 hover:bg-white/80 hover:text-blue-600 font-semibold hover:shadow-xs'
                 }`
               }
             >
@@ -71,7 +71,7 @@ const AdminLayout = () => {
             rel="noreferrer"
             className="flex items-center gap-3.5 px-4 py-3 rounded-2xl text-gray-600 hover:bg-white/80 hover:text-brand-green font-semibold transition-all text-sm group"
           >
-            <FaExternalLinkAlt size={14} className="text-gray-400 group-hover:text-brand-green" />
+            <FaExternalLinkAlt size={14} className="text-gray-400 group-hover:text-blue-600" />
             <span>View Public Site</span>
           </Link>
         </nav>
@@ -91,9 +91,9 @@ const AdminLayout = () => {
       <div className="flex-1 flex flex-col min-w-0 bg-[#FAF7F2] relative overflow-hidden">
         
         {/* Ambient liquid background orbs */}
-        <div className="absolute -top-24 -right-24 w-96 h-96 bg-brand-green/10 rounded-full blur-3xl pointer-events-none animate-pulse"></div>
-        <div className="absolute top-1/2 left-1/3 w-[500px] h-[500px] bg-[#d67b22]/8 rounded-full blur-[140px] pointer-events-none"></div>
-        <div className="absolute -bottom-24 -left-24 w-96 h-96 bg-[#70a448]/10 rounded-full blur-3xl pointer-events-none"></div>
+        <div className="absolute -top-24 -right-24 w-96 h-96 bg-blue-600/10 rounded-full blur-3xl pointer-events-none animate-pulse"></div>
+        <div className="absolute top-1/2 left-1/3 w-[500px] h-[500px] bg-cyan-600/8 rounded-full blur-[140px] pointer-events-none"></div>
+        <div className="absolute -bottom-24 -left-24 w-96 h-96 bg-indigo-600/10 rounded-full blur-3xl pointer-events-none"></div>
 
         {/* Top Header */}
         <header className="h-16 md:h-20 bg-white/70 backdrop-blur-xl border-b border-white/60 flex items-center justify-between px-4 md:px-8 z-20 shrink-0 shadow-[0_4px_30px_rgba(0,0,0,0.02)] sticky top-0">
@@ -105,7 +105,7 @@ const AdminLayout = () => {
 
           {/* Desktop Left */}
           <div className="hidden md:flex items-center gap-3">
-            <h2 className="text-base lg:text-lg font-extrabold text-gray-800 tracking-tight">Swamy Dwija Foundation Admin Portal</h2>
+            <h2 className="text-base lg:text-lg font-extrabold text-gray-800 tracking-tight">JVK Technologies Admin Portal</h2>
           </div>
 
           {/* Desktop Right */}
@@ -115,7 +115,7 @@ const AdminLayout = () => {
               <span>System Live</span>
             </div>
             <div className="flex items-center gap-2.5 pl-3 border-l border-gray-200/80">
-              <div className="w-9 h-9 rounded-xl bg-brand-green text-white flex items-center justify-center font-black text-xs shadow-md">
+              <div className="w-9 h-9 rounded-xl bg-blue-600 text-white flex items-center justify-center font-black text-xs shadow-md">
                 SA
               </div>
               <div className="flex flex-col">
@@ -149,14 +149,14 @@ const AdminLayout = () => {
               to={item.path}
               className={({ isActive }) =>
                 `flex flex-col items-center justify-center w-full h-full space-y-1 transition-colors ${
-                  isActive ? 'text-brand-green font-bold' : 'text-gray-400 hover:text-gray-600 font-medium'
+                  isActive ? 'text-blue-600 font-bold' : 'text-gray-400 hover:text-gray-600 font-medium'
                 }`
               }
             >
               {({ isActive }) => (
                 <>
-                  <item.icon size={20} className={isActive ? 'text-brand-green' : ''} />
-                  <span className={`text-[10px] font-semibold ${isActive ? 'text-brand-green font-bold' : ''}`}>
+                  <item.icon size={20} className={isActive ? 'text-blue-600' : ''} />
+                  <span className={`text-[10px] font-semibold ${isActive ? 'text-blue-600 font-bold' : ''}`}>
                     {item.name}
                   </span>
                 </>

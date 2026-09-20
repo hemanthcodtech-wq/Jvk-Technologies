@@ -2,8 +2,11 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { FaUserShield, FaArrowLeft, FaLock, FaDatabase, FaCookieBite, FaEnvelope, FaPhoneAlt } from 'react-icons/fa';
 import { motion } from 'framer-motion';
+import { useSettings } from "../../context/SettingsContext";
 
 const PrivacyPolicy = () => {
+  const { settings } = useSettings();
+  const { contact } = settings;
   return (
     <div className="min-h-screen bg-[#020817] text-gray-200 font-inter py-10 px-4 sm:px-6 lg:px-8 bg-cyber-grid">
       <div className="max-w-4xl mx-auto space-y-8">
@@ -95,9 +98,9 @@ const PrivacyPolicy = () => {
             </h2>
             <div className="p-4 rounded-2xl bg-[#020817] border border-blue-500/25 space-y-2 text-xs text-gray-300">
               <p><strong>JVK Technologies Pvt Ltd</strong></p>
-              <p>Plot No 42, Tech Cyber Zone, Near Cyber Towers, HITEC City, Madhapur, Hyderabad, Telangana - 500081</p>
-              <p>Phone: <a href="tel:+919059519151" className="text-[#00d2ff] font-bold">+91-9059519151</a></p>
-              <p>Email: <a href="mailto:contact@jvktechnologies.com" className="text-[#00d2ff] font-bold">contact@jvktechnologies.com</a></p>
+              <p>{contact.address}</p>
+              <p>Phone: <a href={`tel:${contact.callNumber}`} className="text-[#00d2ff] font-bold">{contact.callNumber}</a></p>
+              <p>Email: <a href={`mailto:${contact.email}`} className="text-[#00d2ff] font-bold">{contact.email}</a></p>
             </div>
           </section>
 

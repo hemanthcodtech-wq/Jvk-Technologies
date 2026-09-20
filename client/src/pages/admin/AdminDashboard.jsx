@@ -21,34 +21,45 @@ const AdminDashboard = () => {
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
 
-  // Public Stats Modal State
-  const [statsModalOpen, setStatsModalOpen] = useState(false);
-  const [publicStats, setPublicStats] = useState({
-    studentsCount: 5000,
-    studentsSuffix: '+',
-    studentsLabel: 'Transformed Seekers',
-    coursesCount: 25,
-    coursesSuffix: '+',
-    coursesLabel: 'Master Curricula',
-    instructorsCount: 15,
-    instructorsSuffix: '+',
-    instructorsLabel: 'Expert Gurus',
-    satisfactionRate: 99,
-    satisfactionSuffix: '%',
-    satisfactionLabel: 'Satisfaction',
-    communitiesCount: 15,
-    communitiesSuffix: '+',
-    communitiesLabel: 'Global Communities',
-    lineageRate: 100,
-    lineageSuffix: '%',
-    lineageLabel: 'Authentic Vedic Lineage'
+  // Platform Settings Modal State
+  const [settingsModalOpen, setSettingsModalOpen] = useState(false);
+  const [activeTab, setActiveTab] = useState('contact'); // 'contact', 'stats', 'categories'
+  const [platformSettings, setPlatformSettings] = useState({
+    stats: {
+      studentsCount: 5000,
+      studentsSuffix: '+',
+      studentsLabel: 'Transformed Seekers',
+      coursesCount: 25,
+      coursesSuffix: '+',
+      coursesLabel: 'Master Curricula',
+      instructorsCount: 15,
+      instructorsSuffix: '+',
+      instructorsLabel: 'Expert Gurus',
+      satisfactionRate: 99,
+      satisfactionSuffix: '%',
+      satisfactionLabel: 'Satisfaction',
+      communitiesCount: 15,
+      communitiesSuffix: '+',
+      communitiesLabel: 'Global Communities',
+      lineageRate: 100,
+      lineageSuffix: '%',
+      lineageLabel: 'Authentic Vedic Lineage'
+    },
+    contact: {
+      whatsappNumber: '+919059519151',
+      callNumber: '+919059519151',
+      email: 'support@jvktech.com',
+      address: 'IT Hub, India'
+    },
+    categories: []
   });
+  const [newCategory, setNewCategory] = useState('');
   const [savingStats, setSavingStats] = useState(false);
   const [toastMessage, setToastMessage] = useState('');
 
   useEffect(() => {
     fetchStats();
-    fetchPublicStats();
+    fetchPlatformSettings();
   }, []);
 
   const fetchStats = async () => {
@@ -67,14 +78,14 @@ const AdminDashboard = () => {
     }
   };
 
-  const fetchPublicStats = async () => {
+  const fetchPlatformSettings = async () => {
     try {
-      const res = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/admin/settings/stats`);
+      const res = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/admin/settings`);
       if (res.data.success && res.data.data) {
-        setPublicStats(res.data.data);
+        setPlatformSettings(prev => ({ ...prev, ...res.data.data }));
       }
     } catch (err) {
-      console.error("Error fetching public stats", err);
+      console.error("Error fetching platform settings", err);
     }
   };
 
@@ -83,25 +94,42 @@ const AdminDashboard = () => {
     setTimeout(() => setToastMessage(''), 4000);
   };
 
-  const handleSavePublicStats = async (e) => {
+  const handleSavePlatformSettings = async (e) => {
     e.preventDefault();
     setSavingStats(true);
     try {
       const token = localStorage.getItem('adminToken');
       const res = await axios.put(
-        `${import.meta.env.VITE_API_BASE_URL}/admin/settings/stats`,
-        publicStats,
+        `${import.meta.env.VITE_API_BASE_URL}/admin/settings`,
+        platformSettings,
         { headers: { Authorization: `Bearer ${token}` } }
       );
       if (res.data.success) {
-        showToast('Public platform metrics updated successfully across Home & About pages!');
-        setStatsModalOpen(false);
+        showToast('Platform settings updated successfully across the app!');
+        setSettingsModalOpen(false);
       }
     } catch (err) {
-      alert(err.response?.data?.message || 'Error updating platform stats');
+      alert(err.response?.data?.message || 'Error updating platform settings');
     } finally {
       setSavingStats(false);
     }
+  };
+
+  const handleAddCategory = () => {
+    if (newCategory.trim() && !platformSettings.categories.includes(newCategory.trim())) {
+      setPlatformSettings({
+        ...platformSettings,
+        categories: [...platformSettings.categories, newCategory.trim()]
+      });
+      setNewCategory('');
+    }
+  };
+
+  const handleRemoveCategory = (cat) => {
+    setPlatformSettings({
+      ...platformSettings,
+      categories: platformSettings.categories.filter(c => c !== cat)
+    });
   };
 
   const statCards = [
@@ -142,7 +170,7 @@ const AdminDashboard = () => {
   if (loading) {
     return (
       <div className="flex justify-center items-center h-[50vh]">
-        <div className="w-10 h-10 border-4 border-brand-green border-t-transparent rounded-full animate-spin"></div>
+        <div className="w-10 h-10 border-4 border-blue-600 border-t-transparent rounded-full animate-spin"></div>
       </div>
     );
   }
@@ -157,7 +185,7 @@ const AdminDashboard = () => {
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
-            className="fixed top-24 right-8 z-50 bg-brand-green text-white px-6 py-3.5 rounded-2xl shadow-2xl font-bold text-sm flex items-center gap-2 border border-brand-green-dark"
+            className="fixed top-24 right-8 z-50 bg-blue-600 text-white px-6 py-3.5 rounded-2xl shadow-2xl font-bold text-sm flex items-center gap-2 border border-blue-600-dark"
           >
             <FaCheckCircle className="text-yellow-300" /> {toastMessage}
           </motion.div>
@@ -167,8 +195,8 @@ const AdminDashboard = () => {
       {/* Top Banner with Glassmorphism */}
       <div className="bg-white/60 backdrop-blur-2xl rounded-[2.5rem] p-6 lg:p-8 border border-white/80 shadow-[0_8px_32px_rgba(0,0,0,0.03)] flex flex-col md:flex-row md:items-center justify-between gap-6">
         <div>
-          <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-brand-green/10 text-brand-green-dark text-xs font-bold uppercase tracking-wider mb-2">
-            <span className="w-2 h-2 rounded-full bg-brand-green"></span>
+          <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-blue-600/10 text-blue-600-dark text-xs font-bold uppercase tracking-wider mb-2">
+            <span className="w-2 h-2 rounded-full bg-blue-600"></span>
             Operational Intelligence
           </div>
           <h1 className="text-2xl lg:text-3xl font-black text-gray-900 tracking-tight">Admin Control Center</h1>
@@ -178,19 +206,19 @@ const AdminDashboard = () => {
         {/* Quick Action Buttons */}
         <div className="flex flex-wrap items-center gap-3">
           
-          {/* Edit Public Stats Button */}
+          {/* Edit Platform Settings Button */}
           <button
-            onClick={() => setStatsModalOpen(true)}
+            onClick={() => setSettingsModalOpen(true)}
             className="px-4 py-3 bg-amber-500/10 hover:bg-amber-500 hover:text-white text-amber-800 border border-amber-300 rounded-2xl text-xs lg:text-sm font-bold shadow-xs transition-all flex items-center gap-2"
-            title="Edit public metrics shown on Home and About pages"
+            title="Edit contact info, course categories, and public metrics"
           >
             <FaSlidersH size={13} />
-            <span>Edit Public Stats</span>
+            <span>Platform Settings</span>
           </button>
 
           <button
             onClick={() => navigate('/admin/courses')}
-            className="px-5 py-3 bg-brand-green hover:bg-brand-green-dark text-white rounded-2xl text-xs lg:text-sm font-bold shadow-[0_4px_16px_rgba(41,120,56,0.3)] transition-all flex items-center gap-2 group"
+            className="px-5 py-3 bg-blue-600 hover:bg-blue-600-dark text-white rounded-2xl text-xs lg:text-sm font-bold shadow-[0_4px_16px_rgba(41,120,56,0.3)] transition-all flex items-center gap-2 group"
           >
             <FaPlus size={12} className="group-hover:rotate-90 transition-transform" />
             <span>Create Course</span>
@@ -200,7 +228,7 @@ const AdminDashboard = () => {
             onClick={() => navigate('/admin/materials')}
             className="px-5 py-3 bg-white/90 hover:bg-white text-gray-700 border border-gray-200/80 rounded-2xl text-xs lg:text-sm font-bold shadow-xs hover:shadow-md transition-all flex items-center gap-2"
           >
-            <FaFolderOpen className="text-brand-green" />
+            <FaFolderOpen className="text-blue-600" />
             <span>Upload Materials</span>
           </button>
         </div>
@@ -244,7 +272,7 @@ const AdminDashboard = () => {
             </div>
             <button 
               onClick={() => navigate('/admin/users')}
-              className="text-xs font-bold text-brand-green hover:text-brand-green-dark flex items-center gap-1.5 transition-colors"
+              className="text-xs font-bold text-blue-600 hover:text-blue-600-dark flex items-center gap-1.5 transition-colors"
             >
               <span>View All Users</span>
               <FaArrowRight size={10} />
@@ -255,20 +283,20 @@ const AdminDashboard = () => {
             {stats.recentActivity && stats.recentActivity.length > 0 ? (
               stats.recentActivity.map((activity, idx) => (
                 <div key={idx} className="flex items-center gap-4 p-4 bg-white/80 rounded-2xl border border-gray-100/90 shadow-xs hover:shadow-md transition-all">
-                  <div className="w-11 h-11 rounded-2xl bg-brand-green/10 text-brand-green flex items-center justify-center shrink-0 border border-brand-green/20 font-bold">
+                  <div className="w-11 h-11 rounded-2xl bg-blue-600/10 text-blue-600 flex items-center justify-center shrink-0 border border-blue-600/20 font-bold">
                     <FaUserCircle size={22} />
                   </div>
                   <div className="flex-1 min-w-0">
                     <p className="text-sm font-bold text-gray-900 truncate">{activity.studentEmail}</p>
                     <p className="text-xs text-gray-500 mt-0.5 truncate">
-                      Course: <span className="font-semibold text-brand-green-dark">{activity.course?.title || 'Program Enrollment'}</span>
+                      Course: <span className="font-semibold text-blue-600-dark">{activity.course?.title || 'Program Enrollment'}</span>
                     </p>
                   </div>
                   <div className="text-right shrink-0">
                     <span className="text-xs font-semibold text-gray-400 block">
                       {new Date(activity.createdAt).toLocaleDateString('en-IN', { day: '2-digit', month: 'short' })}
                     </span>
-                    <span className="text-xs font-black text-brand-green bg-green-50 border border-green-200/60 px-2.5 py-0.5 rounded-full mt-1 inline-block">
+                    <span className="text-xs font-black text-blue-600 bg-green-50 border border-green-200/60 px-2.5 py-0.5 rounded-full mt-1 inline-block">
                       +₹{activity.amountPaid || 0}
                     </span>
                   </div>
@@ -291,7 +319,7 @@ const AdminDashboard = () => {
             </div>
             <button 
               onClick={() => navigate('/admin/courses')}
-              className="text-xs font-bold text-brand-green hover:text-brand-green-dark flex items-center gap-1.5 transition-colors"
+              className="text-xs font-bold text-blue-600 hover:text-blue-600-dark flex items-center gap-1.5 transition-colors"
             >
               <span>Manage Sessions</span>
               <FaArrowRight size={10} />
@@ -309,7 +337,7 @@ const AdminDashboard = () => {
                   <div className="flex-1 min-w-0">
                     <h4 className="font-bold text-gray-900 text-sm truncate">{cls.title || cls.courseId?.title}</h4>
                     <div className="flex items-center gap-3 text-xs font-medium text-gray-500 mt-1">
-                      <span className="flex items-center gap-1 text-brand-green"><FaClock size={11} /> {cls.time}</span>
+                      <span className="flex items-center gap-1 text-blue-600"><FaClock size={11} /> {cls.time}</span>
                       {cls.meetingId && <span className="text-[11px] text-gray-400 font-mono">ID: {cls.meetingId}</span>}
                     </div>
                   </div>
@@ -339,15 +367,15 @@ const AdminDashboard = () => {
 
       </div>
 
-      {/* 🌟 EDIT PUBLIC PLATFORM METRICS MODAL */}
+      {/* 🌟 EDIT PLATFORM SETTINGS MODAL */}
       <AnimatePresence>
-        {statsModalOpen && (
+        {settingsModalOpen && (
           <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm overflow-y-auto">
             <motion.div
               initial={{ opacity: 0, scale: 0.95, y: 15 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.95, y: 15 }}
-              className="bg-white rounded-[2.5rem] max-w-2xl w-full p-6 sm:p-8 shadow-2xl border border-white/80 my-8 space-y-6 max-h-[90vh] overflow-y-auto"
+              className="bg-white rounded-[2.5rem] max-w-3xl w-full p-6 sm:p-8 shadow-2xl border border-white/80 my-8 space-y-6 max-h-[90vh] overflow-y-auto"
             >
               <div className="flex items-center justify-between border-b border-gray-100 pb-4">
                 <div className="flex items-center gap-3">
@@ -355,196 +383,300 @@ const AdminDashboard = () => {
                     <FaSlidersH />
                   </div>
                   <div>
-                    <h3 className="text-lg font-black text-gray-900">Manage Public Platform Stats</h3>
+                    <h3 className="text-lg font-black text-gray-900">Manage Platform Settings</h3>
                     <p className="text-xs text-gray-500">
-                      Sync and edit metrics shown on Home & About pages (eliminates contradictions & errors).
+                      Update contact info, course categories, and public metrics shown across the site.
                     </p>
                   </div>
                 </div>
                 <button
-                  onClick={() => setStatsModalOpen(false)}
+                  onClick={() => setSettingsModalOpen(false)}
                   className="w-8 h-8 rounded-full bg-gray-100 hover:bg-gray-200 text-gray-500 flex items-center justify-center transition-all"
                 >
                   <FaTimes size={13} />
                 </button>
               </div>
 
-              <form onSubmit={handleSavePublicStats} className="space-y-4">
+              {/* TABS */}
+              <div className="flex border-b border-gray-200 gap-4 mb-4">
+                <button 
+                  type="button" 
+                  onClick={() => setActiveTab('contact')}
+                  className={`pb-2 text-sm font-bold transition-all ${activeTab === 'contact' ? 'text-blue-600 border-b-2 border-blue-600' : 'text-gray-500 hover:text-blue-500'}`}
+                >
+                  Contact Info
+                </button>
+                <button 
+                  type="button" 
+                  onClick={() => setActiveTab('categories')}
+                  className={`pb-2 text-sm font-bold transition-all ${activeTab === 'categories' ? 'text-blue-600 border-b-2 border-blue-600' : 'text-gray-500 hover:text-blue-500'}`}
+                >
+                  Course Categories
+                </button>
+                <button 
+                  type="button" 
+                  onClick={() => setActiveTab('stats')}
+                  className={`pb-2 text-sm font-bold transition-all ${activeTab === 'stats' ? 'text-blue-600 border-b-2 border-blue-600' : 'text-gray-500 hover:text-blue-500'}`}
+                >
+                  Platform Stats
+                </button>
+              </div>
+
+              <form onSubmit={handleSavePlatformSettings} className="space-y-4">
                 
-                {/* Students Metric */}
-                <div className="grid grid-cols-3 gap-3 p-3.5 bg-gray-50 rounded-2xl border border-gray-100 items-center">
-                  <div>
-                    <label className="text-xs font-bold text-gray-700 block">Students Count</label>
-                    <input
-                      type="number"
-                      required
-                      value={publicStats.studentsCount}
-                      onChange={(e) => setPublicStats({ ...publicStats, studentsCount: Number(e.target.value) })}
-                      className="w-full mt-1 px-3 py-2 bg-white border border-gray-200 rounded-xl text-sm font-bold text-gray-900 outline-none focus:border-brand-green"
-                    />
+                {activeTab === 'contact' && (
+                  <div className="space-y-4">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                      <div>
+                        <label className="text-xs font-bold text-gray-700 block">WhatsApp Number</label>
+                        <input
+                          type="text"
+                          required
+                          value={platformSettings.contact.whatsappNumber}
+                          onChange={(e) => setPlatformSettings({ ...platformSettings, contact: { ...platformSettings.contact, whatsappNumber: e.target.value } })}
+                          className="w-full mt-1 px-3 py-2 bg-gray-50 border border-gray-200 rounded-xl text-sm font-bold text-gray-900 outline-none focus:border-blue-600 focus:bg-white"
+                          placeholder="+91..."
+                        />
+                      </div>
+                      <div>
+                        <label className="text-xs font-bold text-gray-700 block">Call Number</label>
+                        <input
+                          type="text"
+                          required
+                          value={platformSettings.contact.callNumber}
+                          onChange={(e) => setPlatformSettings({ ...platformSettings, contact: { ...platformSettings.contact, callNumber: e.target.value } })}
+                          className="w-full mt-1 px-3 py-2 bg-gray-50 border border-gray-200 rounded-xl text-sm font-bold text-gray-900 outline-none focus:border-blue-600 focus:bg-white"
+                          placeholder="+91..."
+                        />
+                      </div>
+                      <div>
+                        <label className="text-xs font-bold text-gray-700 block">Support Email</label>
+                        <input
+                          type="email"
+                          required
+                          value={platformSettings.contact.email}
+                          onChange={(e) => setPlatformSettings({ ...platformSettings, contact: { ...platformSettings.contact, email: e.target.value } })}
+                          className="w-full mt-1 px-3 py-2 bg-gray-50 border border-gray-200 rounded-xl text-sm font-bold text-gray-900 outline-none focus:border-blue-600 focus:bg-white"
+                          placeholder="support@domain.com"
+                        />
+                      </div>
+                      <div className="sm:col-span-2">
+                        <label className="text-xs font-bold text-gray-700 block">Office Address</label>
+                        <textarea
+                          required
+                          rows="2"
+                          value={platformSettings.contact.address}
+                          onChange={(e) => setPlatformSettings({ ...platformSettings, contact: { ...platformSettings.contact, address: e.target.value } })}
+                          className="w-full mt-1 px-3 py-2 bg-gray-50 border border-gray-200 rounded-xl text-sm font-bold text-gray-900 outline-none focus:border-blue-600 focus:bg-white resize-none"
+                        ></textarea>
+                      </div>
+                    </div>
                   </div>
-                  <div>
-                    <label className="text-xs font-bold text-gray-700 block">Suffix</label>
-                    <input
-                      type="text"
-                      value={publicStats.studentsSuffix}
-                      onChange={(e) => setPublicStats({ ...publicStats, studentsSuffix: e.target.value })}
-                      className="w-full mt-1 px-3 py-2 bg-white border border-gray-200 rounded-xl text-sm font-bold text-gray-900 outline-none focus:border-brand-green"
-                      placeholder="e.g. +"
-                    />
-                  </div>
-                  <div>
-                    <label className="text-xs font-bold text-gray-700 block">Label</label>
-                    <input
-                      type="text"
-                      value={publicStats.studentsLabel}
-                      onChange={(e) => setPublicStats({ ...publicStats, studentsLabel: e.target.value })}
-                      className="w-full mt-1 px-3 py-2 bg-white border border-gray-200 rounded-xl text-sm text-gray-800 outline-none focus:border-brand-green"
-                      placeholder="e.g. Transformed Seekers"
-                    />
-                  </div>
-                </div>
+                )}
 
-                {/* Courses Metric */}
-                <div className="grid grid-cols-3 gap-3 p-3.5 bg-gray-50 rounded-2xl border border-gray-100 items-center">
-                  <div>
-                    <label className="text-xs font-bold text-gray-700 block">Courses Count</label>
-                    <input
-                      type="number"
-                      required
-                      value={publicStats.coursesCount}
-                      onChange={(e) => setPublicStats({ ...publicStats, coursesCount: Number(e.target.value) })}
-                      className="w-full mt-1 px-3 py-2 bg-white border border-gray-200 rounded-xl text-sm font-bold text-gray-900 outline-none focus:border-brand-green"
-                    />
+                {activeTab === 'categories' && (
+                  <div className="space-y-4">
+                    <div className="flex gap-2">
+                      <input
+                        type="text"
+                        value={newCategory}
+                        onChange={(e) => setNewCategory(e.target.value)}
+                        className="flex-1 px-3 py-2 bg-gray-50 border border-gray-200 rounded-xl text-sm font-bold text-gray-900 outline-none focus:border-blue-600 focus:bg-white"
+                        placeholder="Add a new category (e.g., Salesforce)"
+                        onKeyPress={(e) => e.key === 'Enter' && (e.preventDefault(), handleAddCategory())}
+                      />
+                      <button 
+                        type="button" 
+                        onClick={handleAddCategory}
+                        className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-xl text-sm transition-all"
+                      >
+                        Add
+                      </button>
+                    </div>
+                    <div className="flex flex-wrap gap-2 mt-4">
+                      {platformSettings.categories.map((cat, idx) => (
+                        <div key={idx} className="flex items-center gap-2 bg-gray-100 text-gray-800 px-3 py-1.5 rounded-lg text-sm font-semibold border border-gray-200">
+                          <span>{cat}</span>
+                          <button type="button" onClick={() => handleRemoveCategory(cat)} className="text-gray-400 hover:text-red-500 focus:outline-none">
+                            <FaTimes />
+                          </button>
+                        </div>
+                      ))}
+                      {platformSettings.categories.length === 0 && (
+                        <div className="text-sm text-gray-400">No categories found.</div>
+                      )}
+                    </div>
                   </div>
-                  <div>
-                    <label className="text-xs font-bold text-gray-700 block">Suffix</label>
-                    <input
-                      type="text"
-                      value={publicStats.coursesSuffix}
-                      onChange={(e) => setPublicStats({ ...publicStats, coursesSuffix: e.target.value })}
-                      className="w-full mt-1 px-3 py-2 bg-white border border-gray-200 rounded-xl text-sm font-bold text-gray-900 outline-none focus:border-brand-green"
-                      placeholder="e.g. +"
-                    />
-                  </div>
-                  <div>
-                    <label className="text-xs font-bold text-gray-700 block">Label</label>
-                    <input
-                      type="text"
-                      value={publicStats.coursesLabel}
-                      onChange={(e) => setPublicStats({ ...publicStats, coursesLabel: e.target.value })}
-                      className="w-full mt-1 px-3 py-2 bg-white border border-gray-200 rounded-xl text-sm text-gray-800 outline-none focus:border-brand-green"
-                      placeholder="e.g. Master Curricula"
-                    />
-                  </div>
-                </div>
+                )}
 
-                {/* Instructors Metric */}
-                <div className="grid grid-cols-3 gap-3 p-3.5 bg-gray-50 rounded-2xl border border-gray-100 items-center">
-                  <div>
-                    <label className="text-xs font-bold text-gray-700 block">Instructors Count</label>
-                    <input
-                      type="number"
-                      required
-                      value={publicStats.instructorsCount}
-                      onChange={(e) => setPublicStats({ ...publicStats, instructorsCount: Number(e.target.value) })}
-                      className="w-full mt-1 px-3 py-2 bg-white border border-gray-200 rounded-xl text-sm font-bold text-gray-900 outline-none focus:border-brand-green"
-                    />
-                  </div>
-                  <div>
-                    <label className="text-xs font-bold text-gray-700 block">Suffix</label>
-                    <input
-                      type="text"
-                      value={publicStats.instructorsSuffix}
-                      onChange={(e) => setPublicStats({ ...publicStats, instructorsSuffix: e.target.value })}
-                      className="w-full mt-1 px-3 py-2 bg-white border border-gray-200 rounded-xl text-sm font-bold text-gray-900 outline-none focus:border-brand-green"
-                      placeholder="e.g. +"
-                    />
-                  </div>
-                  <div>
-                    <label className="text-xs font-bold text-gray-700 block">Label</label>
-                    <input
-                      type="text"
-                      value={publicStats.instructorsLabel}
-                      onChange={(e) => setPublicStats({ ...publicStats, instructorsLabel: e.target.value })}
-                      className="w-full mt-1 px-3 py-2 bg-white border border-gray-200 rounded-xl text-sm text-gray-800 outline-none focus:border-brand-green"
-                      placeholder="e.g. Expert Gurus"
-                    />
-                  </div>
-                </div>
+                {activeTab === 'stats' && (
+                  <div className="space-y-4 max-h-[50vh] overflow-y-auto pr-2">
+                    {/* Students Metric */}
+                    <div className="grid grid-cols-3 gap-3 p-3.5 bg-gray-50 rounded-2xl border border-gray-100 items-center">
+                      <div>
+                        <label className="text-xs font-bold text-gray-700 block">Students Count</label>
+                        <input
+                          type="number"
+                          required
+                          value={platformSettings.stats.studentsCount}
+                          onChange={(e) => setPlatformSettings({ ...platformSettings, stats: { ...platformSettings.stats, studentsCount: Number(e.target.value) } })}
+                          className="w-full mt-1 px-3 py-2 bg-white border border-gray-200 rounded-xl text-sm font-bold text-gray-900 outline-none focus:border-blue-600"
+                        />
+                      </div>
+                      <div>
+                        <label className="text-xs font-bold text-gray-700 block">Suffix</label>
+                        <input
+                          type="text"
+                          value={platformSettings.stats.studentsSuffix}
+                          onChange={(e) => setPlatformSettings({ ...platformSettings, stats: { ...platformSettings.stats, studentsSuffix: e.target.value } })}
+                          className="w-full mt-1 px-3 py-2 bg-white border border-gray-200 rounded-xl text-sm font-bold text-gray-900 outline-none focus:border-blue-600"
+                        />
+                      </div>
+                      <div>
+                        <label className="text-xs font-bold text-gray-700 block">Label</label>
+                        <input
+                          type="text"
+                          value={platformSettings.stats.studentsLabel}
+                          onChange={(e) => setPlatformSettings({ ...platformSettings, stats: { ...platformSettings.stats, studentsLabel: e.target.value } })}
+                          className="w-full mt-1 px-3 py-2 bg-white border border-gray-200 rounded-xl text-sm text-gray-800 outline-none focus:border-blue-600"
+                        />
+                      </div>
+                    </div>
 
-                {/* Satisfaction Rate */}
-                <div className="grid grid-cols-3 gap-3 p-3.5 bg-gray-50 rounded-2xl border border-gray-100 items-center">
-                  <div>
-                    <label className="text-xs font-bold text-gray-700 block">Satisfaction Rate</label>
-                    <input
-                      type="number"
-                      required
-                      value={publicStats.satisfactionRate}
-                      onChange={(e) => setPublicStats({ ...publicStats, satisfactionRate: Number(e.target.value) })}
-                      className="w-full mt-1 px-3 py-2 bg-white border border-gray-200 rounded-xl text-sm font-bold text-gray-900 outline-none focus:border-brand-green"
-                    />
-                  </div>
-                  <div>
-                    <label className="text-xs font-bold text-gray-700 block">Suffix</label>
-                    <input
-                      type="text"
-                      value={publicStats.satisfactionSuffix}
-                      onChange={(e) => setPublicStats({ ...publicStats, satisfactionSuffix: e.target.value })}
-                      className="w-full mt-1 px-3 py-2 bg-white border border-gray-200 rounded-xl text-sm font-bold text-gray-900 outline-none focus:border-brand-green"
-                      placeholder="e.g. %"
-                    />
-                  </div>
-                  <div>
-                    <label className="text-xs font-bold text-gray-700 block">Label</label>
-                    <input
-                      type="text"
-                      value={publicStats.satisfactionLabel}
-                      onChange={(e) => setPublicStats({ ...publicStats, satisfactionLabel: e.target.value })}
-                      className="w-full mt-1 px-3 py-2 bg-white border border-gray-200 rounded-xl text-sm text-gray-800 outline-none focus:border-brand-green"
-                      placeholder="e.g. Satisfaction"
-                    />
-                  </div>
-                </div>
+                    {/* Courses Metric */}
+                    <div className="grid grid-cols-3 gap-3 p-3.5 bg-gray-50 rounded-2xl border border-gray-100 items-center">
+                      <div>
+                        <label className="text-xs font-bold text-gray-700 block">Courses Count</label>
+                        <input
+                          type="number"
+                          required
+                          value={platformSettings.stats.coursesCount}
+                          onChange={(e) => setPlatformSettings({ ...platformSettings, stats: { ...platformSettings.stats, coursesCount: Number(e.target.value) } })}
+                          className="w-full mt-1 px-3 py-2 bg-white border border-gray-200 rounded-xl text-sm font-bold text-gray-900 outline-none focus:border-blue-600"
+                        />
+                      </div>
+                      <div>
+                        <label className="text-xs font-bold text-gray-700 block">Suffix</label>
+                        <input
+                          type="text"
+                          value={platformSettings.stats.coursesSuffix}
+                          onChange={(e) => setPlatformSettings({ ...platformSettings, stats: { ...platformSettings.stats, coursesSuffix: e.target.value } })}
+                          className="w-full mt-1 px-3 py-2 bg-white border border-gray-200 rounded-xl text-sm font-bold text-gray-900 outline-none focus:border-blue-600"
+                        />
+                      </div>
+                      <div>
+                        <label className="text-xs font-bold text-gray-700 block">Label</label>
+                        <input
+                          type="text"
+                          value={platformSettings.stats.coursesLabel}
+                          onChange={(e) => setPlatformSettings({ ...platformSettings, stats: { ...platformSettings.stats, coursesLabel: e.target.value } })}
+                          className="w-full mt-1 px-3 py-2 bg-white border border-gray-200 rounded-xl text-sm text-gray-800 outline-none focus:border-blue-600"
+                        />
+                      </div>
+                    </div>
 
-                {/* Global Communities */}
-                <div className="grid grid-cols-3 gap-3 p-3.5 bg-gray-50 rounded-2xl border border-gray-100 items-center">
-                  <div>
-                    <label className="text-xs font-bold text-gray-700 block">Communities Count</label>
-                    <input
-                      type="number"
-                      required
-                      value={publicStats.communitiesCount}
-                      onChange={(e) => setPublicStats({ ...publicStats, communitiesCount: Number(e.target.value) })}
-                      className="w-full mt-1 px-3 py-2 bg-white border border-gray-200 rounded-xl text-sm font-bold text-gray-900 outline-none focus:border-brand-green"
-                    />
+                    {/* Instructors Metric */}
+                    <div className="grid grid-cols-3 gap-3 p-3.5 bg-gray-50 rounded-2xl border border-gray-100 items-center">
+                      <div>
+                        <label className="text-xs font-bold text-gray-700 block">Instructors Count</label>
+                        <input
+                          type="number"
+                          required
+                          value={platformSettings.stats.instructorsCount}
+                          onChange={(e) => setPlatformSettings({ ...platformSettings, stats: { ...platformSettings.stats, instructorsCount: Number(e.target.value) } })}
+                          className="w-full mt-1 px-3 py-2 bg-white border border-gray-200 rounded-xl text-sm font-bold text-gray-900 outline-none focus:border-blue-600"
+                        />
+                      </div>
+                      <div>
+                        <label className="text-xs font-bold text-gray-700 block">Suffix</label>
+                        <input
+                          type="text"
+                          value={platformSettings.stats.instructorsSuffix}
+                          onChange={(e) => setPlatformSettings({ ...platformSettings, stats: { ...platformSettings.stats, instructorsSuffix: e.target.value } })}
+                          className="w-full mt-1 px-3 py-2 bg-white border border-gray-200 rounded-xl text-sm font-bold text-gray-900 outline-none focus:border-blue-600"
+                        />
+                      </div>
+                      <div>
+                        <label className="text-xs font-bold text-gray-700 block">Label</label>
+                        <input
+                          type="text"
+                          value={platformSettings.stats.instructorsLabel}
+                          onChange={(e) => setPlatformSettings({ ...platformSettings, stats: { ...platformSettings.stats, instructorsLabel: e.target.value } })}
+                          className="w-full mt-1 px-3 py-2 bg-white border border-gray-200 rounded-xl text-sm text-gray-800 outline-none focus:border-blue-600"
+                        />
+                      </div>
+                    </div>
+
+                    {/* Satisfaction Rate */}
+                    <div className="grid grid-cols-3 gap-3 p-3.5 bg-gray-50 rounded-2xl border border-gray-100 items-center">
+                      <div>
+                        <label className="text-xs font-bold text-gray-700 block">Satisfaction Rate</label>
+                        <input
+                          type="number"
+                          required
+                          value={platformSettings.stats.satisfactionRate}
+                          onChange={(e) => setPlatformSettings({ ...platformSettings, stats: { ...platformSettings.stats, satisfactionRate: Number(e.target.value) } })}
+                          className="w-full mt-1 px-3 py-2 bg-white border border-gray-200 rounded-xl text-sm font-bold text-gray-900 outline-none focus:border-blue-600"
+                        />
+                      </div>
+                      <div>
+                        <label className="text-xs font-bold text-gray-700 block">Suffix</label>
+                        <input
+                          type="text"
+                          value={platformSettings.stats.satisfactionSuffix}
+                          onChange={(e) => setPlatformSettings({ ...platformSettings, stats: { ...platformSettings.stats, satisfactionSuffix: e.target.value } })}
+                          className="w-full mt-1 px-3 py-2 bg-white border border-gray-200 rounded-xl text-sm font-bold text-gray-900 outline-none focus:border-blue-600"
+                        />
+                      </div>
+                      <div>
+                        <label className="text-xs font-bold text-gray-700 block">Label</label>
+                        <input
+                          type="text"
+                          value={platformSettings.stats.satisfactionLabel}
+                          onChange={(e) => setPlatformSettings({ ...platformSettings, stats: { ...platformSettings.stats, satisfactionLabel: e.target.value } })}
+                          className="w-full mt-1 px-3 py-2 bg-white border border-gray-200 rounded-xl text-sm text-gray-800 outline-none focus:border-blue-600"
+                        />
+                      </div>
+                    </div>
+
+                    {/* Global Communities */}
+                    <div className="grid grid-cols-3 gap-3 p-3.5 bg-gray-50 rounded-2xl border border-gray-100 items-center">
+                      <div>
+                        <label className="text-xs font-bold text-gray-700 block">Communities Count</label>
+                        <input
+                          type="number"
+                          required
+                          value={platformSettings.stats.communitiesCount}
+                          onChange={(e) => setPlatformSettings({ ...platformSettings, stats: { ...platformSettings.stats, communitiesCount: Number(e.target.value) } })}
+                          className="w-full mt-1 px-3 py-2 bg-white border border-gray-200 rounded-xl text-sm font-bold text-gray-900 outline-none focus:border-blue-600"
+                        />
+                      </div>
+                      <div>
+                        <label className="text-xs font-bold text-gray-700 block">Suffix</label>
+                        <input
+                          type="text"
+                          value={platformSettings.stats.communitiesSuffix}
+                          onChange={(e) => setPlatformSettings({ ...platformSettings, stats: { ...platformSettings.stats, communitiesSuffix: e.target.value } })}
+                          className="w-full mt-1 px-3 py-2 bg-white border border-gray-200 rounded-xl text-sm font-bold text-gray-900 outline-none focus:border-blue-600"
+                        />
+                      </div>
+                      <div>
+                        <label className="text-xs font-bold text-gray-700 block">Label</label>
+                        <input
+                          type="text"
+                          value={platformSettings.stats.communitiesLabel}
+                          onChange={(e) => setPlatformSettings({ ...platformSettings, stats: { ...platformSettings.stats, communitiesLabel: e.target.value } })}
+                          className="w-full mt-1 px-3 py-2 bg-white border border-gray-200 rounded-xl text-sm text-gray-800 outline-none focus:border-blue-600"
+                        />
+                      </div>
+                    </div>
                   </div>
-                  <div>
-                    <label className="text-xs font-bold text-gray-700 block">Suffix</label>
-                    <input
-                      type="text"
-                      value={publicStats.communitiesSuffix}
-                      onChange={(e) => setPublicStats({ ...publicStats, communitiesSuffix: e.target.value })}
-                      className="w-full mt-1 px-3 py-2 bg-white border border-gray-200 rounded-xl text-sm font-bold text-gray-900 outline-none focus:border-brand-green"
-                      placeholder="e.g. +"
-                    />
-                  </div>
-                  <div>
-                    <label className="text-xs font-bold text-gray-700 block">Label</label>
-                    <input
-                      type="text"
-                      value={publicStats.communitiesLabel}
-                      onChange={(e) => setPublicStats({ ...publicStats, communitiesLabel: e.target.value })}
-                      className="w-full mt-1 px-3 py-2 bg-white border border-gray-200 rounded-xl text-sm text-gray-800 outline-none focus:border-brand-green"
-                      placeholder="e.g. Global Communities"
-                    />
-                  </div>
-                </div>
+                )}
 
                 <div className="flex justify-end gap-3 pt-4 border-t border-gray-100">
                   <button
                     type="button"
-                    onClick={() => setStatsModalOpen(false)}
+                    onClick={() => setSettingsModalOpen(false)}
                     className="px-5 py-2.5 bg-gray-100 hover:bg-gray-200 text-gray-700 font-bold rounded-xl text-xs transition-all"
                   >
                     Cancel
@@ -552,14 +684,14 @@ const AdminDashboard = () => {
                   <button
                     type="submit"
                     disabled={savingStats}
-                    className="px-6 py-2.5 bg-brand-green hover:bg-brand-green-dark text-white font-extrabold rounded-xl text-xs shadow-md transition-all flex items-center gap-2 disabled:opacity-50"
+                    className="px-6 py-2.5 bg-blue-600 hover:bg-blue-600-dark text-white font-extrabold rounded-xl text-xs shadow-md transition-all flex items-center gap-2 disabled:opacity-50"
                   >
                     {savingStats ? (
                       <span>Saving...</span>
                     ) : (
                       <>
                         <FaSave size={12} />
-                        <span>Save & Sync All Pages</span>
+                        <span>Save Settings</span>
                       </>
                     )}
                   </button>

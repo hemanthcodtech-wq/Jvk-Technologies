@@ -2,7 +2,8 @@
 @import "tailwindcss";
 
 @theme {
-  --font-inter: 'Inter', sans-serif;
+  --font-sans: 'Outfit', sans-serif;
+  --font-inter: 'Outfit', sans-serif;
   --font-outfit: 'Outfit', sans-serif;
   --font-mono: 'JetBrains Mono', monospace;
 
@@ -37,7 +38,7 @@
 }
 
 body {
-  font-family: var(--font-inter);
+  font-family: var(--font-outfit);
   background-color: #f8fafc;
   color: #0f172a;
   margin: 0;

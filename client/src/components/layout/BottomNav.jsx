@@ -19,12 +19,12 @@ const BottomNav = () => {
   ].some(route => pathname.startsWith(route));
 
   const isLearningActive = pathname.startsWith('/dashboard/learning');
-  const isCoursesActive = pathname.startsWith('/courses');
+  const isCoursesActive = pathname.startsWith('/dashboard/courses');
   const isHomeActive = pathname === '/dashboard';
 
   const navItems = [
     { name: t('dash_nav_home'), path: '/dashboard', icon: FaHome, active: isHomeActive },
-    { name: t('dash_nav_courses'), path: '/courses', icon: FaGraduationCap, active: isCoursesActive },
+    { name: t('dash_nav_courses'), path: '/dashboard/courses', icon: FaGraduationCap, active: isCoursesActive },
     { name: t('dash_nav_learning'), path: '/dashboard/learning', icon: FaBookOpen, active: isLearningActive },
     { name: t('dash_nav_profile'), path: '/dashboard/profile', icon: FaUser, active: isProfileActive },
   ];
@@ -39,7 +39,7 @@ const BottomNav = () => {
               key={item.name}
               to={item.path}
               className={`flex flex-col items-center justify-center w-full h-full py-1 space-y-1.5 transition-all ${
-                isActive ? 'text-brand-green font-bold' : 'text-gray-400 hover:text-gray-600 font-medium'
+                isActive ? 'text-blue-600 font-bold' : 'text-gray-400 hover:text-gray-600 font-medium'
               }`}
             >
               <motion.div
@@ -51,12 +51,12 @@ const BottomNav = () => {
                 {isActive && (
                   <motion.div
                     layoutId="bottomNavIndicator"
-                    className="absolute -top-2.5 left-1/2 transform -translate-x-1/2 w-10 h-1.5 bg-brand-green rounded-full shadow-sm"
+                    className="absolute -top-2.5 left-1/2 transform -translate-x-1/2 w-10 h-1.5 bg-blue-600 rounded-full shadow-[0_2px_8px_rgba(37,99,235,0.4)]"
                     transition={{ type: "spring", stiffness: 350, damping: 22 }}
                   />
                 )}
               </motion.div>
-              <span className={`text-[11px] md:text-xs leading-none tracking-tight ${isActive ? 'text-brand-green font-bold' : 'text-gray-500'}`}>
+              <span className={`text-[11px] md:text-xs leading-none tracking-tight ${isActive ? 'text-blue-600 font-bold' : 'text-gray-500'}`}>
                 {item.name}
               </span>
             </NavLink>

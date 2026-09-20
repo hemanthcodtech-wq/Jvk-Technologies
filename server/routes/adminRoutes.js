@@ -474,11 +474,10 @@ router.post('/certificate/preview-pdf', protect, admin, async (req, res) => {
   }
 });
 
-// Site Setting for Platform Stats
 const SiteSetting = require('../models/SiteSetting');
 
-// Get Platform Stats Settings (Public)
-router.get('/settings/stats', async (req, res) => {
+// Get Platform Settings (Public)
+router.get('/settings', async (req, res) => {
   try {
     let setting = await SiteSetting.findOne({ key: 'platform_stats' });
     if (!setting) {
@@ -503,29 +502,55 @@ router.get('/settings/stats', async (req, res) => {
           lineageRate: 100,
           lineageSuffix: '%',
           lineageLabel: 'Authentic Vedic Lineage'
-        }
+        },
+        contact: {
+          whatsappNumber: '+919059519151',
+          callNumber: '+919059519151',
+          email: 'support@jvktech.com',
+          address: 'IT Hub, India'
+        },
+        categories: ['Full Stack Java', 'Python & AI', 'MERN Stack', 'Cloud & DevOps', 'Software Testing', 'Data Engineering', 'Software Development', 'Service Now', 'Salesforce', 'Other']
       });
     }
-    res.json({ success: true, data: setting.stats });
+    res.json({ 
+      success: true, 
+      data: {
+        stats: setting.stats,
+        contact: setting.contact,
+        categories: setting.categories
+      } 
+    });
   } catch (error) {
-    res.status(500).json({ success: false, message: 'Error fetching stats settings', error: error.message });
+    res.status(500).json({ success: false, message: 'Error fetching platform settings', error: error.message });
   }
 });
 
-// Update Platform Stats Settings (Admin Only)
-router.put('/settings/stats', protect, admin, async (req, res) => {
+// Update Platform Settings (Admin Only)
+router.put('/settings', protect, admin, async (req, res) => {
   try {
-    const updatedStats = req.body;
+    const { stats, contact, categories } = req.body;
     let setting = await SiteSetting.findOne({ key: 'platform_stats' });
+    
     if (!setting) {
-      setting = new SiteSetting({ key: 'platform_stats', stats: updatedStats });
-    } else {
-      setting.stats = { ...setting.stats, ...updatedStats };
+      setting = new SiteSetting({ key: 'platform_stats' });
     }
+    
+    if (stats) setting.stats = { ...setting.stats, ...stats };
+    if (contact) setting.contact = { ...setting.contact, ...contact };
+    if (categories) setting.categories = categories;
+
     await setting.save();
-    res.json({ success: true, message: 'Platform stats updated successfully!', data: setting.stats });
+    res.json({ 
+      success: true, 
+      message: 'Platform settings updated successfully!', 
+      data: {
+        stats: setting.stats,
+        contact: setting.contact,
+        categories: setting.categories
+      } 
+    });
   } catch (error) {
-    res.status(500).json({ success: false, message: 'Error updating stats settings', error: error.message });
+    res.status(500).json({ success: false, message: 'Error updating platform settings', error: error.message });
   }
 });
 

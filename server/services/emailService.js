@@ -24,7 +24,7 @@ const sendEmail = async (to, subject, html) => {
 
   try {
     const mailOptions = {
-      from: `"SDF LMS" <${process.env.EMAIL_USER}>`,
+      from: `"JVK LMS" <${process.env.EMAIL_USER}>`,
       to,
       subject,
       html
@@ -49,7 +49,7 @@ const sendEnrollmentConfirmation = async (userEmail, courseName, amountPaid) => 
     <p><strong>Payment Received:</strong> $${amountPaid}</p>
     <p>You can now access your course content and class schedule from your dashboard.</p>
     <br>
-    <p>Best Regards,<br>Swamy Dwija Foundation</p>
+    <p>Best Regards,<br>JVK Technologies</p>
   `;
   return sendEmail(userEmail, subject, html);
 };
@@ -67,7 +67,7 @@ const sendClassUpdateAlert = async (userEmail, courseName, classTitle, newDate, 
     <p><strong>New Time:</strong> ${newTime}</p>
     <p>Please check your calendar for the updated Zoom meeting link.</p>
     <br>
-    <p>Best Regards,<br>Swamy Dwija Foundation</p>
+    <p>Best Regards,<br>JVK Technologies</p>
   `;
   return sendEmail(userEmail, subject, html);
 };
@@ -83,9 +83,9 @@ const sendClassReminder = async (userEmail, courseName, classTitle, date, time, 
     <p><strong>Topic:</strong> ${classTitle || 'Live Session'}</p>
     <p><strong>Date:</strong> ${new Date(date).toLocaleDateString()}</p>
     <p><strong>Time:</strong> ${time}</p>
-    ${zoomLink ? `<p><a href="${zoomLink}" style="padding: 10px 15px; background-color: #297838; color: white; text-decoration: none; border-radius: 5px;">Join Zoom Meeting</a></p>` : ''}
+    ${zoomLink ? `<p><a href="${zoomLink}" style="padding: 10px 15px; background-color: #2563eb; color: white; text-decoration: none; border-radius: 5px;">Join Zoom Meeting</a></p>` : ''}
     <br>
-    <p>Best Regards,<br>Swamy Dwija Foundation</p>
+    <p>Best Regards,<br>JVK Technologies</p>
   `;
   return sendEmail(userEmail, subject, html);
 };

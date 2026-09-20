@@ -178,7 +178,7 @@ const translations = {
     dash_nav_home: 'Dashboard',
     dash_nav_courses: 'All Programs',
     dash_nav_classes: 'My Batches',
-    dash_nav_learning: 'Classroom',
+    dash_nav_learning: 'My Learnings',
     dash_nav_profile: 'Profile',
   },
 
@@ -359,7 +359,7 @@ const translations = {
     dash_nav_home: 'డాష్‌బోర్డ్',
     dash_nav_courses: 'అన్ని కోర్సులు',
     dash_nav_classes: 'నా బ్యాచ్‌లు',
-    dash_nav_learning: 'క్లాస్‌రూమ్',
+    dash_nav_learning: 'నా లెర్నింగ్స్',
     dash_nav_profile: 'ప్రొఫైల్',
   }
 };

@@ -3,10 +3,13 @@ import { Link, useNavigate } from 'react-router-dom';
 import { FaArrowLeft, FaKey, FaShieldAlt, FaEye, FaEyeSlash, FaCheckCircle, FaEnvelope, FaLock } from 'react-icons/fa';
 import axios from 'axios';
 import { motion } from 'framer-motion';
+import { useSettings } from '../context/SettingsContext';
 import SEO from '../components/common/SEO';
 
 const ForgotPassword = () => {
   const navigate = useNavigate();
+  const { settings } = useSettings();
+  const { contact } = settings;
   const [step, setStep] = useState(1); // 1: Enter Email, 2: Enter OTP & New Password, 3: Success
   const [emailOrPhone, setEmailOrPhone] = useState('');
   const [otp, setOtp] = useState('');
@@ -98,7 +101,7 @@ const ForgotPassword = () => {
             <span>Back to Sign In</span>
           </Link>
           <span className="text-xs text-slate-500 font-medium">
-            Help: <a href="tel:+919059519151" className="text-blue-600 font-bold hover:underline">+91-9059519151</a>
+            Help: <a href={`tel:${contact.callNumber}`} className="text-blue-600 font-bold hover:underline">{contact.callNumber}</a>
           </span>
         </div>
 

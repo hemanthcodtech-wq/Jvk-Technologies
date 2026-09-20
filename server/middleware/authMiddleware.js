@@ -43,13 +43,7 @@ const instructor = (req, res, next) => {
   }
 };
 
-const moderator = (req, res, next) => {
-  if (req.user && (req.user.role === 'moderator' || req.user.role === 'admin')) {
-    return next();
-  } else {
-    return res.status(403).json({ success: false, message: 'Not authorized as a moderator' });
-  }
-};
 
-module.exports = { protect, admin, instructor, moderator };
+
+module.exports = { protect, admin, instructor };
 

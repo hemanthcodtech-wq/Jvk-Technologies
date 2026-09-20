@@ -5,6 +5,7 @@ import PublicNavbar from './PublicNavbar';
 import TopNav from './TopNav';
 import BottomNav from './BottomNav';
 import { useLanguage } from '../../context/LanguageContext';
+import { useSettings } from '../../context/SettingsContext';
 import { 
   FaMapMarkerAlt, FaEnvelope, FaPhoneAlt, FaShieldAlt, 
   FaAward, FaWhatsapp, FaArrowRight, FaCode, FaLaptopCode,
@@ -17,6 +18,9 @@ const PublicLayout = () => {
   const location = useLocation();
   const token = localStorage.getItem('token');
   const isLoggedIn = !!token;
+  const { settings } = useSettings();
+  const { contact } = settings;
+  const cleanWhatsapp = contact.whatsappNumber.replace(/[^0-9]/g, '');
 
   const [livePrograms, setLivePrograms] = useState([]);
 
@@ -68,24 +72,24 @@ const PublicLayout = () => {
         
         {/* Floating Call Button */}
         <a 
-          href="tel:+919059519151" 
+          href={`tel:${contact.callNumber}`} 
           className="pointer-events-auto group relative flex items-center justify-center w-12 h-12 sm:w-14 sm:h-14 rounded-full bg-gradient-to-r from-blue-600 to-blue-500 text-white shadow-[0_4px_25px_rgba(37,99,235,0.6)] hover:shadow-[0_6px_35px_rgba(37,99,235,0.8)] hover:scale-110 active:scale-95 transition-all duration-300"
-          title="Direct Call Admissions: +91-9059519151"
+          title={`Direct Call Admissions: ${contact.callNumber}`}
           aria-label="Call JVK Technologies Admissions"
         >
           <FaPhoneAlt className="text-lg sm:text-xl animate-bounce" />
           <span className="absolute right-16 top-1/2 -translate-y-1/2 bg-gray-900/95 border border-blue-500/30 text-white font-outfit text-xs font-bold py-1.5 px-3 rounded-lg shadow-xl whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none">
-            Call +91-9059519151
+            Call {contact.callNumber}
           </span>
         </a>
 
         {/* Floating WhatsApp Button */}
         <a 
-          href="https://wa.me/919059519151?text=Hello%20JVK%20Technologies,%20I%20am%20interested%20in%20learning%20more%20about%20your%20software%20courses%20and%20upcoming%20batches." 
+          href={`https://wa.me/${cleanWhatsapp}?text=Hello%20JVK%20Technologies,%20I%20am%20interested%20in%20learning%20more%20about%20your%20software%20courses%20and%20upcoming%20batches.`} 
           target="_blank" 
           rel="noreferrer"
           className="pointer-events-auto group relative flex items-center justify-center w-12 h-12 sm:w-14 sm:h-14 rounded-full bg-gradient-to-r from-emerald-500 to-green-600 text-white shadow-[0_4px_25px_rgba(16,185,129,0.5)] hover:shadow-[0_6px_35px_rgba(16,185,129,0.8)] hover:scale-110 active:scale-95 transition-all duration-300"
-          title="Chat with Us on WhatsApp: +91-9059519151"
+          title={`Chat with Us on WhatsApp: ${contact.whatsappNumber}`}
           aria-label="WhatsApp JVK Technologies"
         >
           <span className="absolute inset-0 rounded-full bg-emerald-400 opacity-75 animate-ping pointer-events-none"></span>
@@ -130,30 +134,30 @@ const PublicLayout = () => {
                 <div className="flex items-start gap-2.5">
                   <FaMapMarkerAlt className="text-[#00d2ff] shrink-0 mt-0.5" size={14} />
                   <span className="leading-relaxed">
-                    Plot No 42, Tech Cyber Zone, Near Cyber Towers, HITEC City, Madhapur, Hyderabad, Telangana - 500081
+                    {contact.address}
                   </span>
                 </div>
                 <div className="flex items-center gap-2.5">
                   <FaPhoneAlt className="text-amber-400 shrink-0" size={13} />
-                  <a href="tel:+919059519151" className="hover:text-white transition-colors font-semibold">
-                    +91-9059519151 (Admissions & Support)
+                  <a href={`tel:${contact.callNumber}`} className="hover:text-white transition-colors font-semibold">
+                    {contact.callNumber} (Admissions & Support)
                   </a>
                 </div>
                 <div className="flex items-center gap-2.5">
                   <FaWhatsapp className="text-emerald-400 shrink-0" size={15} />
                   <a 
-                    href="https://wa.me/919059519151" 
+                    href={`https://wa.me/${cleanWhatsapp}`} 
                     target="_blank" 
                     rel="noreferrer" 
                     className="hover:text-white transition-colors font-semibold"
                   >
-                    +91-9059519151 (WhatsApp Counseling)
+                    {contact.whatsappNumber} (WhatsApp Counseling)
                   </a>
                 </div>
                 <div className="flex items-center gap-2.5">
                   <FaEnvelope className="text-[#00d2ff] shrink-0" size={13} />
-                  <a href="mailto:contact@jvktechnologies.com" className="hover:text-white transition-colors">
-                    contact@jvktechnologies.com
+                  <a href={`mailto:${contact.email}`} className="hover:text-white transition-colors">
+                    {contact.email}
                   </a>
                 </div>
               </div>
@@ -161,13 +165,13 @@ const PublicLayout = () => {
               {/* Action Buttons */}
               <div className="flex items-center gap-3 pt-2">
                 <a 
-                  href="tel:+919059519151"
+                  href={`tel:${contact.callNumber}`}
                   className="px-4 py-2 rounded-xl bg-blue-600/30 hover:bg-blue-600 border border-blue-500/40 text-white text-xs font-bold transition-colors inline-flex items-center gap-2"
                 >
                   <FaPhoneAlt size={11} /> Call Now
                 </a>
                 <a 
-                  href="https://wa.me/919059519151?text=Hello%20JVK%20Technologies,%20please%20send%20me%20the%20course%20brochure."
+                  href={`https://wa.me/${cleanWhatsapp}?text=Hello%20JVK%20Technologies,%20please%20send%20me%20the%20course%20brochure.`}
                   target="_blank"
                   rel="noreferrer"
                   className="px-4 py-2 rounded-xl bg-emerald-600/30 hover:bg-emerald-600 border border-emerald-500/40 text-emerald-200 hover:text-white text-xs font-bold transition-colors inline-flex items-center gap-2"

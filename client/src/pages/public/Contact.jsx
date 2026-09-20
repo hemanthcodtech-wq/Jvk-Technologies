@@ -7,15 +7,22 @@ import {
 } from 'react-icons/fa';
 import axios from 'axios';
 import { useLanguage } from '../../context/LanguageContext';
+import { useSettings } from '../../context/SettingsContext';
 import SEO from '../../components/common/SEO';
 
 const Contact = () => {
   const { t } = useLanguage();
+  const { settings } = useSettings();
+  const { contact, categories } = settings;
+  const cleanWhatsapp = contact.whatsappNumber.replace(/[^0-9]/g, '');
+
+  const defaultCourse = categories && categories.length > 0 ? categories[0] : 'Java Full Stack Development';
+
   const [formData, setFormData] = useState({ 
     name: '', 
     email: '', 
     phone: '', 
-    course: 'Java Full Stack Development',
+    course: defaultCourse,
     mode: 'Online Live Interactive',
     message: '' 
   });
@@ -47,13 +54,13 @@ const Contact = () => {
       } else {
         setStatus({
           type: 'error',
-          message: res.data.message || 'Failed to submit inquiry. Please call or WhatsApp us directly at +91-9059519151.'
+          message: res.data.message || `Failed to submit inquiry. Please call or WhatsApp us directly at ${contact.callNumber}.`
         });
       }
     } catch (err) {
       setStatus({
         type: 'success',
-        message: 'Thank you for your interest! For fastest response, you can also reach us directly on WhatsApp or Call at +91-9059519151.'
+        message: `Thank you for your interest! For fastest response, you can also reach us directly on WhatsApp or Call at ${contact.callNumber}.`
       });
     } finally {
       setLoading(false);
@@ -119,10 +126,10 @@ const Contact = () => {
               <p className="text-xs text-slate-500 mb-4">Monday – Saturday: 8 AM – 8 PM IST</p>
             </div>
             <a 
-              href="tel:+919059519151" 
+              href={`tel:${contact.callNumber}`} 
               className="py-2.5 px-4 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-bold text-sm transition-colors block font-outfit shadow-sm"
             >
-              +91-9059519151
+              {contact.callNumber}
             </a>
           </div>
 
@@ -136,12 +143,12 @@ const Contact = () => {
               <p className="text-xs text-slate-500 mb-4">Instant reply for fees, demo & syllabus</p>
             </div>
             <a 
-              href="https://wa.me/919059519151?text=Hello%20JVK%20Technologies,%20I%20am%20interested%20in%20course%20details." 
+              href={`https://wa.me/${cleanWhatsapp}?text=Hello%20JVK%20Technologies,%20I%20am%20interested%20in%20course%20details.`}
               target="_blank" 
               rel="noreferrer" 
               className="py-2.5 px-4 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-sm transition-colors block font-outfit shadow-sm"
             >
-              Chat: +91-9059519151
+              Chat: {contact.whatsappNumber}
             </a>
           </div>
 
@@ -155,10 +162,10 @@ const Contact = () => {
               <p className="text-xs text-slate-500 mb-4">For corporate training & hiring drives</p>
             </div>
             <a 
-              href="mailto:contact@jvktechnologies.com" 
-              className="py-2.5 px-4 rounded-xl bg-amber-500 hover:bg-amber-600 text-slate-950 font-bold text-sm transition-colors block font-outfit shadow-sm"
+              href={`mailto:${contact.email}`} 
+              className="py-2.5 px-4 rounded-xl bg-amber-500 hover:bg-amber-600 text-slate-950 font-bold text-sm transition-colors block font-outfit shadow-sm truncate"
             >
-              contact@jvktechnologies.com
+              {contact.email}
             </a>
           </div>
         </div>
@@ -233,11 +240,9 @@ const Contact = () => {
                     onChange={(e) => setFormData({...formData, course: e.target.value})}
                     className="w-full px-4 py-3 rounded-xl bg-slate-50 border border-slate-200 focus:bg-white focus:border-blue-600 text-slate-900 text-xs outline-none cursor-pointer"
                   >
-                    <option value="Java Full Stack Development">Java Full Stack Development</option>
-                    <option value="Python Full Stack & AI">Python Full Stack & AI</option>
-                    <option value="MERN Stack Web Development">MERN Stack Web Development</option>
-                    <option value="Cloud AWS, Azure & DevOps">Cloud AWS, Azure & DevOps</option>
-                    <option value="Software Automation & QA">Software Automation & QA</option>
+                    {categories.map((cat, idx) => (
+                      <option key={idx} value={cat}>{cat}</option>
+                    ))}
                   </select>
                 </div>
 
@@ -305,7 +310,7 @@ const Contact = () => {
                   </div>
                   <div className="flex items-center gap-2">
                     <FaPhoneAlt className="text-blue-600 shrink-0" />
-                    <a href="tel:+919059519151" className="hover:text-blue-600 font-bold text-slate-800">+91-9059519151</a>
+                    <a href={`tel:${contact.callNumber}`} className="hover:text-blue-600 font-bold text-slate-800">{contact.callNumber}</a>
                   </div>
                 </div>
               </div>
@@ -317,7 +322,7 @@ const Contact = () => {
                   <span className="text-emerald-600 text-[11px]">Chat directly on WhatsApp</span>
                 </div>
                 <a
-                  href="https://wa.me/919059519151?text=Hello%20JVK%20Technologies,%20I%20have%20an%20admissions%20inquiry."
+                  href={`https://wa.me/${cleanWhatsapp}?text=Hello%20JVK%20Technologies,%20I%20have%20an%20admissions%20inquiry.`}
                   target="_blank"
                   rel="noreferrer"
                   className="px-3 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs flex items-center gap-1.5 shadow-xs shrink-0 transition-colors"

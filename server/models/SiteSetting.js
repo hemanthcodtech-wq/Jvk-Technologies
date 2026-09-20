@@ -31,6 +31,16 @@ const siteSettingSchema = new mongoose.Schema({
     lineageRate: { type: Number, default: 100 },
     lineageSuffix: { type: String, default: '%' },
     lineageLabel: { type: String, default: 'Authentic Vedic Lineage' }
+  },
+  contact: {
+    whatsappNumber: { type: String, default: '+919059519151' },
+    callNumber: { type: String, default: '+919059519151' },
+    email: { type: String, default: 'support@jvktech.com' },
+    address: { type: String, default: 'IT Hub, India' }
+  },
+  categories: {
+    type: [String],
+    default: ['Full Stack Java', 'Python & AI', 'MERN Stack', 'Cloud & DevOps', 'Software Testing', 'Data Engineering', 'Software Development', 'Service Now', 'Salesforce', 'Other']
   }
 }, { timestamps: true });
 
