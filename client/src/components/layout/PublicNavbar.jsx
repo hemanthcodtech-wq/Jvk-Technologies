@@ -111,17 +111,17 @@ const PublicNavbar = () => {
                 <Link
                   key={link.path}
                   to={link.path}
-                  className={`relative px-4 py-2 rounded-xl font-outfit font-semibold text-[15px] transition-all duration-200 ${
+                  className={`relative px-4 py-2 rounded-xl font-['Sora'] font-semibold text-[15px] transition-all duration-200 ${
                     isActive(link.path) 
-                      ? 'text-blue-600 bg-blue-50/80' 
-                      : 'text-slate-700 hover:text-blue-600 hover:bg-slate-50'
+                      ? 'text-indigo-600 bg-indigo-50/80' 
+                      : 'text-slate-700 hover:text-indigo-600 hover:bg-slate-50'
                   }`}
                 >
                   {link.name}
                   {isActive(link.path) && (
                     <motion.div
                       layoutId="navbar-indicator"
-                      className="absolute bottom-0 left-3 right-3 h-0.5 bg-blue-600 rounded-full"
+                      className="absolute bottom-0 left-3 right-3 h-0.5 bg-gradient-to-r from-indigo-600 to-violet-600 rounded-full"
                     />
                   )}
                 </Link>
@@ -132,11 +132,11 @@ const PublicNavbar = () => {
             <div className="hidden md:flex items-center space-x-3">
               {/* Language Switch */}
               <div className="flex items-center gap-1 px-2.5 py-1.5 rounded-xl border border-slate-200 bg-slate-50 text-slate-700 hover:bg-slate-100 transition-colors">
-                <FaGlobe className="text-blue-600 text-xs" />
+                <FaGlobe className="text-indigo-600 text-xs" />
                 <select
                   value={lang}
                   onChange={(e) => setLang(e.target.value)}
-                  className="bg-transparent text-xs font-bold text-slate-800 font-outfit outline-none cursor-pointer pr-1"
+                  className="bg-transparent text-xs font-bold text-slate-800 font-['Sora'] outline-none cursor-pointer pr-1"
                 >
                   <option value="en">EN</option>
                   <option value="te">TE</option>
@@ -148,7 +148,7 @@ const PublicNavbar = () => {
                 href={`https://wa.me/${cleanWhatsapp}?text=Hello%20JVK%20Technologies,%20I%20would%20like%20to%20register%20for%20the%20Free%20Demo%20Session.`}
                 target="_blank"
                 rel="noreferrer"
-                className="relative group overflow-hidden px-5 py-2.5 rounded-xl bg-gradient-to-r from-amber-500 to-amber-600 text-slate-950 font-bold font-outfit text-sm shadow-[0_4px_15px_rgba(245,158,11,0.25)] hover:shadow-[0_6px_20px_rgba(245,158,11,0.4)] hover:-translate-y-0.5 transition-all duration-200"
+                className="relative group overflow-hidden px-5 py-2.5 rounded-xl bg-gradient-to-r from-amber-500 to-amber-600 text-slate-950 font-bold font-['Sora'] text-sm shadow-[0_4px_15px_rgba(245,158,11,0.25)] hover:shadow-[0_6px_20px_rgba(245,158,11,0.4)] hover:-translate-y-0.5 transition-all duration-200"
               >
                 <span className="relative z-10 flex items-center gap-1.5">
                   <FaBolt size={12} />
@@ -160,14 +160,14 @@ const PublicNavbar = () => {
               {token ? (
                 <Link
                   to={user?.role === 'admin' ? '/admin/dashboard' : '/dashboard'}
-                  className="px-5 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-semibold font-outfit text-sm shadow-sm transition-all"
+                  className="px-5 py-2.5 rounded-xl bg-gradient-to-r from-indigo-600 to-violet-600 hover:brightness-110 text-white font-semibold font-['Sora'] text-sm shadow-sm transition-all"
                 >
                   {t('nav_dashboard')}
                 </Link>
               ) : (
                 <Link
                   to="/login"
-                  className="px-4 py-2 rounded-xl border border-slate-200 text-slate-700 hover:text-blue-600 hover:bg-slate-50 font-semibold font-outfit text-sm transition-all"
+                  className="px-4 py-2 rounded-xl border border-slate-200 text-slate-700 hover:text-indigo-600 hover:border-indigo-300 hover:bg-indigo-50/50 font-semibold font-['Sora'] text-sm transition-all"
                 >
                   {t('nav_login')}
                 </Link>
