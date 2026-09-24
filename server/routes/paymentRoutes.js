@@ -41,10 +41,11 @@ router.get('/invoice/:enrollmentId/download', protect, async (req, res) => {
     }
 
     const invoiceBuffer = await generateInvoicePDF({
-      invoiceNumber: enrollment.invoiceNumber || `SDF-INV-${enrollment._id.toString().slice(-6).toUpperCase()}`,
+      invoiceNumber: enrollment.invoiceNumber || `JVK-INV-${enrollment._id.toString().slice(-6).toUpperCase()}`,
       studentName,
       studentEmail: enrollment.studentEmail,
       courseTitle: enrollment.course?.title || 'Yoga Course',
+      courseCategory: enrollment.course?.category || 'Software Training',
       amountPaid: enrollment.amountPaid,
       paymentDate: new Date(enrollment.createdAt).toLocaleDateString('en-IN'),
       accessValidity: enrollment.course?.accessValidity || '2 Months'
@@ -60,6 +61,13 @@ router.get('/invoice/:enrollmentId/download', protect, async (req, res) => {
 });
 
 // Create Razorpay Order
+router.get('/debug-env', (req, res) => {
+  res.json({
+    keyId: process.env.RAZORPAY_KEY_ID,
+    keySecret: process.env.RAZORPAY_KEY_SECRET ? process.env.RAZORPAY_KEY_SECRET.slice(0,4) + '...' : null
+  });
+});
+
 router.post('/create-order', protect, async (req, res) => {
   try {
     const { courseId } = req.body;
@@ -74,7 +82,9 @@ router.post('/create-order', protect, async (req, res) => {
       key_secret: process.env.RAZORPAY_KEY_SECRET,
     });
 
-    const price = course.price !== undefined ? course.price : 0;
+    let price = Number(course.price);
+    if (isNaN(price) || price <= 0) price = 1; // Fallback to 1 INR if invalid
+    
     const options = {
       amount: Math.round(price * 100), // paise
       currency: "INR",
@@ -90,7 +100,7 @@ router.post('/create-order', protect, async (req, res) => {
     });
   } catch (error) {
     console.error("Order creation error", error);
-    res.status(500).json({ success: false, message: 'Error creating order', error: error.message });
+    res.status(500).json({ success: 'DEBUG_TRUE', message: 'Error creating order', error: error.toString(), stack: error.stack, fullError: JSON.stringify(error) });
   }
 });
 
@@ -113,7 +123,7 @@ router.post('/verify-payment', protect, async (req, res) => {
     const isAuthentic = expectedSignature === razorpay_signature;
 
     if (isAuthentic || process.env.NODE_ENV === 'development') {
-      const invoiceNumber = `SDF-INV-${Date.now().toString().slice(-6)}${Math.floor(100 + Math.random() * 900)}`;
+      const invoiceNumber = `JVK-INV-${Date.now().toString().slice(-6)}${Math.floor(100 + Math.random() * 900)}`;
       const finalAmount = amountPaid !== undefined ? amountPaid : course.price;
 
       // Create Enrollment
@@ -144,6 +154,7 @@ const { uploadBufferToCloudinary } = require('../utils/cloudinaryUploader');
         studentName,
         studentEmail: req.user.emailOrPhone,
         courseTitle: course.title,
+        courseCategory: course.category || 'Software Training',
         amountPaid: finalAmount,
         paymentDate: new Date().toLocaleDateString('en-IN'),
         accessValidity: course.accessValidity || '2 Months'

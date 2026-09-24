@@ -181,6 +181,24 @@ const CourseDetails = () => {
     fetchCourse();
   }, [slug]);
 
+  useEffect(() => {
+    // Check enrollment status
+    const token = localStorage.getItem('token');
+    if (token && course?._id) {
+      axios.get(`${import.meta.env.VITE_API_BASE_URL}/payments/history`, {
+        headers: { Authorization: `Bearer ${token}` }
+      }).then(res => {
+        if (res.data.success && res.data.data) {
+          const courseId = course._id || course.slug;
+          const enrolled = res.data.data.some(e => 
+            e.course?._id === courseId || e.course === courseId
+          );
+          setIsEnrolled(enrolled);
+        }
+      }).catch(() => {});
+    }
+  }, [course]);
+
   const handleEnroll = () => {
     const token = localStorage.getItem('token');
     if (!token) {
@@ -248,104 +266,110 @@ const CourseDetails = () => {
         
         <div className="max-w-7xl mx-auto relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
           <div className="lg:col-span-8 space-y-4">
+            {/* Category badge only */}
             <div className="flex flex-wrap items-center gap-2">
-              <span className="bg-blue-600/90 text-white text-[11px] font-extrabold uppercase px-3 py-1 rounded-full tracking-wider">
-                {course.category || 'Career Track'}
-              </span>
-              <span className="bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 text-[11px] font-bold px-3 py-1 rounded-full">
-                100% Placement Support
-              </span>
-              <span className="bg-white/10 text-slate-200 text-[11px] font-semibold px-3 py-1 rounded-full">
-                Live Online & Classroom
-              </span>
+              {course.category && (
+                <span className="bg-blue-600/90 text-white text-[11px] font-extrabold uppercase px-3 py-1 rounded-full tracking-wider">
+                  {course.category}
+                </span>
+              )}
+              {course.level && (
+                <span className="bg-white/10 text-slate-200 text-[11px] font-semibold px-3 py-1 rounded-full">
+                  {course.level}
+                </span>
+              )}
             </div>
 
             <h1 className="text-2xl sm:text-3xl lg:text-4xl font-black tracking-tight text-white leading-tight">
               {course.title}
             </h1>
 
-            <p className="text-sm sm:text-base text-slate-300 leading-relaxed max-w-3xl">
-              {course.description}
-            </p>
+            {course.description && (
+              <p className="text-sm sm:text-base text-slate-300 leading-relaxed max-w-3xl">
+                {course.description}
+              </p>
+            )}
 
-            {/* Quick Metrics */}
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 pt-3">
-              <div className="bg-slate-800/80 border border-slate-700/60 rounded-xl p-3">
-                <span className="text-[11px] text-slate-400 block font-semibold">Duration</span>
-                <span className="text-sm font-bold text-white flex items-center gap-1.5 mt-0.5">
-                  <FaClock className="text-amber-400" size={13} /> {course.duration}
-                </span>
-              </div>
-              <div className="bg-slate-800/80 border border-slate-700/60 rounded-xl p-3">
-                <span className="text-[11px] text-slate-400 block font-semibold">Skill Level</span>
-                <span className="text-sm font-bold text-white flex items-center gap-1.5 mt-0.5">
-                  <FaGraduationCap className="text-blue-400" size={14} /> {course.level || 'Beginner to Pro'}
-                </span>
-              </div>
-              <div className="bg-slate-800/80 border border-slate-700/60 rounded-xl p-3">
-                <span className="text-[11px] text-slate-400 block font-semibold">Language</span>
-                <span className="text-sm font-bold text-white flex items-center gap-1.5 mt-0.5">
-                  <FaGlobe className="text-emerald-400" size={13} /> {course.language || 'English & Telugu'}
-                </span>
-              </div>
-              <div className="bg-slate-800/80 border border-slate-700/60 rounded-xl p-3">
-                <span className="text-[11px] text-slate-400 block font-semibold">Certification</span>
-                <span className="text-sm font-bold text-white flex items-center gap-1.5 mt-0.5">
-                  <FaCertificate className="text-amber-400" size={13} /> ISO Recognized
-                </span>
-              </div>
+            {/* Quick Metrics — only real DB fields */}
+            <div className="flex flex-wrap gap-3 pt-2">
+              {course.durationMonths && (
+                <div className="bg-slate-800/80 border border-slate-700/60 rounded-xl px-4 py-2.5">
+                  <span className="text-[10px] text-slate-400 block font-semibold uppercase tracking-wider">Duration</span>
+                  <span className="text-sm font-bold text-white flex items-center gap-1.5 mt-0.5">
+                    <FaClock className="text-amber-400" size={13} /> {course.durationMonths} Month{course.durationMonths > 1 ? 's' : ''}
+                  </span>
+                </div>
+              )}
+              {course.level && (
+                <div className="bg-slate-800/80 border border-slate-700/60 rounded-xl px-4 py-2.5">
+                  <span className="text-[10px] text-slate-400 block font-semibold uppercase tracking-wider">Skill Level</span>
+                  <span className="text-sm font-bold text-white flex items-center gap-1.5 mt-0.5">
+                    <FaGraduationCap className="text-blue-400" size={14} /> {course.level}
+                  </span>
+                </div>
+              )}
+              {course.language && (
+                <div className="bg-slate-800/80 border border-slate-700/60 rounded-xl px-4 py-2.5">
+                  <span className="text-[10px] text-slate-400 block font-semibold uppercase tracking-wider">Language</span>
+                  <span className="text-sm font-bold text-white flex items-center gap-1.5 mt-0.5">
+                    <FaGlobe className="text-emerald-400" size={13} /> {course.language}
+                  </span>
+                </div>
+              )}
+              {course.sessionDates?.length > 0 && (
+                <div className="bg-slate-800/80 border border-slate-700/60 rounded-xl px-4 py-2.5">
+                  <span className="text-[10px] text-slate-400 block font-semibold uppercase tracking-wider">Sessions</span>
+                  <span className="text-sm font-bold text-white flex items-center gap-1.5 mt-0.5">
+                    <FaLaptopCode className="text-purple-400" size={13} /> {course.sessionDates.length} Classes
+                  </span>
+                </div>
+              )}
+              {course.accessValidity && (
+                <div className="bg-slate-800/80 border border-slate-700/60 rounded-xl px-4 py-2.5">
+                  <span className="text-[10px] text-slate-400 block font-semibold uppercase tracking-wider">Access</span>
+                  <span className="text-sm font-bold text-white flex items-center gap-1.5 mt-0.5">
+                    <FaCertificate className="text-amber-400" size={13} /> {course.accessValidity}
+                  </span>
+                </div>
+              )}
             </div>
           </div>
 
           {/* Quick Action Card on Desktop */}
           <div className="lg:col-span-4 bg-white text-slate-900 rounded-3xl p-6 sm:p-7 shadow-2xl border border-slate-200">
-            <span className="text-xs font-extrabold uppercase text-slate-400 tracking-wider">
-              Tuition & Admission
-            </span>
-            <div className="mt-1 flex items-baseline gap-2">
-              <span className="text-3xl sm:text-4xl font-black text-slate-900">
-                ₹{course.price || '18,999'}
-              </span>
-              <span className="text-xs text-slate-500 font-semibold line-through">
-                ₹30,000
-              </span>
-              <span className="text-xs font-bold text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded-md">
-                Save 35%
-              </span>
-            </div>
+            {course.price > 0 && (
+              <div className="mb-4">
+                <span className="text-xs font-extrabold uppercase text-slate-400 tracking-wider">Course Fee</span>
+                <div className="mt-1 flex items-baseline gap-2">
+                  <span className="text-3xl sm:text-4xl font-black text-slate-900">₹{course.price}</span>
+                </div>
+              </div>
+            )}
 
-            <p className="text-xs text-slate-600 mt-2 font-medium">
-              Includes live mentor sessions, lab access, project code repositories, resume building, and placement drives.
-            </p>
-
-            <div className="mt-5 space-y-2.5">
-              <a 
-                href={`https://wa.me/${cleanWhatsapp}?text=${encodeURIComponent(`Hello JVK Technologies, I want to enroll in ${course.title}. Please share batch dates and syllabus.`)}`}
-                target="_blank"
-                rel="noreferrer"
-                className="w-full py-3 px-4 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-sm flex items-center justify-center gap-2 shadow-md transition-all"
-              >
-                <FaWhatsapp size={16} /> WhatsApp Enrollment
-              </a>
-
-              <a 
-                href={`tel:${contact.callNumber}`}
-                className="w-full py-3 px-4 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-bold text-sm flex items-center justify-center gap-2 shadow-md transition-all"
-              >
-                <FaPhoneAlt size={13} /> Call Counseling: {contact.callNumber}
-              </a>
-
+            <div className="mt-5">
               <button 
-                onClick={handleEnroll}
-                className="w-full py-2.5 px-4 rounded-xl border border-slate-300 hover:bg-slate-50 text-slate-700 font-bold text-xs flex items-center justify-center gap-2 transition-all"
+                onClick={() => {
+                  const token = localStorage.getItem('token');
+                  if (isEnrolled) {
+                    navigate(`/dashboard/learning/${course._id || course.slug}`);
+                  } else if (token) {
+                    navigate(`/checkout/${course._id || course.slug}`);
+                  } else {
+                    navigate('/login');
+                  }
+                }}
+                className={`w-full py-3.5 px-4 rounded-xl font-black text-sm flex items-center justify-center gap-2 shadow-md transition-all ${
+                  isEnrolled 
+                    ? 'bg-indigo-600 hover:bg-indigo-700 text-white'
+                    : 'bg-blue-600 hover:bg-blue-700 text-white'
+                }`}
               >
-                <FaRocket size={12} className="text-blue-600" /> Book Free Demo Class
+                {isEnrolled ? (
+                  <><FaGraduationCap size={14} /> Go to My Learning</>
+                ) : (
+                  <><FaRocket size={14} /> Enroll Now</>
+                )}
               </button>
-            </div>
-
-            <div className="mt-4 pt-4 border-t border-slate-100 flex items-center justify-center gap-2 text-center text-[11px] text-slate-500 font-medium">
-              <FaBuilding className="text-blue-600" />
-              <span>Training Center: HITEC City, Madhapur, Hyderabad</span>
             </div>
           </div>
         </div>
@@ -354,24 +378,54 @@ const CourseDetails = () => {
       {/* Main Content Sections */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-10">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
-          
-          {/* Left Column: Details & Syllabus */}
-          <div className="lg:col-span-8 space-y-8">
-            
-            {/* What you will learn */}
-            {course.whatYouWillLearn && course.whatYouWillLearn.length > 0 && (
-              <div className="bg-white rounded-3xl p-6 sm:p-8 border border-slate-200/80 shadow-xs">
-                <h2 className="text-xl font-black text-slate-900 mb-5 flex items-center gap-2.5">
-                  <span className="w-2.5 h-2.5 rounded-full bg-blue-600"></span>
-                  What You Will Master in this Program
+          <div className="lg:col-span-12 max-w-4xl mx-auto space-y-8 w-full">
+
+            {/* About This Course */}
+            {course.description && (
+              <div className="bg-white rounded-3xl p-6 sm:p-8 border border-slate-200/80 shadow-sm">
+                <h2 className="text-xl font-black text-slate-900 mb-4 flex items-center gap-2.5">
+                  <span className="w-2.5 h-2.5 rounded-full bg-indigo-600"></span>
+                  About This Program
                 </h2>
-                
+                <p className="text-sm sm:text-base text-slate-600 leading-relaxed">{course.description}</p>
+
+                {/* Course meta chips */}
+                <div className="flex flex-wrap gap-3 mt-5">
+                  {course.language && (
+                    <div className="flex items-center gap-1.5 text-xs font-semibold text-slate-600 bg-slate-50 border border-slate-200 px-3 py-1.5 rounded-full">
+                      <FaGlobe size={11} className="text-indigo-500" /> {course.language}
+                    </div>
+                  )}
+                  {course.level && (
+                    <div className="flex items-center gap-1.5 text-xs font-semibold text-slate-600 bg-slate-50 border border-slate-200 px-3 py-1.5 rounded-full">
+                      <FaGraduationCap size={11} className="text-indigo-500" /> {course.level}
+                    </div>
+                  )}
+                  {course.accessValidity && (
+                    <div className="flex items-center gap-1.5 text-xs font-semibold text-slate-600 bg-slate-50 border border-slate-200 px-3 py-1.5 rounded-full">
+                      <FaCertificate size={11} className="text-indigo-500" /> {course.accessValidity} Access
+                    </div>
+                  )}
+                  {course.sessionDates?.length > 0 && (
+                    <div className="flex items-center gap-1.5 text-xs font-semibold text-slate-600 bg-slate-50 border border-slate-200 px-3 py-1.5 rounded-full">
+                      <FaProjectDiagram size={11} className="text-indigo-500" /> {course.sessionDates.length} Live Sessions
+                    </div>
+                  )}
+                </div>
+              </div>
+            )}
+
+            {/* What You Will Learn */}
+            {course.whatYouWillLearn && course.whatYouWillLearn.length > 0 && (
+              <div className="bg-white rounded-3xl p-6 sm:p-8 border border-slate-200/80 shadow-sm">
+                <h2 className="text-xl font-black text-slate-900 mb-5 flex items-center gap-2.5">
+                  <span className="w-2.5 h-2.5 rounded-full bg-indigo-600"></span>
+                  What You Will Master
+                </h2>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
                   {course.whatYouWillLearn.map((item, idx) => (
-                    <div key={idx} className="flex items-start gap-3 bg-slate-50/80 p-3.5 rounded-xl border border-slate-100">
-                      <div className="w-5 h-5 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center shrink-0 mt-0.5 text-xs font-bold">
-                        ✓
-                      </div>
+                    <div key={idx} className="flex items-start gap-3 bg-indigo-50/60 p-3.5 rounded-xl border border-indigo-100">
+                      <div className="w-5 h-5 rounded-full bg-indigo-100 text-indigo-600 flex items-center justify-center shrink-0 mt-0.5 text-xs font-bold">✓</div>
                       <span className="text-xs sm:text-sm text-slate-700 font-medium leading-snug">{item}</span>
                     </div>
                   ))}
@@ -379,40 +433,60 @@ const CourseDetails = () => {
               </div>
             )}
 
-            {/* Curriculum Modules */}
-            {course.modules && course.modules.length > 0 && (
-              <div className="bg-white rounded-3xl p-6 sm:p-8 border border-slate-200/80 shadow-xs">
+            {/* Curriculum / Topics */}
+            {course.topics && course.topics.length > 0 && (
+              <div className="bg-white rounded-3xl p-6 sm:p-8 border border-slate-200/80 shadow-sm">
                 <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-6">
                   <div>
-                    <h2 className="text-xl font-black text-slate-900">Curriculum & Syllabus Roadmap</h2>
-                    <p className="text-xs text-slate-500 mt-0.5">Engineered to match real job role requirements in top IT companies</p>
+                    <h2 className="text-xl font-black text-slate-900">Course Curriculum</h2>
+                    <p className="text-xs text-slate-500 mt-0.5">{course.topics.length} topics covered in this program</p>
                   </div>
                   <a 
                     href={`https://wa.me/${cleanWhatsapp}?text=Please%20send%20the%20detailed%20syllabus%20PDF.`}
-                    target="_blank" 
-                    rel="noreferrer"
-                    className="inline-flex items-center gap-2 text-xs font-bold text-blue-600 bg-blue-50 px-3 py-1.5 rounded-xl hover:bg-blue-100 transition-colors w-max"
+                    target="_blank" rel="noreferrer"
+                    className="inline-flex items-center gap-2 text-xs font-bold text-indigo-600 bg-indigo-50 px-3 py-1.5 rounded-xl hover:bg-indigo-100 transition-colors w-max"
                   >
-                    <FaDownload size={11} /> Download Detailed Syllabus (PDF)
+                    <FaDownload size={11} /> Download Syllabus PDF
                   </a>
                 </div>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+                  {course.topics.map((topic, idx) => (
+                    <div key={idx} className="flex items-center gap-3 p-3 rounded-xl border border-slate-200 hover:border-indigo-300 hover:bg-indigo-50/40 transition-colors">
+                      <div className="w-6 h-6 rounded-lg bg-indigo-100 text-indigo-600 flex items-center justify-center shrink-0 text-[10px] font-bold">{idx + 1}</div>
+                      <span className="text-xs sm:text-sm text-slate-700 font-medium">{topic}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
 
+            {/* Fallback - Modules (from fallback data) */}
+            {!course.topics?.length && course.modules && course.modules.length > 0 && (
+              <div className="bg-white rounded-3xl p-6 sm:p-8 border border-slate-200/80 shadow-sm">
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-6">
+                  <div>
+                    <h2 className="text-xl font-black text-slate-900">Curriculum & Syllabus Roadmap</h2>
+                    <p className="text-xs text-slate-500 mt-0.5">Engineered to match real job role requirements</p>
+                  </div>
+                  <a 
+                    href={`https://wa.me/${cleanWhatsapp}?text=Please%20send%20the%20detailed%20syllabus%20PDF.`}
+                    target="_blank" rel="noreferrer"
+                    className="inline-flex items-center gap-2 text-xs font-bold text-indigo-600 bg-indigo-50 px-3 py-1.5 rounded-xl hover:bg-indigo-100 transition-colors w-max"
+                  >
+                    <FaDownload size={11} /> Download Syllabus PDF
+                  </a>
+                </div>
                 <div className="space-y-4">
                   {course.modules.map((mod, idx) => (
-                    <div key={idx} className="border border-slate-200 rounded-2xl p-4 sm:p-5 hover:border-blue-300 transition-colors">
+                    <div key={idx} className="border border-slate-200 rounded-2xl p-4 sm:p-5 hover:border-indigo-300 transition-colors">
                       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-1 mb-2">
-                        <h3 className="text-sm sm:text-base font-bold text-slate-900">
-                          {mod.title}
-                        </h3>
-                        <span className="text-xs font-bold text-blue-600 bg-blue-50 px-2.5 py-0.5 rounded-md w-max">
-                          {mod.duration}
-                        </span>
+                        <h3 className="text-sm sm:text-base font-bold text-slate-900">{mod.title}</h3>
+                        <span className="text-xs font-bold text-indigo-600 bg-indigo-50 px-2.5 py-0.5 rounded-md w-max">{mod.duration}</span>
                       </div>
-                      
                       <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 mt-3">
                         {mod.topics?.map((topic, tIdx) => (
                           <div key={tIdx} className="flex items-center gap-2 text-xs text-slate-600 font-medium">
-                            <span className="w-1.5 h-1.5 rounded-full bg-blue-500 shrink-0"></span>
+                            <span className="w-1.5 h-1.5 rounded-full bg-indigo-500 shrink-0"></span>
                             <span>{topic}</span>
                           </div>
                         ))}
@@ -423,84 +497,66 @@ const CourseDetails = () => {
               </div>
             )}
 
-            {/* Placement & Career Assistance */}
-            <div className="bg-gradient-to-br from-blue-900 to-indigo-950 text-white rounded-3xl p-6 sm:p-8 shadow-md">
-              <h2 className="text-xl font-black text-white mb-2">
-                100% Placement Assurance & Job Assistance
-              </h2>
-              <p className="text-xs sm:text-sm text-blue-100 leading-relaxed max-w-2xl">
-                Every enrolled candidate at JVK Technologies undergoes mock technical rounds, HR coaching, live project portfolio construction, and direct referral drives with our network of 100+ hiring MNCs.
-              </p>
-
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mt-6">
-                <div className="bg-white/10 backdrop-blur-md rounded-2xl p-4 border border-white/10">
-                  <span className="text-amber-400 font-bold text-lg block">Unlimited</span>
-                  <span className="text-xs text-blue-200 font-medium">Interview Calls & Placement Drives</span>
-                </div>
-                <div className="bg-white/10 backdrop-blur-md rounded-2xl p-4 border border-white/10">
-                  <span className="text-emerald-400 font-bold text-lg block">1-on-1</span>
-                  <span className="text-xs text-blue-200 font-medium">Resume & LinkedIn Profile Optimization</span>
-                </div>
-                <div className="bg-white/10 backdrop-blur-md rounded-2xl p-4 border border-white/10">
-                  <span className="text-cyan-400 font-bold text-lg block">Real Projects</span>
-                  <span className="text-xs text-blue-200 font-medium">Live Code Portfolio on GitHub</span>
+            {/* Instructor Info */}
+            {(course.instructorId || course.instructor) && (
+              <div className="bg-white rounded-3xl p-6 sm:p-8 border border-slate-200/80 shadow-sm">
+                <h2 className="text-xl font-black text-slate-900 mb-5 flex items-center gap-2.5">
+                  <span className="w-2.5 h-2.5 rounded-full bg-indigo-600"></span>
+                  About Your Instructor
+                </h2>
+                <div className="flex flex-col sm:flex-row items-start gap-5">
+                  <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-indigo-500 to-indigo-700 flex items-center justify-center shrink-0">
+                    <FaUserTie size={28} className="text-white" />
+                  </div>
+                  <div className="flex-1">
+                    <h3 className="text-lg font-extrabold text-slate-900">
+                      {course.instructorId?.name || course.instructor || 'Lead Instructor'}
+                    </h3>
+                    {course.instructorId?.speciality && (
+                      <p className="text-xs font-semibold text-indigo-600 bg-indigo-50 inline-block px-2.5 py-0.5 rounded-full mt-1">
+                        {course.instructorId.speciality}
+                      </p>
+                    )}
+                    {course.instructorId?.bio && (
+                      <p className="text-sm text-slate-600 leading-relaxed mt-3">{course.instructorId.bio}</p>
+                    )}
+                    {!course.instructorId?.bio && (
+                      <p className="text-sm text-slate-500 leading-relaxed mt-3">
+                        Industry expert and certified technical trainer with extensive hands-on experience in {course.category || 'software development'}. Committed to delivering job-ready skills through practical, project-based learning at JVK Technologies.
+                      </p>
+                    )}
+                    {course.instructorId?.phone && (
+                      <a href={`tel:${course.instructorId.phone}`} className="inline-flex items-center gap-1.5 text-xs text-indigo-600 font-semibold mt-3 hover:underline">
+                        <FaPhoneAlt size={10} /> {course.instructorId.phone}
+                      </a>
+                    )}
+                  </div>
                 </div>
               </div>
+            )}
+
+            {/* CTA Bottom */}
+            <div className="bg-gradient-to-r from-indigo-600 to-indigo-800 rounded-3xl p-6 sm:p-8 text-white text-center">
+              <h3 className="text-xl font-black mb-2">Ready to Start Your Career Journey?</h3>
+              <p className="text-indigo-200 text-sm mb-5">Join {course.title} at JVK Technologies — hands-on training with guaranteed placement support.</p>
+              <button
+                onClick={() => {
+                  const token = localStorage.getItem('token');
+                  if (isEnrolled) {
+                    navigate(`/dashboard/learning/${course._id || course.slug}`);
+                  } else if (token) {
+                    navigate(`/checkout/${course._id || course.slug}`);
+                  } else {
+                    navigate('/login');
+                  }
+                }}
+                className="px-8 py-3.5 bg-white text-indigo-700 font-black rounded-2xl hover:bg-indigo-50 transition-all shadow-lg text-sm inline-flex items-center gap-2"
+              >
+                {isEnrolled ? (<><FaGraduationCap /> Go to My Learning</>) : (<><FaRocket /> Enroll Now — ₹{course.price || 'N/A'}</>)}
+              </button>
             </div>
 
           </div>
-
-          {/* Right Column: Key Details & Other Tracks */}
-          <div className="lg:col-span-4 space-y-6">
-            
-            {/* Direct Trainer Details */}
-            <div className="bg-white rounded-3xl p-6 border border-slate-200/80 shadow-xs">
-              <h3 className="text-sm font-extrabold uppercase text-slate-400 tracking-wider mb-4">
-                Instructor & Mentorship
-              </h3>
-              <div className="flex items-center gap-3.5">
-                <div className="w-12 h-12 rounded-2xl bg-blue-600 text-white flex items-center justify-center font-bold text-lg">
-                  JVK
-                </div>
-                <div>
-                  <h4 className="text-sm font-bold text-slate-900">Industry Tech Lead</h4>
-                  <p className="text-xs text-slate-500 font-medium">12+ Years Enterprise Architecture Experience</p>
-                </div>
-              </div>
-              <p className="text-xs text-slate-600 mt-4 leading-relaxed font-medium">
-                Our trainers are active senior developers and technical leads working in Fortune 500 companies who bring direct industry challenges and best coding practices to each class.
-              </p>
-            </div>
-
-            {/* Other Software Tracks */}
-            <div className="bg-white rounded-3xl p-6 border border-slate-200/80 shadow-xs">
-              <h3 className="text-sm font-extrabold uppercase text-slate-400 tracking-wider mb-4">
-                Explore Other Software Tracks
-              </h3>
-              <div className="space-y-3">
-                {Object.values(fallbackCourseData)
-                  .filter(c => c.slug !== slug)
-                  .slice(0, 4)
-                  .map((item) => (
-                    <Link
-                      key={item.slug}
-                      to={location.pathname.startsWith('/dashboard') ? `/dashboard/courses/${item.slug}` : `/courses/${item.slug}`}
-                      className="block p-3 rounded-xl border border-slate-100 hover:border-blue-300 hover:bg-blue-50/40 transition-all group"
-                    >
-                      <span className="text-xs font-bold text-slate-800 group-hover:text-blue-600 transition-colors block">
-                        {item.title}
-                      </span>
-                      <div className="flex items-center justify-between text-[11px] text-slate-400 mt-1">
-                        <span>{item.duration}</span>
-                        <span className="font-bold text-slate-700">₹{item.price}</span>
-                      </div>
-                    </Link>
-                  ))}
-              </div>
-            </div>
-
-          </div>
-
         </div>
       </div>
 

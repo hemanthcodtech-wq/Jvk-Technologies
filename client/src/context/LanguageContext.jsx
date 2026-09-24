@@ -15,7 +15,7 @@ const translations = {
     hero_title_2: 'and Move Towards Your Dream Job!',
     hero_subtitle: 'Industry-driven software training in Java Full Stack, Python, MERN, Cloud & DevOps with real-world capstone projects and 100% dedicated placement assistance.',
     hero_explore: 'Explore Tech Tracks',
-    hero_start: 'Book Free Demo',
+    hero_start: 'Register Now',
     hero_call_now: 'Call: +91-9059519151',
     hero_whatsapp: 'WhatsApp Us',
 

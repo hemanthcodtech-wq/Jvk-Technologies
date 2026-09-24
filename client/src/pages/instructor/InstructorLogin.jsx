@@ -277,7 +277,7 @@ const InstructorLogin = () => {
                     value={formData.email}
                     onChange={handleChange}
                     required
-                    placeholder="instructor@swamydwija.org"
+                    placeholder="instructor@jvktechnologies.com"
                     className="w-full pl-11 pr-4 py-3.5 bg-gray-50/80 border border-gray-200 rounded-2xl text-sm font-medium text-gray-900 placeholder-gray-400 focus:bg-white focus:ring-2 focus:ring-[#0A4F2A]/20 focus:border-[#0A4F2A] outline-none transition-all shadow-xs"
                   />
                 </div>
@@ -416,7 +416,7 @@ const InstructorLogin = () => {
                         required
                         value={forgotEmail}
                         onChange={(e) => setForgotEmail(e.target.value)}
-                        placeholder="instructor@swamydwija.org"
+                        placeholder="instructor@jvktechnologies.com"
                         className="w-full pl-11 pr-4 py-3 bg-gray-50 border border-gray-200 rounded-2xl text-sm font-medium focus:bg-white focus:ring-2 focus:ring-brand-green/20 focus:border-brand-green outline-none"
                       />
                     </div>

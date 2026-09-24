@@ -146,17 +146,17 @@ const StudentClasses = () => {
   todayMidnight.setHours(0, 0, 0, 0);
 
   return (
-    <div className="min-h-screen bg-[#F9F7F5] pb-24 md:pb-12 pt-20 md:pt-10">
+    <div className="min-h-screen bg-gray-50 pb-24 md:pb-12 pt-20 md:pt-10">
       <div className="max-w-7xl mx-auto px-4 lg:px-8">
         
         {/* Back Button */}
-        <button onClick={() => navigate(-1)} className="text-[#C08552] flex items-center gap-2 font-semibold mb-6 hover:text-[#a06b3e] transition-colors">
+        <button onClick={() => navigate(-1)} className="text-gray-500 flex items-center gap-2 font-semibold mb-6 hover:text-brand-600 transition-colors">
           <FaArrowLeft size={14} /> Back to Learning
         </button>
 
         {loading ? (
           <div className="flex justify-center py-20">
-            <div className="w-10 h-10 border-4 border-[#C08552] border-t-transparent rounded-full animate-spin"></div>
+            <div className="w-10 h-10 border-4 border-brand-600 border-t-transparent rounded-full animate-spin"></div>
           </div>
         ) : (
           <div className="space-y-6">
@@ -166,7 +166,7 @@ const StudentClasses = () => {
               <div className="lg:sticky lg:top-28 space-y-4">
                 
                 {/* Top Dark Card */}
-                <div className="bg-[#2D2D2D] rounded-2xl p-6 md:p-8 flex flex-col justify-center text-white shadow-xl relative overflow-hidden">
+                <div className="bg-gradient-to-br from-indigo-900 via-brand-800 to-indigo-900 ring-1 ring-white/10 rounded-2xl p-6 md:p-8 flex flex-col justify-center text-white shadow-xl relative overflow-hidden">
                   <div className="absolute top-0 right-0 w-32 h-32 bg-white/5 rounded-full -mr-10 -mt-10 blur-xl"></div>
                   
                   <div className="flex items-center gap-4 mb-8">
@@ -220,14 +220,14 @@ const StudentClasses = () => {
 
                   <button 
                     onClick={() => setActiveTab('classes')}
-                    className={`rounded-xl py-4 px-5 flex items-center justify-between shadow-sm border transition-all duration-300 ${activeTab === 'classes' ? 'bg-[#C08552] border-[#C08552] text-white shadow-[#C08552]/20' : 'bg-white border-gray-200 hover:bg-gray-50 text-gray-700'}`}
+                    className={`rounded-xl py-4 px-5 flex items-center justify-between shadow-sm border transition-all duration-300 ${activeTab === 'classes' ? 'bg-brand-600 border-brand-600 text-white shadow-brand-600/30' : 'bg-white border-gray-200 hover:bg-gray-50 text-gray-700'}`}
                   >
                     <span className={`text-[13px] font-bold ${activeTab === 'classes' ? 'text-white' : 'text-gray-700'}`}>All Classes</span>
                     <FaChevronRight className={`${activeTab === 'classes' ? 'text-white' : 'text-gray-400'} text-[12px]`} />
                   </button>
                   <button 
                     onClick={() => setActiveTab('materials')}
-                    className={`rounded-xl py-4 px-5 flex items-center justify-between shadow-sm border transition-all duration-300 ${activeTab === 'materials' ? 'bg-[#C08552] border-[#C08552] text-white shadow-[#C08552]/20' : 'bg-white border-gray-200 hover:bg-gray-50 text-gray-700'}`}
+                    className={`rounded-xl py-4 px-5 flex items-center justify-between shadow-sm border transition-all duration-300 ${activeTab === 'materials' ? 'bg-brand-600 border-brand-600 text-white shadow-brand-600/30' : 'bg-white border-gray-200 hover:bg-gray-50 text-gray-700'}`}
                   >
                     <span className={`text-[13px] font-bold ${activeTab === 'materials' ? 'text-white' : 'text-gray-700'}`}>Course Materials ({materials.length})</span>
                     <FaChevronRight className={`${activeTab === 'materials' ? 'text-white' : 'text-gray-400'} text-[12px]`} />
@@ -235,13 +235,13 @@ const StudentClasses = () => {
                   <button 
                     onClick={handleClaimCertificate}
                     disabled={completing}
-                    className="rounded-xl py-4 px-5 flex items-center justify-between shadow-sm border border-brand-green/30 bg-green-50 hover:bg-green-100 text-brand-green transition-all duration-300 col-span-2 lg:col-span-1"
+                    className="rounded-xl py-4 px-5 flex items-center justify-between shadow-sm border border-brand-600/30 bg-indigo-50 hover:bg-indigo-100 text-brand-600 transition-all duration-300 col-span-2 lg:col-span-1"
                   >
                     <span className="text-[13px] font-extrabold flex items-center gap-2">
                       <FaAward className="text-yellow-600" />
                       {completing ? 'Generating Certificate...' : 'Get Certificate of Completion'}
                     </span>
-                    <FaChevronRight className="text-brand-green text-[12px]" />
+                    <FaChevronRight className="text-brand-600 text-[12px]" />
                   </button>
                 </div>
               </div>
@@ -265,21 +265,21 @@ const StudentClasses = () => {
                           <motion.div 
                             initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: index * 0.05 }}
                             key={cls._id} 
-                            className={`bg-white rounded-[20px] p-5 flex flex-col justify-between border shadow-[0_2px_10px_rgba(0,0,0,0.02)] hover:shadow-lg transition-all duration-300 group ${isToday ? 'border-brand-green ring-2 ring-brand-green/20' : 'border-gray-200'}`}
+                            className={`bg-white rounded-[20px] p-5 flex flex-col justify-between border shadow-[0_2px_10px_rgba(0,0,0,0.02)] hover:shadow-lg transition-all duration-300 group ${isToday ? 'border-brand-600 ring-2 ring-brand-600/20' : 'border-gray-200'}`}
                           >
                             <div className="flex items-start gap-4 mb-5">
-                              <div className={`w-12 h-12 rounded-xl flex items-center justify-center border shrink-0 group-hover:scale-110 transition-transform ${isToday ? 'bg-brand-green/10 border-brand-green/30 text-brand-green' : isPast ? 'bg-gray-50 border-gray-100 text-gray-400' : 'bg-amber-50 border-amber-100 text-[#C08552]'}`}>
+                              <div className={`w-12 h-12 rounded-xl flex items-center justify-center border shrink-0 group-hover:scale-110 transition-transform ${isToday ? 'bg-brand-600/10 border-brand-600/30 text-brand-600' : isPast ? 'bg-gray-50 border-gray-100 text-gray-400' : 'bg-blue-50 border-blue-100 text-gray-500'}`}>
                                 <FaCalendarAlt size={18} />
                               </div>
                               <div className="flex flex-col pt-1 flex-1 min-w-0">
                                 <div className="flex items-center gap-2 mb-1">
                                   {isToday && (
-                                    <span className="flex items-center gap-1.5 text-[10px] font-extrabold text-green-700 bg-green-100 px-2.5 py-0.5 rounded-full animate-pulse">
+                                    <span className="flex items-center gap-1.5 text-[10px] font-extrabold text-green-700 bg-indigo-100 px-2.5 py-0.5 rounded-full animate-pulse">
                                       <span className="w-1.5 h-1.5 rounded-full bg-green-600"></span> LIVE TODAY
                                     </span>
                                   )}
                                   {isUpcoming && (
-                                    <span className="text-[10px] font-bold text-amber-700 bg-amber-50 border border-amber-200/60 px-2.5 py-0.5 rounded-full uppercase tracking-wider">
+                                    <span className="text-[10px] font-bold text-brand-700 bg-blue-50 border border-brand-200/60 px-2.5 py-0.5 rounded-full uppercase tracking-wider">
                                       UPCOMING
                                     </span>
                                   )}
@@ -303,7 +303,7 @@ const StudentClasses = () => {
                                 cls.zoomLink ? (
                                   <button 
                                     onClick={() => setSelectedLiveClass(cls)}
-                                    className="text-[11px] font-bold text-white tracking-wider uppercase bg-brand-green hover:bg-brand-green-dark px-4 py-2 rounded-full shadow-md shadow-brand-green/30 transition-all hover:scale-105 flex items-center gap-1.5 cursor-pointer"
+                                    className="text-[11px] font-bold text-white tracking-wider uppercase bg-brand-600 hover:bg-brand-700 px-4 py-2 rounded-full shadow-md shadow-brand-600/30 transition-all hover:scale-105 flex items-center gap-1.5 cursor-pointer"
                                   >
                                     <FaVideo size={12}/> JOIN LIVE
                                   </button>
@@ -313,13 +313,13 @@ const StudentClasses = () => {
                               ) : isPast ? (
                                 <button 
                                   onClick={() => handleViewClassMaterial(cls)} 
-                                  className="text-[11px] font-bold text-brand-green-dark hover:text-white bg-brand-green/10 hover:bg-brand-green px-4 py-2 rounded-full border border-brand-green/20 transition-all flex items-center gap-1.5 shadow-sm"
+                                  className="text-[11px] font-bold text-brand-700 hover:text-white bg-brand-600/10 hover:bg-brand-600 px-4 py-2 rounded-full border border-brand-600/20 transition-all flex items-center gap-1.5 shadow-sm"
                                 >
                                   <FaBook size={11} /> VIEW MATERIALS
                                 </button>
                               ) : (
-                                <span className="text-[11px] font-semibold text-amber-700 bg-amber-50/80 border border-amber-200/60 px-3.5 py-1.5 rounded-full flex items-center gap-1.5">
-                                  <FaCalendarAlt size={11} className="text-[#C08552]" /> Scheduled
+                                <span className="text-[11px] font-semibold text-brand-700 bg-blue-50/80 border border-brand-200/60 px-3.5 py-1.5 rounded-full flex items-center gap-1.5">
+                                  <FaCalendarAlt size={11} className="text-gray-500" /> Scheduled
                                 </span>
                               )}
                             </div>
@@ -356,7 +356,7 @@ const StudentClasses = () => {
                             
                             <button 
                               onClick={() => setSelectedMaterial(mat)}
-                              className="text-[11px] font-bold text-white tracking-wider uppercase bg-brand-green hover:bg-brand-green-dark px-4 py-2 rounded-full shadow-sm transition-colors"
+                              className="text-[11px] font-bold text-white tracking-wider uppercase bg-brand-600 hover:bg-brand-700 px-4 py-2 rounded-full shadow-sm transition-colors"
                             >
                               VIEW
                             </button>
@@ -418,7 +418,7 @@ const StudentClasses = () => {
           <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
             <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="absolute inset-0 bg-black/60 backdrop-blur-sm" onClick={() => setNoMaterialNotice(null)} />
             <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0, scale: 0.95 }} className="bg-white rounded-3xl shadow-2xl w-full max-w-md p-8 relative z-10 text-center">
-              <div className="w-16 h-16 rounded-full bg-amber-50 text-amber-600 flex items-center justify-center mx-auto mb-4 border border-amber-100">
+              <div className="w-16 h-16 rounded-full bg-blue-50 text-amber-600 flex items-center justify-center mx-auto mb-4 border border-blue-100">
                 <FaBook size={24} />
               </div>
               <h3 className="font-bold text-xl text-gray-900 mb-2">Class Materials Notice</h3>
@@ -427,7 +427,7 @@ const StudentClasses = () => {
               </p>
               <button 
                 onClick={() => setNoMaterialNotice(null)}
-                className="w-full py-3 bg-brand-green hover:bg-brand-green-dark text-white font-bold rounded-xl transition-all shadow-md"
+                className="w-full py-3 bg-brand-600 hover:bg-brand-700 text-white font-bold rounded-xl transition-all shadow-md"
               >
                 Got It
               </button>

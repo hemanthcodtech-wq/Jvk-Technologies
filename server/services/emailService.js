@@ -83,7 +83,7 @@ const sendClassReminder = async (userEmail, courseName, classTitle, date, time, 
     <p><strong>Topic:</strong> ${classTitle || 'Live Session'}</p>
     <p><strong>Date:</strong> ${new Date(date).toLocaleDateString()}</p>
     <p><strong>Time:</strong> ${time}</p>
-    ${zoomLink ? `<p><a href="${zoomLink}" style="padding: 10px 15px; background-color: #2563eb; color: white; text-decoration: none; border-radius: 5px;">Join Zoom Meeting</a></p>` : ''}
+    ${zoomLink ? `<p><a href="${zoomLink}" style="padding: 10px 15px; background-color: #4F46E5; color: white; text-decoration: none; border-radius: 5px;">Join Zoom Meeting</a></p>` : ''}
     <br>
     <p>Best Regards,<br>JVK Technologies</p>
   `;

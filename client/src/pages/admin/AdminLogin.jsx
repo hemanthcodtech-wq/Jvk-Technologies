@@ -377,7 +377,7 @@ const AdminLogin = () => {
               )}
 
               {forgotMessage && forgotStep === 2 && (
-                <div className="mb-4 p-3.5 bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs font-bold rounded-2xl flex items-center gap-2">
+                <div className="mb-4 p-3.5 bg-indigo-50 border border-indigo-200 text-indigo-800 text-xs font-bold rounded-2xl flex items-center gap-2">
                   <FaCheckCircle /> {forgotMessage}
                 </div>
               )}

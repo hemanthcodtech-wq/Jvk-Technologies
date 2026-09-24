@@ -23,7 +23,7 @@ function numberToWords(num) {
 
 /**
  * Generate an Official Corporate / Institutional Tax Invoice PDF
- * @param {Object} data - { invoiceNumber, studentName, studentEmail, courseTitle, amountPaid, paymentDate, accessValidity }
+ * @param {Object} data - { invoiceNumber, studentName, studentEmail, courseTitle, courseCategory, amountPaid, paymentDate, accessValidity }
  * @returns {Promise<Buffer>}
  */
 const generateInvoicePDF = (data) => {
@@ -46,7 +46,7 @@ const generateInvoicePDF = (data) => {
       let logoPath = logoCandidates.find(p => fs.existsSync(p));
 
       // 1. Top Header Bar (Subtle Accent)
-      doc.rect(40, 40, 515, 4).fill('#0D532B');
+      doc.rect(40, 40, 515, 4).fill('#4F46E5');
 
       // 2. Organization Branding (Left)
       let headerTextX = 40;
@@ -59,22 +59,22 @@ const generateInvoicePDF = (data) => {
         }
       }
 
-      doc.fillColor('#0D532B')
+      doc.fillColor('#4F46E5')
          .fontSize(16)
          .font('Helvetica-Bold')
-         .text('SWAMY DWIJA FOUNDATION', headerTextX, 52);
+         .text('JVK TECHNOLOGIES PVT. LTD.', headerTextX, 52);
 
       doc.fillColor('#4B5563')
          .fontSize(8.5)
          .font('Helvetica')
-         .text('Academy of Yoga, Pranayama & Vedic Wellness Sciences', headerTextX, 70)
-         .text('Registered Public Educational & Charitable Trust', headerTextX, 81)
-         .text('Hitec City, Hyderabad, Telangana - 500081, India', headerTextX, 92)
-         .text('Email: support@swamydwija.org • Web: swamydwija.org', headerTextX, 103);
+         .text('Industry-Aligned Software Training & Technology Careers', headerTextX, 70)
+         .text('Professional Learning Management Platform', headerTextX, 81)
+         .text('IT Hub, India', headerTextX, 92)
+         .text('Email: support@jvktech.com • Web: jvktechnologies.com', headerTextX, 103);
 
       // 3. Invoice Badge & Meta Box (Right)
       const rightColX = 370;
-      doc.rect(rightColX, 52, 185, 24).fill('#0D532B');
+      doc.rect(rightColX, 52, 185, 24).fill('#4F46E5');
       doc.fillColor('#FFFFFF')
          .fontSize(12)
          .font('Helvetica-Bold')
@@ -88,7 +88,7 @@ const generateInvoicePDF = (data) => {
          .font('Helvetica-Bold')
          .text('Invoice No:', rightColX + 8, 86)
          .font('Helvetica')
-         .text(data.invoiceNumber || 'SDF-INV-001', rightColX + 65, 86)
+         .text(data.invoiceNumber || 'JVK-INV-001', rightColX + 65, 86)
 
          .font('Helvetica-Bold')
          .text('Date:', rightColX + 8, 98)
@@ -136,7 +136,7 @@ const generateInvoicePDF = (data) => {
       doc.fillColor('#4B5563')
          .fontSize(8.5)
          .font('Helvetica')
-         .text('Service Category: Online Live Educational Training', 313, infoBoxY + 24)
+         .text(`Course Category: ${data.courseCategory || 'Software Training'}`, 313, infoBoxY + 24)
          .text('SAC Code: 999293 (Commercial Training & Education)', 313, infoBoxY + 36)
          .text('Mode of Delivery: Instant Digital Dashboard & Live Zoom', 313, infoBoxY + 48)
          .text('Fulfillment: 100% Electronic Access', 313, infoBoxY + 60);
@@ -145,7 +145,7 @@ const generateInvoicePDF = (data) => {
       const tableTop = 248;
       
       // Table Header Row
-      doc.rect(40, tableTop, 515, 22).fill('#0D532B');
+      doc.rect(40, tableTop, 515, 22).fill('#4F46E5');
       doc.fillColor('#FFFFFF')
          .fontSize(8.5)
          .font('Helvetica-Bold')
@@ -172,11 +172,11 @@ const generateInvoicePDF = (data) => {
          .fontSize(8.5)
          .font('Helvetica-Bold')
          .text('1', 45, rowTop + 8, { width: 20 })
-         .text(data.courseTitle || 'Live Yoga & Pranayama Curriculum', 70, rowTop + 8, { width: 235 })
+         .text(data.courseTitle || 'Live Technical Training Curriculum', 70, rowTop + 8, { width: 235 })
          .fontSize(7.5)
          .font('Helvetica')
          .fillColor('#6B7280')
-         .text('Daily Live Zoom Classes, Study Notes & Recordings', 70, rowTop + 21, { width: 235 })
+         .text(`${data.courseCategory || 'Software Training'} | Live Classes, Notes & Recordings`, 70, rowTop + 21, { width: 235 })
          .fillColor('#374151')
          .fontSize(8.5)
          .text('999293', 315, rowTop + 12, { width: 55, align: 'center' })
@@ -197,13 +197,13 @@ const generateInvoicePDF = (data) => {
          .text('AMOUNT IN WORDS:', 48, sumTop + 8)
          .fontSize(9)
          .font('Helvetica-Bold')
-         .fillColor('#0D532B')
+         .fillColor('#4F46E5')
          .text(numberToWords(data.amountPaid), 48, sumTop + 20, { width: 270 })
          .font('Helvetica')
          .fillColor('#6B7280')
          .fontSize(7.5)
          .text('Payment Gateway: Razorpay / UPI / Netbanking', 48, sumTop + 48)
-         .text('Transaction Ref: Confirmed & Settled to SDF Account', 48, sumTop + 58)
+         .text('Transaction Ref: Confirmed & Settled to JVK Account', 48, sumTop + 58)
          .text('Educational services eligible for GST exemption under Sec 12AA.', 48, sumTop + 68);
 
       // Financial Calculation Table (Right)
@@ -255,16 +255,16 @@ const generateInvoicePDF = (data) => {
       const signTop = notesTop + 62;
       
       // Digital Seal Stamp (Left)
-      doc.rect(40, signTop, 180, 52).strokeColor('#0D532B').lineWidth(1).fill('#F0FDF4');
-      doc.fillColor('#0D532B')
+      doc.rect(40, signTop, 180, 52).strokeColor('#4F46E5').lineWidth(1).fill('#F0FDF4');
+      doc.fillColor('#4F46E5')
          .fontSize(8)
          .font('Helvetica-Bold')
          .text('★ DIGITALLY VERIFIED DOCUMENT ★', 40, signTop + 7, { width: 180, align: 'center' })
          .fontSize(7)
          .font('Helvetica')
-         .text('Swamy Dwija Foundation Certified', 40, signTop + 19, { width: 180, align: 'center' })
-         .text(`Hash: ${Buffer.from(data.invoiceNumber || 'SDF').toString('hex').slice(0, 16).toUpperCase()}`, 40, signTop + 29, { width: 180, align: 'center' })
-         .text('Generated electronically via SDF Portal', 40, signTop + 39, { width: 180, align: 'center' });
+         .text('JVK Technologies Certified', 40, signTop + 19, { width: 180, align: 'center' })
+         .text(`Hash: ${Buffer.from(data.invoiceNumber || 'JVK').toString('hex').slice(0, 16).toUpperCase()}`, 40, signTop + 29, { width: 180, align: 'center' })
+         .text('Generated electronically via JVK Portal', 40, signTop + 39, { width: 180, align: 'center' });
 
       // Digital Signature (Right)
       const signX = 360;
@@ -274,7 +274,7 @@ const generateInvoicePDF = (data) => {
       doc.fillColor('#111827')
          .fontSize(14)
          .font('Times-BoldItalic')
-         .text('Swamy Dwija Foundation', signX, signTop + 12, { width: 190, align: 'center' });
+         .text('JVK Technologies Pvt. Ltd.', signX, signTop + 12, { width: 190, align: 'center' });
 
       doc.fillColor('#374151')
          .fontSize(8)
@@ -282,14 +282,14 @@ const generateInvoicePDF = (data) => {
          .text('Authorized Finance Controller', signX, signTop + 34, { width: 190, align: 'center' })
          .fontSize(7)
          .font('Helvetica')
-         .text('Swamy Dwija Foundation • Accounts Department', signX, signTop + 44, { width: 190, align: 'center' });
+         .text('JVK Technologies • Accounts Department', signX, signTop + 44, { width: 190, align: 'center' });
 
       // 9. Bottom Footer
       doc.fillColor('#9CA3AF')
          .fontSize(7)
          .font('Helvetica')
-         .text('This is an authentic, system-generated computer Tax Invoice issued by Swamy Dwija Foundation. No physical signature is required.', 40, 770, { width: 515, align: 'center' })
-         .text('support@swamydwija.org • swamydwija.org • All Rights Reserved © 2026', 40, 780, { width: 515, align: 'center' });
+         .text('This is an authentic, system-generated computer Tax Invoice issued by JVK Technologies Pvt. Ltd. No physical signature is required.', 40, 770, { width: 515, align: 'center' })
+         .text('support@jvktech.com • jvktechnologies.com • All Rights Reserved © 2026', 40, 780, { width: 515, align: 'center' });
 
       doc.end();
     } catch (err) {

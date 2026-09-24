@@ -62,7 +62,7 @@ const PublicLayout = () => {
       {isLoggedIn && !isAuthPage ? <TopNav /> : <PublicNavbar />}
       
       {/* Main Content Area */}
-      <main className={`flex-grow w-full flex flex-col ${isAuthPage ? 'pt-[72px] pb-16 md:pt-20 md:pb-0' : 'pt-28 md:pt-32 pb-24 lg:pb-0'}`}>
+      <main className={`flex-grow w-full flex flex-col ${isAuthPage ? 'pt-[72px] pb-16 md:pt-20 md:pb-0' : 'pt-[88px] md:pt-[92px] pb-24 lg:pb-0'}`}>
         <Outlet />
       </main>
 

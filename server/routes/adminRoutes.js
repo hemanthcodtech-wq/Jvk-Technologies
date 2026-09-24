@@ -7,11 +7,24 @@ const Enrollment = require('../models/Enrollment');
 const courseRoutes = require('./courseRoutes');
 const { generateInvoicePDF, generateCertificatePDF } = require('../utils/pdfGenerator');
 const { uploadBufferToCloudinary } = require('../utils/cloudinaryUploader');
+const upload = require('../middleware/upload');
 const { sendCourseEnrollmentEmail, sendCourseCompletionEmail } = require('../utils/emailService');
 
 const router = express.Router();
 
 router.use('/courses', courseRoutes);
+
+// Upload a homepage hero image (admin only)
+router.post('/hero-slides/upload', protect, admin, upload.single('image'), async (req, res) => {
+  try {
+    if (!req.file) {
+      return res.status(400).json({ success: false, message: 'Hero image is required' });
+    }
+    res.json({ success: true, imageUrl: req.file.path || req.file.location });
+  } catch (error) {
+    res.status(500).json({ success: false, message: 'Error uploading hero image', error: error.message });
+  }
+});
 
 // Get Dashboard Analytics
 router.get('/analytics', protect, admin, async (req, res) => {
@@ -201,6 +214,7 @@ router.post('/resend-invoice/:enrollmentId', protect, admin, async (req, res) =>
       studentName,
       studentEmail: enrollment.studentEmail,
       courseTitle: enrollment.course?.title || 'Yoga Course',
+      courseCategory: enrollment.course?.category || 'Software Training',
       amountPaid: enrollment.amountPaid,
       paymentDate: new Date(enrollment.createdAt).toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' }),
       accessValidity: enrollment.course?.accessValidity || '2 Months'
@@ -509,7 +523,8 @@ router.get('/settings', async (req, res) => {
           email: 'support@jvktech.com',
           address: 'IT Hub, India'
         },
-        categories: ['Full Stack Java', 'Python & AI', 'MERN Stack', 'Cloud & DevOps', 'Software Testing', 'Data Engineering', 'Software Development', 'Service Now', 'Salesforce', 'Other']
+        categories: ['Full Stack Java', 'Python & AI', 'MERN Stack', 'Cloud & DevOps', 'Software Testing', 'Data Engineering', 'Software Development', 'Service Now', 'Salesforce', 'Other'],
+        instructorSkillCategories: ['Java Full Stack', 'Python & AI', 'MERN Stack', 'Cloud & DevOps', 'Software Testing', 'Data Engineering', 'Software Architecture']
       });
     }
     res.json({ 
@@ -517,7 +532,12 @@ router.get('/settings', async (req, res) => {
       data: {
         stats: setting.stats,
         contact: setting.contact,
-        categories: setting.categories
+        categories: setting.categories,
+        instructorSkillCategories: setting.instructorSkillCategories,
+        testimonials: setting.testimonials,
+        alumniLogos: setting.alumniLogos,
+        techStack: setting.techStack,
+        heroSlides: setting.heroSlides
       } 
     });
   } catch (error) {
@@ -528,7 +548,7 @@ router.get('/settings', async (req, res) => {
 // Update Platform Settings (Admin Only)
 router.put('/settings', protect, admin, async (req, res) => {
   try {
-    const { stats, contact, categories } = req.body;
+    const { stats, contact, categories, instructorSkillCategories, testimonials, alumniLogos, heroSlides } = req.body;
     let setting = await SiteSetting.findOne({ key: 'platform_stats' });
     
     if (!setting) {
@@ -538,6 +558,10 @@ router.put('/settings', protect, admin, async (req, res) => {
     if (stats) setting.stats = { ...setting.stats, ...stats };
     if (contact) setting.contact = { ...setting.contact, ...contact };
     if (categories) setting.categories = categories;
+    if (instructorSkillCategories) setting.instructorSkillCategories = instructorSkillCategories;
+    if (testimonials) setting.testimonials = testimonials;
+    if (alumniLogos) setting.alumniLogos = alumniLogos;
+    if (heroSlides) setting.heroSlides = heroSlides;
 
     await setting.save();
     res.json({ 
@@ -546,7 +570,12 @@ router.put('/settings', protect, admin, async (req, res) => {
       data: {
         stats: setting.stats,
         contact: setting.contact,
-        categories: setting.categories
+        categories: setting.categories,
+        instructorSkillCategories: setting.instructorSkillCategories,
+        testimonials: setting.testimonials,
+        alumniLogos: setting.alumniLogos,
+        techStack: setting.techStack,
+        heroSlides: setting.heroSlides
       } 
     });
   } catch (error) {

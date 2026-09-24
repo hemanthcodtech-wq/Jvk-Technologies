@@ -41,6 +41,39 @@ const siteSettingSchema = new mongoose.Schema({
   categories: {
     type: [String],
     default: ['Full Stack Java', 'Python & AI', 'MERN Stack', 'Cloud & DevOps', 'Software Testing', 'Data Engineering', 'Software Development', 'Service Now', 'Salesforce', 'Other']
+  },
+  instructorSkillCategories: {
+    type: [String],
+    default: ['Java Full Stack', 'Python & AI', 'MERN Stack', 'Cloud & DevOps', 'Software Testing', 'Data Engineering', 'Software Architecture']
+  },
+  testimonials: {
+    type: [{
+      name: String,
+      role: String,
+      company: String,
+      package: String,
+      content: String,
+      initials: String,
+      imageUrl: String
+    }],
+    default: []
+  },
+  alumniLogos: {
+    type: [{
+      name: String,
+      logoUrl: String
+    }],
+    default: []
+  },
+  heroSlides: {
+    type: [{
+      title: String,
+      subtitle: String,
+      imageUrl: String,
+      active: { type: Boolean, default: true },
+      order: { type: Number, default: 0 }
+    }],
+    default: []
   }
 }, { timestamps: true });
 

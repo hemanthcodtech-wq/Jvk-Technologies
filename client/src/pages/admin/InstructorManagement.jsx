@@ -7,17 +7,7 @@ import {
   FaCheckCircle, FaSpa, FaOm, FaAppleAlt, FaHeartbeat, FaSyncAlt, 
   FaLock, FaInfoCircle
 } from 'react-icons/fa';
-
-const SPECIALITY_PRESETS = [
-  'Yoga Asana & Pranayama',
-  'Meditation & Mindfulness',
-  'Food Nutritionist & Diet',
-  'Ayurveda & Herbal Sciences',
-  'Sound Healing & Vedic Chanting',
-  'Stress Therapy & Holistic Wellness',
-  'Hatha & Ashtanga Yoga',
-  'Kriya Yoga & Breathwork'
-];
+import { useSettings } from '../../context/SettingsContext';
 
 const generateRandomPassword = () => {
   const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZabcdefghjkmnpqrstuvwxyz23456789!@#$';
@@ -29,6 +19,10 @@ const generateRandomPassword = () => {
 };
 
 const InstructorManagement = () => {
+  const { settings } = useSettings();
+  const skillCategories = (settings.instructorSkillCategories || []).length > 0
+    ? settings.instructorSkillCategories
+    : ['Java Full Stack', 'Python & AI', 'MERN Stack', 'Cloud & DevOps', 'Software Testing'];
   const [instructors, setInstructors] = useState([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
@@ -45,7 +39,7 @@ const InstructorManagement = () => {
     name: '',
     email: '',
     phone: '',
-    speciality: 'Yoga Asana & Pranayama',
+    speciality: 'Java Full Stack',
     customSpeciality: '',
     experience: '3+ Years',
     bio: '',
@@ -84,7 +78,7 @@ const InstructorManagement = () => {
     setActionSuccessMsg('');
     if (inst) {
       setEditingInstructor(inst);
-      const isPreset = SPECIALITY_PRESETS.includes(inst.speciality);
+      const isPreset = skillCategories.includes(inst.speciality);
       setFormData({
         name: inst.name || '',
         email: inst.emailOrPhone || '',
@@ -104,7 +98,7 @@ const InstructorManagement = () => {
         name: '',
         email: '',
         phone: '',
-        speciality: 'Yoga Asana & Pranayama',
+        speciality: skillCategories[0] || 'Software Engineering',
         customSpeciality: '',
         experience: '3+ Years',
         bio: '',
@@ -241,11 +235,11 @@ const InstructorManagement = () => {
 
   const getSpecialityIcon = (spec = '') => {
     const s = spec.toLowerCase();
-    if (s.includes('yoga')) return <FaSpa className="text-emerald-600" />;
+    if (s.includes('yoga')) return <FaSpa className="text-indigo-600" />;
     if (s.includes('meditation') || s.includes('mindful')) return <FaOm className="text-purple-600" />;
     if (s.includes('food') || s.includes('nutrition') || s.includes('diet')) return <FaAppleAlt className="text-amber-600" />;
     if (s.includes('ayurveda') || s.includes('herbal')) return <FaHeartbeat className="text-teal-600" />;
-    return <FaAward className="text-brand-green" />;
+    return <FaAward className="text-indigo-600" />;
   };
 
   return (
@@ -254,18 +248,18 @@ const InstructorManagement = () => {
       {/* Top Banner Header */}
       <div className="bg-white/60 backdrop-blur-2xl rounded-[2.5rem] p-6 lg:p-8 border border-white/80 shadow-[0_8px_32px_rgba(0,0,0,0.03)] flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-brand-green/10 text-brand-green-dark text-xs font-bold uppercase tracking-wider mb-2">
-            <FaChalkboardTeacher /> Faculty & Gurus
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-indigo-600/10 text-indigo-700 text-xs font-bold uppercase tracking-wider mb-2">
+            <FaChalkboardTeacher /> Faculty & Instructors
           </div>
           <h1 className="text-2xl lg:text-3xl font-black text-gray-900 tracking-tight">Instructor Management</h1>
           <p className="text-gray-500 text-sm mt-1">
-            Configure wellness masters, assign specialities, and dispatch portal login credentials.
+            Configure instructors, assign specialities, and dispatch portal login credentials.
           </p>
         </div>
 
         <button
           onClick={() => handleOpenModal()}
-          className="bg-brand-green hover:bg-brand-green-dark text-white font-bold py-3.5 px-6 rounded-2xl shadow-[0_6px_20px_rgba(41,120,56,0.3)] transition-all flex items-center gap-2.5 w-max text-xs lg:text-sm group cursor-pointer"
+          className="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3.5 px-6 rounded-2xl shadow-[0_6px_20px_rgba(41,120,56,0.3)] transition-all flex items-center gap-2.5 w-max text-xs lg:text-sm group cursor-pointer"
         >
           <FaPlus size={12} className="group-hover:rotate-90 transition-transform" />
           <span>Register New Instructor</span>
@@ -275,48 +269,12 @@ const InstructorManagement = () => {
       {/* Stats Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         <div className="bg-white/80 backdrop-blur-xl p-5 rounded-3xl border border-white/80 shadow-xs flex items-center gap-4">
-          <div className="w-12 h-12 rounded-2xl bg-emerald-100 text-emerald-700 flex items-center justify-center text-xl font-black">
+          <div className="w-12 h-12 rounded-2xl bg-indigo-100 text-indigo-700 flex items-center justify-center text-xl font-black">
             <FaChalkboardTeacher />
           </div>
           <div>
-            <span className="text-xs font-bold text-gray-400 uppercase tracking-wider">Total Gurus</span>
+            <span className="text-xs font-bold text-gray-400 uppercase tracking-wider">Total Instructors</span>
             <h3 className="text-2xl font-black text-gray-900">{instructors.length}</h3>
-          </div>
-        </div>
-
-        <div className="bg-white/80 backdrop-blur-xl p-5 rounded-3xl border border-white/80 shadow-xs flex items-center gap-4">
-          <div className="w-12 h-12 rounded-2xl bg-brand-green/10 text-brand-green flex items-center justify-center text-xl font-black">
-            <FaSpa />
-          </div>
-          <div>
-            <span className="text-xs font-bold text-gray-400 uppercase tracking-wider">Yoga & Asana</span>
-            <h3 className="text-2xl font-black text-gray-900">
-              {instructors.filter(i => i.speciality?.toLowerCase().includes('yoga')).length}
-            </h3>
-          </div>
-        </div>
-
-        <div className="bg-white/80 backdrop-blur-xl p-5 rounded-3xl border border-white/80 shadow-xs flex items-center gap-4">
-          <div className="w-12 h-12 rounded-2xl bg-purple-100 text-purple-700 flex items-center justify-center text-xl font-black">
-            <FaOm />
-          </div>
-          <div>
-            <span className="text-xs font-bold text-gray-400 uppercase tracking-wider">Meditation</span>
-            <h3 className="text-2xl font-black text-gray-900">
-              {instructors.filter(i => i.speciality?.toLowerCase().includes('meditation')).length}
-            </h3>
-          </div>
-        </div>
-
-        <div className="bg-white/80 backdrop-blur-xl p-5 rounded-3xl border border-white/80 shadow-xs flex items-center gap-4">
-          <div className="w-12 h-12 rounded-2xl bg-amber-100 text-amber-700 flex items-center justify-center text-xl font-black">
-            <FaAppleAlt />
-          </div>
-          <div>
-            <span className="text-xs font-bold text-gray-400 uppercase tracking-wider">Nutrition & Diet</span>
-            <h3 className="text-2xl font-black text-gray-900">
-              {instructors.filter(i => i.speciality?.toLowerCase().includes('nutrition') || i.speciality?.toLowerCase().includes('food')).length}
-            </h3>
           </div>
         </div>
       </div>
@@ -330,18 +288,18 @@ const InstructorManagement = () => {
             placeholder="Search by instructor name, email, phone, skill..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className="w-full pl-11 pr-4 py-3 bg-gray-50/80 border border-gray-200/80 rounded-2xl text-xs lg:text-sm font-medium text-gray-800 placeholder-gray-400 outline-none focus:bg-white focus:ring-2 focus:ring-brand-green/20 focus:border-brand-green transition-all"
+            className="w-full pl-11 pr-4 py-3 bg-gray-50/80 border border-gray-200/80 rounded-2xl text-xs lg:text-sm font-medium text-gray-800 placeholder-gray-400 outline-none focus:bg-white focus:ring-2 focus:ring-indigo-600/20 focus:border-indigo-600 transition-all"
           />
         </div>
 
         <div className="flex items-center gap-2 overflow-x-auto pb-1 md:pb-0">
-          {['ALL', 'Yoga', 'Meditation', 'Nutrition', 'Ayurveda'].map((cat) => (
+          {['ALL', ...skillCategories].map((cat) => (
             <button
               key={cat}
               onClick={() => setFilterCategory(cat)}
               className={`px-3.5 py-2 rounded-xl text-xs font-extrabold transition-all shrink-0 cursor-pointer ${
                 filterCategory === cat 
-                  ? 'bg-brand-green text-white shadow-sm' 
+                  ? 'bg-indigo-600 text-white shadow-sm' 
                   : 'bg-white/80 text-gray-600 hover:bg-gray-100 border border-gray-200/60'
               }`}
             >
@@ -354,7 +312,7 @@ const InstructorManagement = () => {
       {/* Instructors Table View */}
       {loading ? (
         <div className="flex justify-center p-20">
-          <div className="w-10 h-10 border-4 border-brand-green border-t-transparent rounded-full animate-spin"></div>
+          <div className="w-10 h-10 border-4 border-indigo-600 border-t-transparent rounded-full animate-spin"></div>
         </div>
       ) : (
         <div className="bg-white/75 backdrop-blur-2xl rounded-[2rem] shadow-[0_8px_30px_rgba(0,0,0,0.03)] border border-white/80 overflow-hidden">
@@ -396,7 +354,7 @@ const InstructorManagement = () => {
                     </td>
 
                     <td className="p-5">
-                      <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-xl bg-[#FAF7F2] border border-gray-200/80 text-xs font-bold text-gray-800">
+                      <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-xl bg-slate-50 border border-gray-200/80 text-xs font-bold text-gray-800">
                         {getSpecialityIcon(inst.speciality)}
                         <span>{inst.speciality || 'Yoga & Holistic Wellness'}</span>
                       </div>
@@ -412,7 +370,7 @@ const InstructorManagement = () => {
                       <span className={`px-3 py-1 rounded-full text-[11px] font-extrabold uppercase tracking-wider ${
                         inst.status === 'inactive'
                           ? 'bg-red-50 text-red-700 border border-red-200'
-                          : 'bg-emerald-50 text-emerald-700 border border-emerald-200/80'
+                          : 'bg-indigo-50 text-indigo-700 border border-indigo-200/80'
                       }`}>
                         {inst.status || 'active'}
                       </span>
@@ -431,7 +389,7 @@ const InstructorManagement = () => {
                         <button
                           onClick={() => handleOpenModal(inst)}
                           title="Edit Profile"
-                          className="p-2.5 bg-brand-green/10 hover:bg-brand-green hover:text-white text-brand-green-dark rounded-xl transition-all cursor-pointer"
+                          className="p-2.5 bg-indigo-600/10 hover:bg-indigo-600 hover:text-white text-indigo-700 rounded-xl transition-all cursor-pointer"
                         >
                           <FaEdit size={14} />
                         </button>
@@ -478,7 +436,7 @@ const InstructorManagement = () => {
               initial={{ opacity: 0 }} 
               animate={{ opacity: 1 }} 
               exit={{ opacity: 0 }}
-              className="absolute inset-0 bg-brand-green-dark/20 backdrop-blur-sm"
+              className="absolute inset-0 bg-indigo-700/20 backdrop-blur-sm"
               onClick={() => !formSubmitting && setIsModalOpen(false)}
             />
 
@@ -491,13 +449,13 @@ const InstructorManagement = () => {
               className="bg-white/40 backdrop-blur-3xl border-l border-white/60 shadow-[-20px_0_40px_rgba(0,0,0,0.08)] w-full max-w-2xl h-full overflow-y-auto relative z-10 p-6 md:p-10 flex flex-col overflow-x-hidden"
             >
               {/* Glassmorphism background refraction blobs */}
-              <div className="absolute top-[-5%] right-[-10%] w-72 h-72 bg-brand-green/30 rounded-full blur-[90px] pointer-events-none"></div>
+              <div className="absolute top-[-5%] right-[-10%] w-72 h-72 bg-indigo-600/30 rounded-full blur-[90px] pointer-events-none"></div>
               <div className="absolute bottom-[20%] left-[-10%] w-64 h-64 bg-[#d67b22]/20 rounded-full blur-[90px] pointer-events-none"></div>
 
               {/* Close Button */}
               <button 
                 onClick={() => !formSubmitting && setIsModalOpen(false)}
-                className="absolute top-6 right-6 text-gray-500 hover:text-brand-green bg-white/60 backdrop-blur-md p-2.5 rounded-full border border-white/50 shadow-sm transition-all z-20 cursor-pointer"
+                className="absolute top-6 right-6 text-gray-500 hover:text-indigo-600 bg-white/60 backdrop-blur-md p-2.5 rounded-full border border-white/50 shadow-sm transition-all z-20 cursor-pointer"
               >
                 <FaTimes />
               </button>
@@ -513,7 +471,7 @@ const InstructorManagement = () => {
               )}
 
               {actionSuccessMsg && (
-                <div className="mb-4 p-4 bg-emerald-50/90 backdrop-blur-md border border-emerald-200 text-emerald-800 text-xs font-bold rounded-2xl flex items-center gap-2 relative z-10">
+                <div className="mb-4 p-4 bg-indigo-50/90 backdrop-blur-md border border-indigo-200 text-indigo-800 text-xs font-bold rounded-2xl flex items-center gap-2 relative z-10">
                   <FaCheckCircle /> {actionSuccessMsg}
                 </div>
               )}
@@ -531,8 +489,8 @@ const InstructorManagement = () => {
                       required 
                       value={formData.name} 
                       onChange={e => setFormData({ ...formData, name: e.target.value })} 
-                      className="w-full p-3.5 bg-white/50 backdrop-blur-md border border-white/60 rounded-xl focus:border-brand-green focus:bg-white/70 focus:ring-2 focus:ring-brand-green/20 outline-none shadow-[inset_0_2px_4px_rgba(0,0,0,0.02)] transition-all font-medium" 
-                      placeholder="e.g. Acharya Ramesh Sharma" 
+                      className="w-full p-3.5 bg-white/50 backdrop-blur-md border border-white/60 rounded-xl focus:border-indigo-600 focus:bg-white/70 focus:ring-2 focus:ring-indigo-600/20 outline-none shadow-[inset_0_2px_4px_rgba(0,0,0,0.02)] transition-all font-medium" 
+                      placeholder="e.g. John Doe" 
                     />
                   </div>
 
@@ -547,8 +505,8 @@ const InstructorManagement = () => {
                       disabled={!!editingInstructor}
                       value={formData.email} 
                       onChange={e => setFormData({ ...formData, email: e.target.value })} 
-                      className="w-full p-3.5 bg-white/50 backdrop-blur-md border border-white/60 rounded-xl focus:border-brand-green focus:bg-white/70 focus:ring-2 focus:ring-brand-green/20 outline-none shadow-[inset_0_2px_4px_rgba(0,0,0,0.02)] transition-all font-medium disabled:opacity-60" 
-                      placeholder="instructor@swamydwija.org" 
+                      className="w-full p-3.5 bg-white/50 backdrop-blur-md border border-white/60 rounded-xl focus:border-indigo-600 focus:bg-white/70 focus:ring-2 focus:ring-indigo-600/20 outline-none shadow-[inset_0_2px_4px_rgba(0,0,0,0.02)] transition-all font-medium disabled:opacity-60" 
+                      placeholder="instructor@jvktech.com" 
                     />
                   </div>
 
@@ -561,7 +519,7 @@ const InstructorManagement = () => {
                       type="tel" 
                       value={formData.phone} 
                       onChange={e => setFormData({ ...formData, phone: e.target.value })} 
-                      className="w-full p-3.5 bg-white/50 backdrop-blur-md border border-white/60 rounded-xl focus:border-brand-green focus:bg-white/70 focus:ring-2 focus:ring-brand-green/20 outline-none shadow-[inset_0_2px_4px_rgba(0,0,0,0.02)] transition-all font-medium" 
+                      className="w-full p-3.5 bg-white/50 backdrop-blur-md border border-white/60 rounded-xl focus:border-indigo-600 focus:bg-white/70 focus:ring-2 focus:ring-indigo-600/20 outline-none shadow-[inset_0_2px_4px_rgba(0,0,0,0.02)] transition-all font-medium" 
                       placeholder="+91 98765 43210" 
                     />
                   </div>
@@ -575,7 +533,7 @@ const InstructorManagement = () => {
                       type="text" 
                       value={formData.experience} 
                       onChange={e => setFormData({ ...formData, experience: e.target.value })} 
-                      className="w-full p-3.5 bg-white/50 backdrop-blur-md border border-white/60 rounded-xl focus:border-brand-green focus:bg-white/70 focus:ring-2 focus:ring-brand-green/20 outline-none shadow-[inset_0_2px_4px_rgba(0,0,0,0.02)] transition-all font-medium" 
+                      className="w-full p-3.5 bg-white/50 backdrop-blur-md border border-white/60 rounded-xl focus:border-indigo-600 focus:bg-white/70 focus:ring-2 focus:ring-indigo-600/20 outline-none shadow-[inset_0_2px_4px_rgba(0,0,0,0.02)] transition-all font-medium" 
                       placeholder="e.g. 5+ Years / Senior Guru" 
                     />
                   </div>
@@ -588,9 +546,9 @@ const InstructorManagement = () => {
                     <select 
                       value={formData.speciality} 
                       onChange={e => setFormData({ ...formData, speciality: e.target.value })} 
-                      className="w-full p-3.5 bg-white/50 backdrop-blur-md border border-white/60 rounded-xl outline-none focus:bg-white/70 focus:border-brand-green transition-all shadow-[inset_0_2px_4px_rgba(0,0,0,0.02)] font-medium"
+                      className="w-full p-3.5 bg-white/50 backdrop-blur-md border border-white/60 rounded-xl outline-none focus:bg-white/70 focus:border-indigo-600 transition-all shadow-[inset_0_2px_4px_rgba(0,0,0,0.02)] font-medium"
                     >
-                      {SPECIALITY_PRESETS.map((preset) => (
+                      {skillCategories.map((preset) => (
                         <option key={preset} value={preset}>
                           {preset}
                         </option>
@@ -608,7 +566,7 @@ const InstructorManagement = () => {
                         type="text" 
                         value={formData.customSpeciality} 
                         onChange={e => setFormData({ ...formData, customSpeciality: e.target.value })} 
-                        className="w-full p-3.5 bg-white/50 backdrop-blur-md border border-white/60 rounded-xl focus:border-brand-green focus:bg-white/70 focus:ring-2 focus:ring-brand-green/20 outline-none shadow-[inset_0_2px_4px_rgba(0,0,0,0.02)] transition-all font-medium" 
+                        className="w-full p-3.5 bg-white/50 backdrop-blur-md border border-white/60 rounded-xl focus:border-indigo-600 focus:bg-white/70 focus:ring-2 focus:ring-indigo-600/20 outline-none shadow-[inset_0_2px_4px_rgba(0,0,0,0.02)] transition-all font-medium" 
                         placeholder="e.g. Mudra Therapy, Nada Yoga" 
                       />
                     </div>
@@ -623,7 +581,7 @@ const InstructorManagement = () => {
                       <select 
                         value={formData.status} 
                         onChange={e => setFormData({ ...formData, status: e.target.value })} 
-                        className="w-full p-3.5 bg-white/50 backdrop-blur-md border border-white/60 rounded-xl outline-none focus:bg-white/70 focus:border-brand-green transition-all shadow-[inset_0_2px_4px_rgba(0,0,0,0.02)] font-medium"
+                        className="w-full p-3.5 bg-white/50 backdrop-blur-md border border-white/60 rounded-xl outline-none focus:bg-white/70 focus:border-indigo-600 transition-all shadow-[inset_0_2px_4px_rgba(0,0,0,0.02)] font-medium"
                       >
                         <option value="active">Active</option>
                         <option value="inactive">Inactive / Suspended</option>
@@ -640,7 +598,7 @@ const InstructorManagement = () => {
                       rows="3" 
                       value={formData.bio} 
                       onChange={e => setFormData({ ...formData, bio: e.target.value })} 
-                      className="w-full p-3.5 bg-white/50 backdrop-blur-md border border-white/60 rounded-xl focus:border-brand-green focus:bg-white/70 focus:ring-2 focus:ring-brand-green/20 outline-none shadow-[inset_0_2px_4px_rgba(0,0,0,0.02)] transition-all resize-none font-medium" 
+                      className="w-full p-3.5 bg-white/50 backdrop-blur-md border border-white/60 rounded-xl focus:border-indigo-600 focus:bg-white/70 focus:ring-2 focus:ring-indigo-600/20 outline-none shadow-[inset_0_2px_4px_rgba(0,0,0,0.02)] transition-all resize-none font-medium" 
                       placeholder="Brief description about the instructor's background, certifications, and teaching philosophy..."
                     ></textarea>
                   </div>
@@ -650,12 +608,12 @@ const InstructorManagement = () => {
                     <div className="col-span-full bg-white/50 backdrop-blur-md border border-white/60 p-5 rounded-2xl shadow-[inset_0_2px_4px_rgba(0,0,0,0.02)] space-y-3">
                       <div className="flex justify-between items-center">
                         <label className="text-sm font-bold text-gray-800 flex items-center gap-2">
-                          <FaLock className="text-brand-green" /> Initial Portal Password
+                          <FaLock className="text-indigo-600" /> Initial Portal Password
                         </label>
                         <button
                           type="button"
                           onClick={() => setFormData(prev => ({ ...prev, customPassword: generateRandomPassword() }))}
-                          className="text-xs font-bold text-brand-green hover:underline flex items-center gap-1 cursor-pointer"
+                          className="text-xs font-bold text-indigo-600 hover:underline flex items-center gap-1 cursor-pointer"
                         >
                           <FaSyncAlt size={11} /> Auto-Generate
                         </button>
@@ -665,7 +623,7 @@ const InstructorManagement = () => {
                         name="customPassword"
                         value={formData.customPassword}
                         onChange={handleFormChange}
-                        className="w-full p-3 bg-white border border-gray-200 rounded-xl font-mono text-sm font-bold text-gray-900 focus:ring-2 focus:ring-brand-green/20 outline-none"
+                        className="w-full p-3 bg-white border border-gray-200 rounded-xl font-mono text-sm font-bold text-gray-900 focus:ring-2 focus:ring-indigo-600/20 outline-none"
                       />
                       <p className="text-xs text-gray-500">
                         This password will be securely hashed and optionally sent to the instructor's email for their first login.
@@ -678,7 +636,7 @@ const InstructorManagement = () => {
                           name="sendEmail"
                           checked={formData.sendEmail}
                           onChange={handleFormChange}
-                          className="w-4 h-4 text-brand-green rounded focus:ring-brand-green/20 border-gray-300 cursor-pointer"
+                          className="w-4 h-4 text-indigo-600 rounded focus:ring-indigo-600/20 border-gray-300 cursor-pointer"
                         />
                         <span className="text-xs font-bold text-gray-800">
                           Email Login Credentials to Instructor Automatically
@@ -695,7 +653,7 @@ const InstructorManagement = () => {
                         placeholder="Enter new password (min 6 characters)"
                         value={formData.newPassword || ''}
                         onChange={e => setFormData({ ...formData, newPassword: e.target.value })}
-                        className="w-full p-3 bg-white border border-gray-200 rounded-xl text-sm font-medium focus:ring-2 focus:ring-brand-green/20 outline-none"
+                        className="w-full p-3 bg-white border border-gray-200 rounded-xl text-sm font-medium focus:ring-2 focus:ring-indigo-600/20 outline-none"
                       />
                     </div>
                   )}
@@ -707,7 +665,7 @@ const InstructorManagement = () => {
                   <button 
                     type="submit" 
                     disabled={formSubmitting} 
-                    className="w-full bg-brand-green hover:bg-brand-green-dark text-white font-bold py-4 rounded-xl shadow-[0_4px_14px_0_rgba(41,120,56,0.39)] transition-all disabled:opacity-70 flex justify-center items-center gap-2 text-lg cursor-pointer"
+                    className="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-4 rounded-xl shadow-[0_4px_14px_0_rgba(41,120,56,0.39)] transition-all disabled:opacity-70 flex justify-center items-center gap-2 text-lg cursor-pointer"
                   >
                     {formSubmitting ? (
                       <>
@@ -731,7 +689,7 @@ const InstructorManagement = () => {
           <div className="fixed inset-0 z-40 flex justify-end">
             <motion.div 
               initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
-              className="absolute inset-0 bg-brand-green-dark/20 backdrop-blur-sm"
+              className="absolute inset-0 bg-indigo-700/20 backdrop-blur-sm"
               onClick={() => setIsDetailDrawerOpen(false)}
             />
 
@@ -741,13 +699,13 @@ const InstructorManagement = () => {
             >
               <button 
                 onClick={() => setIsDetailDrawerOpen(false)}
-                className="absolute top-6 right-6 text-gray-500 hover:text-brand-green bg-white/60 backdrop-blur-md p-2.5 rounded-full border border-white/50 shadow-sm transition-all z-20 cursor-pointer"
+                className="absolute top-6 right-6 text-gray-500 hover:text-indigo-600 bg-white/60 backdrop-blur-md p-2.5 rounded-full border border-white/50 shadow-sm transition-all z-20 cursor-pointer"
               >
                 <FaTimes />
               </button>
 
               <h2 className="text-2xl font-bold text-gray-800 mb-2 mt-2">Instructor Profile</h2>
-              <p className="text-brand-green font-semibold text-sm mb-6">{selectedInstructor.name}</p>
+              <p className="text-indigo-600 font-semibold text-sm mb-6">{selectedInstructor.name}</p>
 
               <div className="flex-1 space-y-5">
                 <div className="p-4 bg-white/80 rounded-2xl border border-gray-100 shadow-sm space-y-2.5 text-xs">
@@ -761,7 +719,7 @@ const InstructorManagement = () => {
                   </div>
                   <div className="flex justify-between">
                     <span className="text-gray-400 font-medium">Speciality:</span>
-                    <span className="font-bold text-brand-green-dark">{selectedInstructor.speciality}</span>
+                    <span className="font-bold text-indigo-700">{selectedInstructor.speciality}</span>
                   </div>
                   <div className="flex justify-between">
                     <span className="text-gray-400 font-medium">Experience:</span>
@@ -769,7 +727,7 @@ const InstructorManagement = () => {
                   </div>
                   <div className="flex justify-between">
                     <span className="text-gray-400 font-medium">Status:</span>
-                    <span className="font-bold text-emerald-700 uppercase">{selectedInstructor.status || 'Active'}</span>
+                    <span className="font-bold text-indigo-700 uppercase">{selectedInstructor.status || 'Active'}</span>
                   </div>
                 </div>
 
@@ -787,7 +745,7 @@ const InstructorManagement = () => {
                     setIsDetailDrawerOpen(false);
                     handleOpenModal(selectedInstructor);
                   }}
-                  className="flex-1 py-3 bg-brand-green text-white rounded-xl font-bold text-xs hover:bg-brand-green-dark transition-all cursor-pointer"
+                  className="flex-1 py-3 bg-indigo-600 text-white rounded-xl font-bold text-xs hover:bg-indigo-700 transition-all cursor-pointer"
                 >
                   Edit Profile
                 </button>

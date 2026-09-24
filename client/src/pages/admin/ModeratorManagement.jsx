@@ -201,7 +201,7 @@ const ModeratorManagement = () => {
       {/* Top Banner Header */}
       <div className="bg-white/60 backdrop-blur-2xl rounded-[2.5rem] p-6 lg:p-8 border border-white/80 shadow-[0_8px_32px_rgba(0,0,0,0.03)] flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-brand-green/10 text-brand-green-dark text-xs font-bold uppercase tracking-wider mb-2">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-indigo-600/10 text-indigo-700 text-xs font-bold uppercase tracking-wider mb-2">
             <FaShieldAlt /> Governance & Security
           </div>
           <h1 className="text-2xl lg:text-3xl font-black text-gray-900 tracking-tight">Moderator Management</h1>
@@ -212,7 +212,7 @@ const ModeratorManagement = () => {
 
         <button
           onClick={() => handleOpenModal()}
-          className="bg-brand-green hover:bg-brand-green-dark text-white font-bold py-3.5 px-6 rounded-2xl shadow-[0_6px_20px_rgba(41,120,56,0.3)] transition-all flex items-center gap-2.5 w-max text-xs lg:text-sm group cursor-pointer"
+          className="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3.5 px-6 rounded-2xl shadow-[0_6px_20px_rgba(41,120,56,0.3)] transition-all flex items-center gap-2.5 w-max text-xs lg:text-sm group cursor-pointer"
         >
           <FaPlus size={12} className="group-hover:rotate-90 transition-transform" />
           <span>Add New Moderator</span>
@@ -222,7 +222,7 @@ const ModeratorManagement = () => {
       {/* Stats Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
         <div className="bg-white/80 backdrop-blur-xl p-5 rounded-3xl border border-white/80 shadow-xs flex items-center gap-4">
-          <div className="w-12 h-12 rounded-2xl bg-brand-green/10 text-brand-green-dark flex items-center justify-center text-xl font-black">
+          <div className="w-12 h-12 rounded-2xl bg-indigo-600/10 text-indigo-700 flex items-center justify-center text-xl font-black">
             <FaUserShield />
           </div>
           <div>
@@ -232,7 +232,7 @@ const ModeratorManagement = () => {
         </div>
 
         <div className="bg-white/80 backdrop-blur-xl p-5 rounded-3xl border border-white/80 shadow-xs flex items-center gap-4">
-          <div className="w-12 h-12 rounded-2xl bg-emerald-100 text-emerald-700 flex items-center justify-center text-xl font-black">
+          <div className="w-12 h-12 rounded-2xl bg-indigo-100 text-indigo-700 flex items-center justify-center text-xl font-black">
             <FaCheckCircle />
           </div>
           <div>
@@ -263,7 +263,7 @@ const ModeratorManagement = () => {
             placeholder="Search by name, email, or phone..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className="w-full pl-11 pr-4 py-3 bg-gray-50/80 border border-gray-200/80 rounded-2xl text-xs lg:text-sm font-medium text-gray-800 placeholder-gray-400 outline-none focus:bg-white focus:ring-2 focus:ring-brand-green/20 focus:border-brand-green transition-all"
+            className="w-full pl-11 pr-4 py-3 bg-gray-50/80 border border-gray-200/80 rounded-2xl text-xs lg:text-sm font-medium text-gray-800 placeholder-gray-400 outline-none focus:bg-white focus:ring-2 focus:ring-indigo-600/20 focus:border-indigo-600 transition-all"
           />
         </div>
       </div>
@@ -271,7 +271,7 @@ const ModeratorManagement = () => {
       {/* Moderators Table */}
       {loading ? (
         <div className="flex justify-center p-20">
-          <div className="w-10 h-10 border-4 border-brand-green border-t-transparent rounded-full animate-spin"></div>
+          <div className="w-10 h-10 border-4 border-indigo-600 border-t-transparent rounded-full animate-spin"></div>
         </div>
       ) : (
         <div className="bg-white/75 backdrop-blur-2xl rounded-[2rem] shadow-[0_8px_30px_rgba(0,0,0,0.03)] border border-white/80 overflow-hidden">
@@ -311,7 +311,7 @@ const ModeratorManagement = () => {
                     </td>
 
                     <td className="p-5">
-                      <span className="px-3 py-1 bg-emerald-50 text-emerald-800 border border-emerald-200/80 rounded-full text-xs font-bold uppercase tracking-wider">
+                      <span className="px-3 py-1 bg-indigo-50 text-indigo-800 border border-indigo-200/80 rounded-full text-xs font-bold uppercase tracking-wider">
                         Moderator
                       </span>
                     </td>
@@ -320,7 +320,7 @@ const ModeratorManagement = () => {
                       <span className={`px-3 py-1 rounded-full text-[11px] font-extrabold uppercase tracking-wider ${
                         mod.status === 'inactive'
                           ? 'bg-red-50 text-red-700 border border-red-200'
-                          : 'bg-emerald-50 text-emerald-700 border border-emerald-200/80'
+                          : 'bg-indigo-50 text-indigo-700 border border-indigo-200/80'
                       }`}>
                         {mod.status || 'active'}
                       </span>
@@ -335,7 +335,7 @@ const ModeratorManagement = () => {
                         <button
                           onClick={() => handleOpenModal(mod)}
                           title="Edit Profile"
-                          className="p-2.5 bg-brand-green/10 hover:bg-brand-green hover:text-white text-brand-green-dark rounded-xl transition-all cursor-pointer"
+                          className="p-2.5 bg-indigo-600/10 hover:bg-indigo-600 hover:text-white text-indigo-700 rounded-xl transition-all cursor-pointer"
                         >
                           <FaEdit size={14} />
                         </button>
@@ -381,7 +381,7 @@ const ModeratorManagement = () => {
               initial={{ opacity: 0 }} 
               animate={{ opacity: 1 }} 
               exit={{ opacity: 0 }}
-              className="absolute inset-0 bg-brand-green-dark/20 backdrop-blur-sm"
+              className="absolute inset-0 bg-indigo-700/20 backdrop-blur-sm"
               onClick={() => !formSubmitting && setIsModalOpen(false)}
             />
 
@@ -393,12 +393,12 @@ const ModeratorManagement = () => {
               className="bg-white/40 backdrop-blur-3xl border-l border-white/60 shadow-[-20px_0_40px_rgba(0,0,0,0.08)] w-full max-w-2xl h-full overflow-y-auto relative z-10 p-6 md:p-10 flex flex-col overflow-x-hidden"
             >
               {/* Glassmorphism background blobs */}
-              <div className="absolute top-[-5%] right-[-10%] w-72 h-72 bg-brand-green/30 rounded-full blur-[90px] pointer-events-none"></div>
+              <div className="absolute top-[-5%] right-[-10%] w-72 h-72 bg-indigo-600/30 rounded-full blur-[90px] pointer-events-none"></div>
               <div className="absolute bottom-[20%] left-[-10%] w-64 h-64 bg-[#d67b22]/20 rounded-full blur-[90px] pointer-events-none"></div>
 
               <button 
                 onClick={() => !formSubmitting && setIsModalOpen(false)}
-                className="absolute top-6 right-6 text-gray-500 hover:text-brand-green bg-white/60 backdrop-blur-md p-2.5 rounded-full border border-white/50 shadow-sm transition-all z-20 cursor-pointer"
+                className="absolute top-6 right-6 text-gray-500 hover:text-indigo-600 bg-white/60 backdrop-blur-md p-2.5 rounded-full border border-white/50 shadow-sm transition-all z-20 cursor-pointer"
               >
                 <FaTimes />
               </button>
@@ -414,7 +414,7 @@ const ModeratorManagement = () => {
               )}
 
               {actionSuccessMsg && (
-                <div className="mb-4 p-4 bg-emerald-50/90 backdrop-blur-md border border-emerald-200 text-emerald-800 text-xs font-bold rounded-2xl flex items-center gap-2 relative z-10">
+                <div className="mb-4 p-4 bg-indigo-50/90 backdrop-blur-md border border-indigo-200 text-indigo-800 text-xs font-bold rounded-2xl flex items-center gap-2 relative z-10">
                   <FaCheckCircle /> {actionSuccessMsg}
                 </div>
               )}
@@ -432,7 +432,7 @@ const ModeratorManagement = () => {
                       required 
                       value={formData.name} 
                       onChange={e => setFormData({ ...formData, name: e.target.value })} 
-                      className="w-full p-3.5 bg-white/50 backdrop-blur-md border border-white/60 rounded-xl focus:border-brand-green focus:bg-white/70 focus:ring-2 focus:ring-brand-green/20 outline-none shadow-[inset_0_2px_4px_rgba(0,0,0,0.02)] transition-all font-medium" 
+                      className="w-full p-3.5 bg-white/50 backdrop-blur-md border border-white/60 rounded-xl focus:border-indigo-600 focus:bg-white/70 focus:ring-2 focus:ring-indigo-600/20 outline-none shadow-[inset_0_2px_4px_rgba(0,0,0,0.02)] transition-all font-medium" 
                       placeholder="e.g. Anand Kumar" 
                     />
                   </div>
@@ -448,8 +448,8 @@ const ModeratorManagement = () => {
                       disabled={!!editingModerator}
                       value={formData.email} 
                       onChange={e => setFormData({ ...formData, email: e.target.value })} 
-                      className="w-full p-3.5 bg-white/50 backdrop-blur-md border border-white/60 rounded-xl focus:border-brand-green focus:bg-white/70 focus:ring-2 focus:ring-brand-green/20 outline-none shadow-[inset_0_2px_4px_rgba(0,0,0,0.02)] transition-all font-medium disabled:opacity-60" 
-                      placeholder="moderator@swamydwija.org" 
+                      className="w-full p-3.5 bg-white/50 backdrop-blur-md border border-white/60 rounded-xl focus:border-indigo-600 focus:bg-white/70 focus:ring-2 focus:ring-indigo-600/20 outline-none shadow-[inset_0_2px_4px_rgba(0,0,0,0.02)] transition-all font-medium disabled:opacity-60" 
+                      placeholder="moderator@jvktechnologies.com" 
                     />
                   </div>
 
@@ -462,7 +462,7 @@ const ModeratorManagement = () => {
                       type="tel" 
                       value={formData.phone} 
                       onChange={e => setFormData({ ...formData, phone: e.target.value })} 
-                      className="w-full p-3.5 bg-white/50 backdrop-blur-md border border-white/60 rounded-xl focus:border-brand-green focus:bg-white/70 focus:ring-2 focus:ring-brand-green/20 outline-none shadow-[inset_0_2px_4px_rgba(0,0,0,0.02)] transition-all font-medium" 
+                      className="w-full p-3.5 bg-white/50 backdrop-blur-md border border-white/60 rounded-xl focus:border-indigo-600 focus:bg-white/70 focus:ring-2 focus:ring-indigo-600/20 outline-none shadow-[inset_0_2px_4px_rgba(0,0,0,0.02)] transition-all font-medium" 
                       placeholder="+91 98765 43210" 
                     />
                   </div>
@@ -476,7 +476,7 @@ const ModeratorManagement = () => {
                       <select 
                         value={formData.status} 
                         onChange={e => setFormData({ ...formData, status: e.target.value })} 
-                        className="w-full p-3.5 bg-white/50 backdrop-blur-md border border-white/60 rounded-xl outline-none focus:bg-white/70 focus:border-brand-green transition-all shadow-[inset_0_2px_4px_rgba(0,0,0,0.02)] font-medium"
+                        className="w-full p-3.5 bg-white/50 backdrop-blur-md border border-white/60 rounded-xl outline-none focus:bg-white/70 focus:border-indigo-600 transition-all shadow-[inset_0_2px_4px_rgba(0,0,0,0.02)] font-medium"
                       >
                         <option value="active">Active</option>
                         <option value="inactive">Inactive / Suspended</option>
@@ -493,7 +493,7 @@ const ModeratorManagement = () => {
                       rows="3" 
                       value={formData.bio} 
                       onChange={e => setFormData({ ...formData, bio: e.target.value })} 
-                      className="w-full p-3.5 bg-white/50 backdrop-blur-md border border-white/60 rounded-xl focus:border-brand-green focus:bg-white/70 focus:ring-2 focus:ring-brand-green/20 outline-none shadow-[inset_0_2px_4px_rgba(0,0,0,0.02)] transition-all resize-none font-medium" 
+                      className="w-full p-3.5 bg-white/50 backdrop-blur-md border border-white/60 rounded-xl focus:border-indigo-600 focus:bg-white/70 focus:ring-2 focus:ring-indigo-600/20 outline-none shadow-[inset_0_2px_4px_rgba(0,0,0,0.02)] transition-all resize-none font-medium" 
                       placeholder="e.g. Oversees live session chats and user feedback..."
                     ></textarea>
                   </div>
@@ -503,12 +503,12 @@ const ModeratorManagement = () => {
                     <div className="col-span-full bg-white/50 backdrop-blur-md border border-white/60 p-5 rounded-2xl shadow-[inset_0_2px_4px_rgba(0,0,0,0.02)] space-y-3">
                       <div className="flex justify-between items-center">
                         <label className="text-sm font-bold text-gray-800 flex items-center gap-2">
-                          <FaLock className="text-brand-green" /> Portal Password
+                          <FaLock className="text-indigo-600" /> Portal Password
                         </label>
                         <button
                           type="button"
                           onClick={() => setFormData(prev => ({ ...prev, customPassword: generateRandomPassword() }))}
-                          className="text-xs font-bold text-brand-green hover:underline flex items-center gap-1 cursor-pointer"
+                          className="text-xs font-bold text-indigo-600 hover:underline flex items-center gap-1 cursor-pointer"
                         >
                           <FaSyncAlt size={11} /> Auto-Generate
                         </button>
@@ -518,7 +518,7 @@ const ModeratorManagement = () => {
                         name="customPassword"
                         value={formData.customPassword}
                         onChange={handleFormChange}
-                        className="w-full p-3 bg-white border border-gray-200 rounded-xl font-mono text-sm font-bold text-gray-900 focus:ring-2 focus:ring-brand-green/20 outline-none"
+                        className="w-full p-3 bg-white border border-gray-200 rounded-xl font-mono text-sm font-bold text-gray-900 focus:ring-2 focus:ring-indigo-600/20 outline-none"
                       />
 
                       <label className="flex items-center gap-3 pt-2 cursor-pointer select-none">
@@ -527,7 +527,7 @@ const ModeratorManagement = () => {
                           name="sendEmail"
                           checked={formData.sendEmail}
                           onChange={handleFormChange}
-                          className="w-4 h-4 text-brand-green rounded focus:ring-brand-green/20 border-gray-300 cursor-pointer"
+                          className="w-4 h-4 text-indigo-600 rounded focus:ring-indigo-600/20 border-gray-300 cursor-pointer"
                         />
                         <span className="text-xs font-bold text-gray-800">
                           Email Login Credentials to Moderator Automatically
@@ -544,7 +544,7 @@ const ModeratorManagement = () => {
                         placeholder="Enter new password (min 6 characters)"
                         value={formData.newPassword || ''}
                         onChange={e => setFormData({ ...formData, newPassword: e.target.value })}
-                        className="w-full p-3 bg-white border border-gray-200 rounded-xl text-sm font-medium focus:ring-2 focus:ring-brand-green/20 outline-none"
+                        className="w-full p-3 bg-white border border-gray-200 rounded-xl text-sm font-medium focus:ring-2 focus:ring-indigo-600/20 outline-none"
                       />
                     </div>
                   )}
@@ -555,7 +555,7 @@ const ModeratorManagement = () => {
                   <button 
                     type="submit" 
                     disabled={formSubmitting} 
-                    className="w-full bg-brand-green hover:bg-brand-green-dark text-white font-bold py-4 rounded-xl shadow-[0_4px_14px_0_rgba(41,120,56,0.39)] transition-all disabled:opacity-70 flex justify-center items-center gap-2 text-lg cursor-pointer"
+                    className="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-4 rounded-xl shadow-[0_4px_14px_0_rgba(41,120,56,0.39)] transition-all disabled:opacity-70 flex justify-center items-center gap-2 text-lg cursor-pointer"
                   >
                     {formSubmitting ? (
                       <>

@@ -132,7 +132,7 @@ const Certificates = () => {
       const url = window.URL.createObjectURL(blob);
       const link = document.createElement('a');
       link.href = url;
-      link.setAttribute('download', `Certificate-${enrollment.certificateId || 'SDF-Completion'}.pdf`);
+      link.setAttribute('download', `JVK-Certificate-${enrollment.certificateId || 'JVK-Completion'}.pdf`);
       document.body.appendChild(link);
       link.click();
       link.remove();
@@ -151,7 +151,7 @@ const Certificates = () => {
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-[#FAF7F2]">
-        <div className="w-10 h-10 border-4 border-brand-green border-t-transparent rounded-full animate-spin"></div>
+        <div className="w-10 h-10 border-4 border-brand-600 border-t-transparent rounded-full animate-spin"></div>
       </div>
     );
   }
@@ -159,8 +159,8 @@ const Certificates = () => {
   const activeCert = completedEnrollments[selectedCertIndex] || null;
   const currentPrintedName = activeCert?.studentName || studentName;
   const certCourse = activeCert?.course || {};
-  const instructorName = certCourse.instructorId?.name || certCourse.instructor || 'Lead Yoga Guru';
-  const categoryName = certCourse.category || 'Vedic Yoga';
+  const instructorName = certCourse.instructorId?.name || certCourse.instructor || 'Lead Instructor';
+  const categoryName = certCourse.category || 'Software Training';
   const levelName = certCourse.level || 'All Levels';
   const durationName = certCourse.duration || `${certCourse.sessionDates?.length || 30} Live Sessions`;
   const issueDateFormatted = activeCert?.completionDate 
@@ -177,7 +177,7 @@ const Certificates = () => {
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
-            className="fixed top-24 right-6 z-50 bg-brand-green text-white px-5 py-3 rounded-2xl shadow-xl font-bold text-sm flex items-center gap-2"
+            className="fixed top-24 right-6 z-50 bg-brand-600 text-white px-5 py-3 rounded-2xl shadow-xl font-bold text-sm flex items-center gap-2"
           >
             <FaCheckCircle /> {toastMessage}
           </motion.div>
@@ -187,7 +187,7 @@ const Certificates = () => {
       {/* Header */}
       <div className="flex items-center justify-between mb-8 max-w-5xl mx-auto w-full">
         <div className="flex items-center gap-3">
-          <button onClick={() => navigate(-1)} className="p-2 rounded-xl bg-white text-brand-green hover:bg-gray-50 border border-gray-200 transition-colors shadow-xs cursor-pointer">
+          <button onClick={() => navigate(-1)} className="p-2 rounded-xl bg-white text-brand-600 hover:bg-gray-50 border border-gray-200 transition-colors shadow-xs cursor-pointer">
             <FaArrowLeft size={16} />
           </button>
           <div>
@@ -215,17 +215,17 @@ const Certificates = () => {
                     onClick={() => setSelectedCertIndex(idx)}
                     className={`w-full text-left p-4 rounded-2xl transition-all border flex items-center justify-between cursor-pointer ${
                       selectedCertIndex === idx 
-                        ? 'bg-brand-green text-white border-brand-green shadow-md shadow-brand-green/20' 
+                        ? 'bg-brand-600 text-white border-brand-600 shadow-md shadow-brand-600/20' 
                         : 'bg-white text-gray-800 border-gray-200/80 hover:bg-gray-50'
                     }`}
                   >
                     <div className="min-w-0 pr-2">
                       <h4 className="font-extrabold text-sm truncate">{enr.course?.title || 'Yoga Program'}</h4>
-                      <p className={`text-xs mt-0.5 ${selectedCertIndex === idx ? 'text-green-100' : 'text-gray-400'}`}>
-                        {enr.certificateId || `ID: SDF-CERT-${enr._id.slice(-6).toUpperCase()}`}
+                      <p className={`text-xs mt-0.5 ${selectedCertIndex === idx ? 'text-brand-100' : 'text-gray-400'}`}>
+                        {enr.certificateId || `ID: JVK-CERT-${enr._id.slice(-6).toUpperCase()}`}
                       </p>
                     </div>
-                    <FaAward className={selectedCertIndex === idx ? 'text-yellow-300' : 'text-brand-green'} size={22} />
+                    <FaAward className={selectedCertIndex === idx ? 'text-yellow-300' : 'text-brand-600'} size={22} />
                   </button>
                 ))}
               </div>
@@ -249,7 +249,7 @@ const Certificates = () => {
                       </p>
                       <button
                         onClick={() => navigate(`/dashboard/learning/${inEnr.course?._id || inEnr.course}`)}
-                        className="w-full py-2 bg-gray-50 hover:bg-brand-green/10 text-brand-green text-xs font-bold rounded-xl border border-gray-200 transition-all flex items-center justify-center gap-1.5 cursor-pointer"
+                        className="w-full py-2 bg-gray-50 hover:bg-brand-600/10 text-brand-600 text-xs font-bold rounded-xl border border-gray-200 transition-all flex items-center justify-center gap-1.5 cursor-pointer"
                       >
                         View Live Schedule & Classes →
                       </button>
@@ -267,7 +267,7 @@ const Certificates = () => {
                     key={activeCert._id}
                     initial={{ opacity: 0, scale: 0.96 }}
                     animate={{ opacity: 1, scale: 1 }}
-                    className="w-full bg-[#FCFAF6] rounded-3xl shadow-[0_15px_50px_rgba(0,0,0,0.08)] border-4 border-[#0A4F2A]/30 relative overflow-hidden flex flex-col items-center justify-between text-center select-none"
+                    className="w-full bg-[#FCFAF6] rounded-3xl shadow-[0_15px_50px_rgba(0,0,0,0.08)] border-4 border-[#312E81]/30 relative overflow-hidden flex flex-col items-center justify-between text-center select-none"
                     style={{ aspectRatio: '1.414/1' }}
                   >
                     {/* Official Certificate Template Background Image */}
@@ -282,7 +282,7 @@ const Certificates = () => {
                       
                       {/* Left Sidebar Meta Information Overlay */}
                       <div className="absolute left-[12%] top-[39.5%] text-[7.5px] md:text-[9.5px] font-bold text-gray-900 text-left w-[12%] pl-1">
-                        {activeCert.studentId || `SDWFY${activeCert._id.slice(-6).toUpperCase()}`}
+                        {activeCert.studentId || `JVKST${activeCert._id.slice(-6).toUpperCase()}`}
                       </div>
                       <div className="absolute left-[12%] top-[51%] text-[7.5px] md:text-[9.5px] font-bold text-gray-900 text-left w-[12%] pl-1">
                         {issueDateFormatted}
@@ -292,12 +292,12 @@ const Certificates = () => {
                         <div className="text-[6.5px] md:text-[8px] text-gray-800">{durationName?.includes('(') ? `(${durationName.split('(')[1]}` : '(20 Hours)'}</div>
                       </div>
                       <div className="absolute left-[12%] top-[70.5%] text-[7px] md:text-[9px] font-bold text-gray-900 text-left w-[12%] pl-1">
-                        {activeCert.certificateId || `SDWFY${activeCert._id.slice(-8).toUpperCase()}`}
+                        {activeCert.certificateId || `JVKST${activeCert._id.slice(-8).toUpperCase()}`}
                       </div>
 
                       {/* Recipient Student Name (Center, above green line) */}
                       <div className="absolute left-[20%] right-[20%] top-[48.5%] text-center">
-                        <h1 className="text-lg sm:text-2xl md:text-3xl lg:text-4xl font-serif italic font-black text-[#0A4F2A] truncate tracking-wide px-2">
+                        <h1 className="text-lg sm:text-2xl md:text-3xl lg:text-4xl font-serif italic font-black text-[#312E81] truncate tracking-wide px-2">
                           {currentPrintedName}
                         </h1>
                       </div>
@@ -313,27 +313,27 @@ const Certificates = () => {
 
                       {/* Bottom Instructor Details (Left, Centered under left diamond ornament) */}
                       <div className="absolute left-[24.5%] -translate-x-1/2 bottom-[9%] text-center w-[22%]">
-                        <p className="font-extrabold text-[8px] md:text-[10px] text-[#0A4F2A] uppercase tracking-tight">
+                        <p className="font-extrabold text-[8px] md:text-[10px] text-[#312E81] uppercase tracking-tight">
                           {instructorName || 'RISHI KRISHNA'}
                         </p>
                         <p className="text-[6.5px] md:text-[8px] text-gray-600 font-medium">
-                          Yoga Instructor
+                          Lead Technical Trainer
                         </p>
                         <p className="text-[6px] md:text-[7px] text-gray-500">
-                          Certified Yoga Professional
+                          JVK Technologies Certified
                         </p>
                       </div>
 
                       {/* Bottom Director Details (Right, Centered under right diamond ornament) */}
                       <div className="absolute left-[64%] -translate-x-1/2 bottom-[9%] text-center w-[22%]">
-                        <p className="font-extrabold text-[8px] md:text-[10px] text-[#0A4F2A] uppercase tracking-tight">
-                          SWAMY DWIJA
+                        <p className="font-extrabold text-[8px] md:text-[10px] text-[#312E81] uppercase tracking-tight">
+                          K RAMA RAJU
                         </p>
                         <p className="text-[6.5px] md:text-[8px] text-gray-600 font-medium">
                           Founder & Director
                         </p>
                         <p className="text-[6px] md:text-[7px] text-gray-500">
-                          Swamy Dwija Foundation
+                          JVK Technologies
                         </p>
                       </div>
 
@@ -348,7 +348,7 @@ const Certificates = () => {
                       onClick={handleOpenEditName}
                       className="px-5 py-4 bg-white border border-gray-300 hover:bg-gray-50 text-gray-800 font-extrabold rounded-2xl text-xs sm:text-sm flex items-center justify-center gap-2 transition-all shadow-xs cursor-pointer"
                     >
-                      <FaEdit className="text-brand-green" />
+                      <FaEdit className="text-brand-600" />
                       <span>Correct / Edit Legal Name</span>
                     </button>
 
@@ -356,7 +356,7 @@ const Certificates = () => {
                     <button
                       onClick={() => handleDownloadPDF(activeCert)}
                       disabled={downloading}
-                      className="flex-1 py-4 bg-brand-green hover:bg-brand-green-dark text-white font-extrabold rounded-2xl shadow-lg shadow-brand-green/20 hover:shadow-brand-green/40 transition-all duration-300 flex items-center justify-center gap-2 text-xs sm:text-sm disabled:opacity-70 cursor-pointer"
+                      className="flex-1 py-4 bg-brand-600 hover:bg-brand-700 text-white font-extrabold rounded-2xl shadow-lg shadow-brand-600/20 hover:shadow-brand-600/40 transition-all duration-300 flex items-center justify-center gap-2 text-xs sm:text-sm disabled:opacity-70 cursor-pointer"
                     >
                       {downloading ? (
                         <>
@@ -390,7 +390,7 @@ const Certificates = () => {
         ) : (
           /* Empty State */
           <div className="bg-white/80 rounded-3xl p-10 md:p-14 border border-white shadow-sm text-center max-w-xl mx-auto space-y-6">
-            <div className="w-20 h-20 bg-brand-green/10 text-brand-green rounded-full flex items-center justify-center mx-auto text-3xl">
+            <div className="w-20 h-20 bg-brand-600/10 text-brand-600 rounded-full flex items-center justify-center mx-auto text-3xl">
               <FaAward />
             </div>
             <div className="space-y-2">
@@ -411,7 +411,7 @@ const Certificates = () => {
                     </div>
                     <button
                       onClick={() => navigate(`/dashboard/learning/${enr.course?._id || enr.course}`)}
-                      className="px-4 py-2 bg-brand-green hover:bg-brand-green-dark text-white text-xs font-bold rounded-xl transition-all shadow-xs cursor-pointer"
+                      className="px-4 py-2 bg-brand-600 hover:bg-brand-700 text-white text-xs font-bold rounded-xl transition-all shadow-xs cursor-pointer"
                     >
                       Go to Classes →
                     </button>
@@ -421,7 +421,7 @@ const Certificates = () => {
             ) : (
               <button
                 onClick={() => navigate('/courses')}
-                className="px-8 py-3.5 bg-brand-green hover:bg-brand-green-dark text-white font-bold text-sm rounded-2xl shadow-md transition-all inline-flex items-center gap-2 cursor-pointer"
+                className="px-8 py-3.5 bg-brand-600 hover:bg-brand-700 text-white font-bold text-sm rounded-2xl shadow-md transition-all inline-flex items-center gap-2 cursor-pointer"
               >
                 <FaBookOpen /> Explore Programs
               </button>
@@ -448,7 +448,7 @@ const Certificates = () => {
             >
               <div className="flex items-center justify-between border-b border-gray-100 pb-3">
                 <h3 className="font-black text-lg text-gray-900 flex items-center gap-2">
-                  <FaUserCheck className="text-brand-green" /> Correct Printed Legal Name
+                  <FaUserCheck className="text-brand-600" /> Correct Printed Legal Name
                 </h3>
                 <button 
                   onClick={() => !savingName && setIsEditNameOpen(false)}
@@ -473,7 +473,7 @@ const Certificates = () => {
                     value={editNameInput} 
                     onChange={e => setEditNameInput(e.target.value)} 
                     placeholder="e.g. Rama Raju Koyyalagadda"
-                    className="w-full p-3.5 bg-gray-50 border border-gray-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-brand-green/20 outline-none font-bold text-gray-900"
+                    className="w-full p-3.5 bg-gray-50 border border-gray-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-brand-600/20 outline-none font-bold text-gray-900"
                   />
                 </div>
 
@@ -493,7 +493,7 @@ const Certificates = () => {
                   <button 
                     type="submit" 
                     disabled={savingName}
-                    className="px-6 py-2.5 rounded-xl bg-brand-green hover:bg-brand-green-dark text-white font-extrabold text-xs shadow-md disabled:opacity-60 flex items-center gap-2 cursor-pointer"
+                    className="px-6 py-2.5 rounded-xl bg-brand-600 hover:bg-brand-700 text-white font-extrabold text-xs shadow-md disabled:opacity-60 flex items-center gap-2 cursor-pointer"
                   >
                     {savingName ? (
                       <><div className="w-3.5 h-3.5 border-2 border-white border-t-transparent rounded-full animate-spin"></div> Regenerating...</>

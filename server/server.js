@@ -44,7 +44,7 @@ app.get('/sitemap.xml', async (req, res) => {
     const Course = require('./models/Course');
     const courses = await Course.find({}, 'slug _id updatedAt createdAt title');
 
-    const baseUrl = 'https://swamydwija.org';
+    const baseUrl = 'https://jvktechnologies.com';
     const staticPages = [
       { loc: `${baseUrl}/`, priority: '1.0', changefreq: 'daily' },
       { loc: `${baseUrl}/courses`, priority: '0.9', changefreq: 'daily' },

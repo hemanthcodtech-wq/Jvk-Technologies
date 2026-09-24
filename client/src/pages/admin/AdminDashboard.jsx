@@ -23,7 +23,7 @@ const AdminDashboard = () => {
 
   // Platform Settings Modal State
   const [settingsModalOpen, setSettingsModalOpen] = useState(false);
-  const [activeTab, setActiveTab] = useState('contact'); // 'contact', 'stats', 'categories'
+  const [activeTab, setActiveTab] = useState('contact'); // 'contact', 'stats', 'categories', 'instructorSkills'
   const [platformSettings, setPlatformSettings] = useState({
     stats: {
       studentsCount: 5000,
@@ -51,9 +51,11 @@ const AdminDashboard = () => {
       email: 'support@jvktech.com',
       address: 'IT Hub, India'
     },
-    categories: []
+    categories: [],
+    instructorSkillCategories: []
   });
   const [newCategory, setNewCategory] = useState('');
+  const [newInstructorSkill, setNewInstructorSkill] = useState('');
   const [savingStats, setSavingStats] = useState(false);
   const [toastMessage, setToastMessage] = useState('');
 
@@ -82,7 +84,12 @@ const AdminDashboard = () => {
     try {
       const res = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/admin/settings`);
       if (res.data.success && res.data.data) {
-        setPlatformSettings(prev => ({ ...prev, ...res.data.data }));
+        setPlatformSettings(prev => ({
+          ...prev,
+          ...res.data.data,
+          categories: res.data.data.categories || prev.categories,
+          instructorSkillCategories: res.data.data.instructorSkillCategories || prev.instructorSkillCategories
+        }));
       }
     } catch (err) {
       console.error("Error fetching platform settings", err);
@@ -132,13 +139,31 @@ const AdminDashboard = () => {
     });
   };
 
+  const handleAddInstructorSkill = () => {
+    const skill = newInstructorSkill.trim();
+    if (skill && !platformSettings.instructorSkillCategories.includes(skill)) {
+      setPlatformSettings({
+        ...platformSettings,
+        instructorSkillCategories: [...platformSettings.instructorSkillCategories, skill]
+      });
+      setNewInstructorSkill('');
+    }
+  };
+
+  const handleRemoveInstructorSkill = (skill) => {
+    setPlatformSettings({
+      ...platformSettings,
+      instructorSkillCategories: platformSettings.instructorSkillCategories.filter(item => item !== skill)
+    });
+  };
+
   const statCards = [
     { 
       title: 'Total Revenue', 
       value: `₹${(stats.totalRevenue || 0).toLocaleString('en-IN')}`, 
       icon: FaRupeeSign, 
-      gradient: 'from-emerald-500 to-green-600',
-      iconBg: 'bg-emerald-500/10 text-emerald-600 border-emerald-500/20',
+      gradient: 'from-indigo-500 to-green-600',
+      iconBg: 'bg-indigo-500/10 text-indigo-600 border-indigo-500/20',
       subtitle: 'Verified course sales'
     },
     { 
@@ -415,6 +440,13 @@ const AdminDashboard = () => {
                 </button>
                 <button 
                   type="button" 
+                  onClick={() => setActiveTab('instructorSkills')}
+                  className={`pb-2 text-sm font-bold transition-all ${activeTab === 'instructorSkills' ? 'text-blue-600 border-b-2 border-blue-600' : 'text-gray-500 hover:text-blue-500'}`}
+                >
+                  Instructor Skills
+                </button>
+                <button 
+                  type="button" 
                   onClick={() => setActiveTab('stats')}
                   className={`pb-2 text-sm font-bold transition-all ${activeTab === 'stats' ? 'text-blue-600 border-b-2 border-blue-600' : 'text-gray-500 hover:text-blue-500'}`}
                 >
@@ -505,6 +537,33 @@ const AdminDashboard = () => {
                       {platformSettings.categories.length === 0 && (
                         <div className="text-sm text-gray-400">No categories found.</div>
                       )}
+                    </div>
+                  </div>
+                )}
+
+                {activeTab === 'instructorSkills' && (
+                  <div className="space-y-4">
+                    <p className="text-xs text-gray-500">These options appear in instructor profiles, filters, and welcome emails.</p>
+                    <div className="flex gap-2">
+                      <input
+                        type="text"
+                        value={newInstructorSkill}
+                        onChange={(e) => setNewInstructorSkill(e.target.value)}
+                        className="flex-1 px-3 py-2 bg-gray-50 border border-gray-200 rounded-xl text-sm font-bold text-gray-900 outline-none focus:border-blue-600 focus:bg-white"
+                        placeholder="Add an instructor skill (e.g., React Engineering)"
+                        onKeyPress={(e) => e.key === 'Enter' && (e.preventDefault(), handleAddInstructorSkill())}
+                      />
+                      <button type="button" onClick={handleAddInstructorSkill} className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-xl text-sm transition-all">
+                        Add
+                      </button>
+                    </div>
+                    <div className="flex flex-wrap gap-2 mt-4">
+                      {platformSettings.instructorSkillCategories.map((skill, idx) => (
+                        <div key={idx} className="flex items-center gap-2 bg-gray-100 text-gray-800 px-3 py-1.5 rounded-lg text-sm font-semibold border border-gray-200">
+                          <span>{skill}</span>
+                          <button type="button" onClick={() => handleRemoveInstructorSkill(skill)} className="text-gray-400 hover:text-red-500 focus:outline-none"><FaTimes /></button>
+                        </div>
+                      ))}
                     </div>
                   </div>
                 )}

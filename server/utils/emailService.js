@@ -70,6 +70,7 @@ const sendCourseEnrollmentEmail = async ({ to, studentName, course, invoiceNumbe
             <div style="background-color: #eff6ff; border-left: 4px solid #2563eb; padding: 15px; border-radius: 6px; margin: 20px 0;">
               <h3 style="margin: 0 0 8px 0; color: #166534; font-size: 15px;">Program Details:</h3>
               <p style="margin: 4px 0; font-size: 13px; color: #374151;"><strong>Course:</strong> ${course.title}</p>
+              <p style="margin: 4px 0; font-size: 13px; color: #374151;"><strong>Category:</strong> ${course.category || 'Software Training'}</p>
               <p style="margin: 4px 0; font-size: 13px; color: #374151;"><strong>Language:</strong> ${course.language || 'English'}</p>
               <p style="margin: 4px 0; font-size: 13px; color: #374151;"><strong>Access Validity:</strong> ${course.accessValidity ? `${course.accessValidity} after completion` : '2 Months Access'}</p>
               <p style="margin: 4px 0; font-size: 13px; color: #374151;"><strong>Amount Paid:</strong> ₹${amountPaid || course.price || 0}</p>
@@ -162,7 +163,8 @@ const sendCourseCompletionEmail = async ({ to, studentName, course, certId, cert
 
             <div style="background-color: #f8fafc; border: 2px dashed #3b82f6; padding: 15px; border-radius: 10px; text-align: center; margin: 20px 0;">
               <h3 style="margin: 0; color: #1e40af; font-size: 18px;">${course.title}</h3>
-              <p style="margin: 6px 0 0 0; font-size: 12px; color: #6b7280;">Issued on: ${new Date().toLocaleDateString('en-IN', { day: '2-digit', month: 'long', year: 'numeric' })}</p>
+              <p style="margin: 6px 0 0 0; font-size: 12px; color: #475569;">Category: ${course.category || 'Software Training'}</p>
+              <p style="margin: 4px 0 0 0; font-size: 12px; color: #6b7280;">Issued on: ${new Date().toLocaleDateString('en-IN', { day: '2-digit', month: 'long', year: 'numeric' })}</p>
             </div>
 
             <p style="font-size: 13px; line-height: 1.6; color: #4b5563;">
@@ -318,7 +320,7 @@ const sendInstructorCredentialsEmail = async ({ to, name, email, password, speci
 
             <div style="background-color: #eff6ff; border-left: 4px solid #2563eb; padding: 16px; border-radius: 8px; margin: 22px 0;">
               <h3 style="margin: 0 0 8px 0; color: #166534; font-size: 15px;">Instructor Profile Details:</h3>
-              <p style="margin: 4px 0; font-size: 13px; color: #374151;"><strong>Assigned Discipline / Category:</strong> <span style="background-color: #dcfce7; color: #166534; padding: 2px 8px; border-radius: 4px; font-weight: bold;">${speciality || 'Software Track'}</span></p>
+              <p style="margin: 4px 0; font-size: 13px; color: #374151;"><strong>Technical Skill Track:</strong> <span style="background-color: #dcfce7; color: #166534; padding: 2px 8px; border-radius: 4px; font-weight: bold;">${speciality || 'Software Track'}</span></p>
               ${experience ? `<p style="margin: 4px 0; font-size: 13px; color: #374151;"><strong>Experience:</strong> ${experience}</p>` : ''}
               <p style="margin: 4px 0; font-size: 13px; color: #374151;"><strong>Account Role:</strong> Certified Instructor</p>
             </div>

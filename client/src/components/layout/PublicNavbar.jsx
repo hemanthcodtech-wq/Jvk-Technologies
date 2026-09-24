@@ -143,18 +143,16 @@ const PublicNavbar = () => {
                 </select>
               </div>
 
-              {/* Book Free Demo Button */}
-              <a
-                href={`https://wa.me/${cleanWhatsapp}?text=Hello%20JVK%20Technologies,%20I%20would%20like%20to%20register%20for%20the%20Free%20Demo%20Session.`}
-                target="_blank"
-                rel="noreferrer"
+              {/* Registration CTA */}
+              <Link
+                to="/register"
                 className="relative group overflow-hidden px-5 py-2.5 rounded-xl bg-gradient-to-r from-amber-500 to-amber-600 text-slate-950 font-bold font-['Sora'] text-sm shadow-[0_4px_15px_rgba(245,158,11,0.25)] hover:shadow-[0_6px_20px_rgba(245,158,11,0.4)] hover:-translate-y-0.5 transition-all duration-200"
               >
                 <span className="relative z-10 flex items-center gap-1.5">
                   <FaBolt size={12} />
-                  <span>Book Free Demo</span>
+                  <span>Register Now</span>
                 </span>
-              </a>
+              </Link>
 
               {/* Auth or Dashboard */}
               {token ? (
@@ -239,15 +237,14 @@ const PublicNavbar = () => {
                   <span>Call: {contact.callNumber}</span>
                 </a>
 
-                <a
-                  href={`https://wa.me/${cleanWhatsapp}?text=Hello%20JVK%20Technologies,%20I%20want%20to%20register%20for%20the%20Free%20Demo%20Session.`}
-                  target="_blank"
-                  rel="noreferrer"
+                <Link
+                  to="/register"
+                  onClick={() => setIsMobileMenuOpen(false)}
                   className="w-full flex items-center justify-center gap-2 py-3 rounded-xl bg-gradient-to-r from-amber-500 to-amber-600 text-slate-950 font-black font-outfit text-sm shadow-md"
                 >
                   <FaBolt />
-                  <span>Book Free Demo Session</span>
-                </a>
+                  <span>Register Now</span>
+                </Link>
 
                 {token ? (
                   <Link

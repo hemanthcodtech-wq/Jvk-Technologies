@@ -37,14 +37,24 @@ const Checkout = () => {
   }, [id]);
 
   useEffect(() => {
-    const script = document.createElement('script');
-    script.src = 'https://checkout.razorpay.com/v1/checkout.js';
-    script.async = true;
-    document.body.appendChild(script);
-
-    return () => {
-      document.body.removeChild(script);
+    const loadRazorpay = () => {
+      return new Promise((resolve) => {
+        if (window.Razorpay) {
+          resolve(true);
+          return;
+        }
+        const script = document.createElement('script');
+        script.src = 'https://checkout.razorpay.com/v1/checkout.js';
+        script.onload = () => {
+          resolve(true);
+        };
+        script.onerror = () => {
+          resolve(false);
+        };
+        document.body.appendChild(script);
+      });
     };
+    loadRazorpay();
   }, []);
 
   const handleCheckout = async (e) => {
@@ -56,6 +66,12 @@ const Checkout = () => {
     setProcessing(true);
 
     try {
+      if (!window.Razorpay) {
+        alert("Razorpay SDK failed to load. Please check your internet connection.");
+        setProcessing(false);
+        return;
+      }
+
       // 1. Create order on server
       const token = localStorage.getItem('token');
       const orderRes = await axios.post(
@@ -66,12 +82,11 @@ const Checkout = () => {
 
       const { order, key } = orderRes.data;
 
-      // 2. Initialize Razorpay checkout
       const options = {
         key: key,
         amount: order.amount,
         currency: order.currency,
-        name: 'Swamy Dwija Foundation',
+        name: 'JVK Technologies',
         description: `Enrollment for ${course.title}`,
         image: '/logo.png',
         order_id: order.id,
@@ -109,7 +124,7 @@ const Checkout = () => {
           contact: ''
         },
         theme: {
-          color: '#297838'
+          color: '#6366f1'
         },
         modal: {
           ondismiss: function() {
@@ -123,7 +138,7 @@ const Checkout = () => {
 
     } catch (error) {
       console.error('Checkout error:', error);
-      alert(error.response?.data?.message || 'Error initializing checkout');
+      alert(error.response?.data?.message || error.message || 'Error initializing checkout');
       setProcessing(false);
     }
   };
@@ -131,7 +146,7 @@ const Checkout = () => {
   if (loading) {
     return (
       <div className="flex justify-center items-center min-h-screen bg-bg-cream">
-        <div className="w-12 h-12 border-4 border-brand-green border-t-transparent rounded-full animate-spin"></div>
+        <div className="w-12 h-12 border-4 border-brand-600 border-t-transparent rounded-full animate-spin"></div>
       </div>
     );
   }
@@ -144,12 +159,12 @@ const Checkout = () => {
           animate={{ scale: 1, opacity: 1 }}
           className="bg-white p-8 rounded-3xl shadow-xl max-w-md w-full text-center"
         >
-          <div className="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6 text-green-500">
+          <div className="w-20 h-20 bg-indigo-500/10 rounded-full flex items-center justify-center mx-auto mb-6 text-brand-500">
             <FaCheckCircle size={40} />
           </div>
           <h2 className="text-2xl font-bold text-gray-800 mb-2">Payment Successful!</h2>
           <p className="text-gray-600 mb-6">You have been enrolled into {course?.title}. Redirecting you to your schedule...</p>
-          <div className="w-8 h-8 border-4 border-brand-green border-t-transparent rounded-full animate-spin mx-auto"></div>
+          <div className="w-8 h-8 border-4 border-brand-600 border-t-transparent rounded-full animate-spin mx-auto"></div>
         </motion.div>
       </div>
     );
@@ -161,7 +176,7 @@ const Checkout = () => {
         
         {/* Header */}
         <div className="mb-8 flex items-center gap-3">
-          <div className="w-10 h-10 rounded-full bg-brand-green/10 flex items-center justify-center text-brand-green">
+          <div className="w-10 h-10 rounded-full bg-brand-600/10 flex items-center justify-center text-brand-600">
             <FaLock size={16} />
           </div>
           <h1 className="text-2xl font-bold text-gray-800">Secure Checkout</h1>
@@ -176,7 +191,7 @@ const Checkout = () => {
             <form onSubmit={handleCheckout} className="space-y-6">
               <div className="mb-4">
                 <label className="block text-sm font-semibold text-gray-700 mb-2">Registered Student Account</label>
-                <input type="email" required value={email} onChange={e => setEmail(e.target.value)} placeholder="student@example.com" className="w-full p-4 bg-gray-50 border border-gray-200 rounded-xl focus:bg-white focus:border-brand-green focus:ring-2 focus:ring-brand-green/20 transition-all outline-none text-sm font-medium" />
+                <input type="email" required value={email} onChange={e => setEmail(e.target.value)} placeholder="student@example.com" className="w-full p-4 bg-gray-50 border border-gray-200 rounded-xl focus:bg-white focus:border-brand-600 focus:ring-2 focus:ring-brand-600/20 transition-all outline-none text-sm font-medium" />
               </div>
 
               {/* Payment Terms Agreement Checkbox */}
@@ -185,15 +200,15 @@ const Checkout = () => {
                   type="checkbox" 
                   checked={agreed} 
                   onChange={(e) => setAgreed(e.target.checked)}
-                  className="mt-0.5 rounded border-gray-300 text-brand-green focus:ring-brand-green/20 w-4 h-4 cursor-pointer" 
+                  className="mt-0.5 rounded border-gray-300 text-brand-600 focus:ring-brand-600/20 w-4 h-4 cursor-pointer" 
                 />
                 <span className="leading-relaxed">
-                  I have read and agree to the <Link to="/terms" target="_blank" className="text-brand-green font-bold hover:underline">Terms of Service</Link>, <Link to="/privacy" target="_blank" className="text-brand-green font-bold hover:underline">Privacy Policy</Link>, and <Link to="/refund-policy" target="_blank" className="text-brand-green font-bold hover:underline">Refund & Cancellation Policy</Link>.
+                  I have read and agree to the <Link to="/terms" target="_blank" className="text-brand-600 font-bold hover:underline">Terms of Service</Link>, <Link to="/privacy" target="_blank" className="text-brand-600 font-bold hover:underline">Privacy Policy</Link>, and <Link to="/refund-policy" target="_blank" className="text-brand-600 font-bold hover:underline">Refund & Cancellation Policy</Link>.
                 </span>
               </label>
 
               <div className="pt-2">
-                <button disabled={processing} type="submit" className="w-full py-4 bg-brand-green hover:bg-brand-green-dark text-white text-lg font-bold rounded-xl shadow-lg shadow-brand-green/30 hover:shadow-brand-green/50 transition-all duration-300 disabled:opacity-70 flex justify-center items-center gap-3">
+                <button disabled={processing} type="submit" className="w-full py-4 bg-brand-600 hover:bg-brand-700 text-white text-lg font-bold rounded-xl shadow-lg shadow-brand-600/30 hover:shadow-brand-600/50 transition-all duration-300 disabled:opacity-70 flex justify-center items-center gap-3">
                   {processing ? <><div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div> Processing...</> : (
                     <>
                       Proceed to Pay ₹{course?.price}
@@ -203,7 +218,7 @@ const Checkout = () => {
               </div>
               
               <div className="flex items-center justify-center gap-2 text-xs text-gray-500 mt-4 font-medium">
-                <FaShieldAlt className="text-green-600" /> 256-bit SSL encrypted • Instant course access
+                <FaShieldAlt className="text-brand-600" /> 256-bit SSL encrypted • Instant course access
               </div>
             </form>
           </div>
@@ -227,7 +242,7 @@ const Checkout = () => {
                 <span>Original Price</span>
                 <span>₹{course?.price}</span>
               </div>
-              <div className="flex justify-between text-green-600 font-medium">
+              <div className="flex justify-between text-brand-600 font-medium">
                 <span>Discount</span>
                 <span>-₹0.00</span>
               </div>

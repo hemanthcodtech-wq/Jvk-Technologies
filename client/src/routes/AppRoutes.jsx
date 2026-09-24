@@ -33,6 +33,8 @@ import InstructorManagement from '../pages/admin/InstructorManagement';
 import UserManagement from '../pages/admin/UserManagement';
 import MaterialManagement from '../pages/admin/MaterialManagement';
 import AdminRecords from '../pages/admin/AdminRecords';
+import AdminTestimonials from '../pages/admin/AdminTestimonials';
+import AdminClientLogos from '../pages/admin/AdminClientLogos';
 
 // Instructor
 import InstructorLogin from '../pages/instructor/InstructorLogin';
@@ -92,6 +94,8 @@ const AppRoutes = () => {
             <Route path="materials" element={<MaterialManagement />} />
             <Route path="records" element={<AdminRecords />} />
             <Route path="users" element={<UserManagement />} />
+            <Route path="testimonials" element={<AdminTestimonials />} />
+            <Route path="client-logos" element={<AdminClientLogos />} />
           </Route>
         </Route>
 

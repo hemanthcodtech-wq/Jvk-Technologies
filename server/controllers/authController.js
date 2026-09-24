@@ -249,8 +249,7 @@ exports.updateUserProfile = async (req, res, next) => {
     const user = await User.findById(req.user._id);
 
     if (user) {
-      user.firstName = req.body.firstName || user.firstName;
-      user.lastName = req.body.lastName || user.lastName;
+      user.name = req.body.name || user.name;
       user.emailOrPhone = req.body.emailOrPhone || user.emailOrPhone;
       
       if (req.body.password) {
@@ -262,8 +261,7 @@ exports.updateUserProfile = async (req, res, next) => {
       res.json({
         success: true,
         _id: updatedUser._id,
-        firstName: updatedUser.firstName,
-        lastName: updatedUser.lastName,
+        name: updatedUser.name,
         emailOrPhone: updatedUser.emailOrPhone,
         role: updatedUser.role,
         token: generateToken(updatedUser._id),

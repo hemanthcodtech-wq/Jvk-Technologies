@@ -3,7 +3,7 @@ import { Outlet, NavLink, useNavigate, Link } from 'react-router-dom';
 import { 
   FaTachometerAlt, FaBook, FaUsers, FaCalendarAlt, FaSignOutAlt, 
   FaFolderOpen, FaExternalLinkAlt, FaShieldAlt, FaAward, 
-  FaChalkboardTeacher, FaUserShield 
+  FaChalkboardTeacher, FaUserShield, FaQuoteRight, FaBuilding
 } from 'react-icons/fa';
 import { motion } from 'framer-motion';
 
@@ -24,10 +24,12 @@ const AdminLayout = () => {
     { name: 'Materials', path: '/admin/materials', icon: FaFolderOpen },
     { name: 'Certificates & Invoices', path: '/admin/records', icon: FaAward },
     { name: 'Learners', path: '/admin/users', icon: FaUsers },
+    { name: 'Testimonials', path: '/admin/testimonials', icon: FaQuoteRight },
+    { name: 'Client Logos', path: '/admin/client-logos', icon: FaBuilding },
   ];
 
   return (
-    <div className="flex h-screen bg-[#FAF7F2] font-inter overflow-hidden relative">
+    <div className="flex h-screen bg-slate-50 font-inter overflow-hidden relative">
 
       {/* Desktop Sidebar (Hidden on Mobile) */}
       <aside className="hidden md:flex md:static inset-y-0 left-0 w-64 lg:w-72 bg-white/75 backdrop-blur-2xl text-gray-800 flex-col shadow-[4px_0_30px_rgba(0,0,0,0.03)] z-30 shrink-0 border-r border-white/60">
@@ -69,7 +71,7 @@ const AdminLayout = () => {
             to="/"
             target="_blank"
             rel="noreferrer"
-            className="flex items-center gap-3.5 px-4 py-3 rounded-2xl text-gray-600 hover:bg-white/80 hover:text-brand-green font-semibold transition-all text-sm group"
+            className="flex items-center gap-3.5 px-4 py-3 rounded-2xl text-gray-600 hover:bg-white/80 hover:text-indigo-600 font-semibold transition-all text-sm group"
           >
             <FaExternalLinkAlt size={14} className="text-gray-400 group-hover:text-blue-600" />
             <span>View Public Site</span>
@@ -88,7 +90,7 @@ const AdminLayout = () => {
       </aside>
 
       {/* Main Content Area */}
-      <div className="flex-1 flex flex-col min-w-0 bg-[#FAF7F2] relative overflow-hidden">
+      <div className="flex-1 flex flex-col min-w-0 bg-slate-50 relative overflow-hidden">
         
         {/* Ambient liquid background orbs */}
         <div className="absolute -top-24 -right-24 w-96 h-96 bg-blue-600/10 rounded-full blur-3xl pointer-events-none animate-pulse"></div>

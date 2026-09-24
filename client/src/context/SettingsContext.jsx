@@ -14,7 +14,10 @@ export const SettingsProvider = ({ children }) => {
       email: 'support@jvktech.com',
       address: 'IT Hub, India'
     },
-    categories: []
+    categories: [],
+    instructorSkillCategories: [],
+    testimonials: [],
+    alumniLogos: []
   });
   const [loading, setLoading] = useState(true);
 

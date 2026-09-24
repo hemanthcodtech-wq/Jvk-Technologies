@@ -638,7 +638,7 @@ const InstructorDashboard = () => {
                     <input
                       type="text"
                       required
-                      placeholder="e.g. Session 3: Pranayama & Surya Namaskar Flow"
+                      placeholder="e.g. Session 3: Java Full Stack | Module 3: Spring Boot APIs"
                       value={materialForm.topicsCovered}
                       onChange={(e) => setMaterialForm({ ...materialForm, topicsCovered: e.target.value })}
                       className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-2xl text-sm font-medium focus:bg-white focus:ring-2 focus:ring-brand-green/20 outline-none"
@@ -786,7 +786,7 @@ const InstructorDashboard = () => {
           <div className="min-w-0">
             <span className="text-xs font-bold text-gray-400 uppercase tracking-wider block">Discipline / Skill</span>
             <h3 className="text-sm font-black text-gray-900 truncate">
-              {profile.speciality || 'Yoga & Pranayama'}
+              {profile.speciality || 'Java & DevOps'}
             </h3>
           </div>
         </div>
