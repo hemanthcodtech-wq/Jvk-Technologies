@@ -52,7 +52,7 @@ router.get('/invoice/:enrollmentId/download', protect, async (req, res) => {
     });
 
     res.setHeader('Content-Type', 'application/pdf');
-    res.setHeader('Content-Disposition', `attachment; filename=Invoice-${enrollment.invoiceNumber || 'SDF-Receipt'}.pdf`);
+    res.setHeader('Content-Disposition', `attachment; filename=Invoice-${enrollment.invoiceNumber || 'JVK-Receipt'}.pdf`);
     res.send(invoiceBuffer);
   } catch (error) {
     console.error('Error downloading invoice:', error);
@@ -161,7 +161,7 @@ const { uploadBufferToCloudinary } = require('../utils/cloudinaryUploader');
       }).then(async (invoicePdfBuffer) => {
         // Upload to Cloudinary
         try {
-          const cloudUrl = await uploadBufferToCloudinary(invoicePdfBuffer, invoiceNumber, 'sdf_invoices');
+          const cloudUrl = await uploadBufferToCloudinary(invoicePdfBuffer, invoiceNumber, 'jvk_invoices');
           if (cloudUrl) {
             enrollment.invoiceUrl = cloudUrl;
             await enrollment.save();

@@ -195,7 +195,7 @@ const InstructorLogin = () => {
 
               <div className="space-y-2">
                 <div className="bg-white p-3 rounded-2xl inline-block shadow-md mb-2">
-                  <img src="/logo.png" alt="SDF Logo" className="h-10 w-auto" />
+                  <img src="/logo.png" alt="JVK Logo" className="h-10 w-auto" />
                 </div>
                 <h2 className="text-xl lg:text-2xl font-black tracking-tight leading-tight">
                   INSTRUCTOR PORTAL
@@ -555,3 +555,4 @@ const InstructorLogin = () => {
 };
 
 export default InstructorLogin;
+

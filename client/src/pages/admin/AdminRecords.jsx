@@ -333,7 +333,7 @@ const AdminRecords = () => {
     const encodedUri = encodeURI(csvContent);
     const link = document.createElement('a');
     link.setAttribute('href', encodedUri);
-    link.setAttribute('download', `SDF_Certificates_Invoices_Log_${Date.now()}.csv`);
+    link.setAttribute('download', `JVK_Certificates_Invoices_Log_${Date.now()}.csv`);
     document.body.appendChild(link);
     link.click();
     link.remove();
@@ -727,8 +727,8 @@ const AdminRecords = () => {
                   <div>
                     <h3 className="text-xl font-black text-gray-900 flex items-center gap-2">
                       {customModalMode === 'edit' ? 'Modify & Re-Issue Certificate' : 'Create Custom Certificate'}
-                      <span className="text-xs bg-amber-100 text-amber-800 font-bold px-2.5 py-0.5 rounded-full uppercase tracking-wider">
-                        Official SDF Studio
+                      <span className="text-xs bg-indigo-100 text-indigo-800 font-bold px-2.5 py-0.5 rounded-full uppercase tracking-wider">
+                        JVK Technologies
                       </span>
                     </h3>
                     <p className="text-xs text-gray-500">
@@ -805,7 +805,7 @@ const AdminRecords = () => {
                           <option value="">-- Select from {coursesList.length} Database Courses --</option>
                           {coursesList.map(c => (
                             <option key={c._id} value={c.title}>
-                              {c.title} ({c.category}) — Guru: {c.instructorId?.name || c.instructor || 'Lead Guru'}
+                              {c.title} ({c.category})
                             </option>
                           ))}
                         </select>
@@ -851,32 +851,7 @@ const AdminRecords = () => {
                     </div>
                   </div>
 
-                  {/* Course Duration & Instructor Details */}
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    <div className="space-y-1">
-                      <label className="text-xs font-bold text-gray-700">Course Duration</label>
-                      <input
-                        type="text"
-                        placeholder="e.g. 30 Days (20 Hours)"
-                        value={customForm.duration}
-                        onChange={(e) => handleFormChange('duration', e.target.value)}
-                        className="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-xs font-medium text-gray-900 focus:ring-2 focus:ring-indigo-600/20 focus:border-indigo-600 outline-none"
-                      />
-                    </div>
-
-                    <div className="space-y-1">
-                      <label className="text-xs font-bold text-gray-700 flex items-center gap-1.5">
-                        <FaChalkboardTeacher className="text-indigo-600" /> Instructor Name (Assigned Guru)
-                      </label>
-                      <input
-                        type="text"
-                        placeholder="e.g. Assigned Course Guru"
-                        value={customForm.instructorName}
-                        onChange={(e) => handleFormChange('instructorName', e.target.value)}
-                        className="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-xs font-bold text-gray-900 focus:ring-2 focus:ring-indigo-600/20 focus:border-indigo-600 outline-none uppercase"
-                      />
-                    </div>
-                  </div>
+                  {/* Removed Course Duration & Instructor Details as requested */}
 
                   {/* Email & DB Update Checkboxes */}
                   <div className="pt-2 border-t border-gray-100 space-y-2">
@@ -917,92 +892,48 @@ const AdminRecords = () => {
                       </span>
                     </div>
 
-                    {/* Official Template Canvas Image with Positioned Overlays */}
-                    <div className="relative w-full aspect-[842/595] rounded-2xl overflow-hidden shadow-xl border-2 border-[#D4AF37] select-none bg-[#FCFAF6]">
+                    {/* JVK Certificate Live Canvas Preview — matches the actual PDF output */}
+                    <div className="relative w-full aspect-[842/595] rounded-2xl overflow-hidden shadow-xl border-2 border-indigo-200 select-none bg-[#0F172A] flex flex-col">
+
+                      {/* Try to show template image; fallback to dark navy */}
                       <img
-                        src="/certificate_template.jpg"
-                        alt="Official Certificate Template"
-                        className="w-full h-full object-cover pointer-events-none"
+                        src="/certificate_template.png"
+                        alt=""
+                        className="absolute inset-0 w-full h-full object-cover"
+                        onError={(e) => { e.target.style.display = 'none'; }}
                       />
 
-                      {/* 1. Left Sidebar Meta Information */}
-                      {/* Student ID */}
-                      <div 
-                        style={{ top: '39.8%', left: '12.1%' }}
-                        className="absolute text-[7px] sm:text-[9px] font-bold text-gray-900 tracking-tight"
-                      >
-                        {customForm.studentId || 'JVKST250501'}
-                      </div>
+                      {/* Overlay layer — only dynamic text since static is baked into the image */}
+                      <div className="absolute inset-0">
+                        {/* Student Name */}
+                        <div className="absolute top-[44%] left-0 right-0 flex justify-center px-[10%]">
+                          <p className="text-[18px] sm:text-[26px] font-bold italic text-[#1E3A8A] text-center leading-tight line-clamp-1">
+                            {customForm.studentName || 'Learner Full Name'}
+                          </p>
+                        </div>
 
-                      {/* Issue Date */}
-                      <div 
-                        style={{ top: '51.2%', left: '12.1%' }}
-                        className="absolute text-[7px] sm:text-[9px] font-bold text-gray-900 tracking-tight whitespace-nowrap"
-                      >
-                        {customForm.completionDate ? new Date(customForm.completionDate).toLocaleDateString('en-IN', { day: '2-digit', month: 'long', year: 'numeric' }) : '23 August 2026'}
-                      </div>
+                        {/* Course Title */}
+                        <div className="absolute top-[64%] left-0 right-0 flex justify-center px-[10%]">
+                          <p className="text-[11px] sm:text-[15px] font-extrabold text-[#1E3A8A] text-center leading-tight line-clamp-2 bg-white/50 px-2 py-0.5 rounded">
+                            {customForm.courseTitle || 'Professional Training Program'}
+                          </p>
+                        </div>
 
-                      {/* Course Duration */}
-                      <div 
-                        style={{ top: '58.5%', left: '12.1%' }}
-                        className="absolute text-[6.5px] sm:text-[8.5px] font-bold text-gray-900 tracking-tight leading-tight max-w-[20%]"
-                      >
-                        {customForm.duration || '30 Days (20 Hours)'}
-                      </div>
+                        {/* Verification ID (Left) */}
+                        <div className="absolute bottom-[16%] left-[6%] w-[32%] flex justify-center">
+                          <p className="text-[7px] sm:text-[10px] font-bold text-gray-900 font-mono text-center">
+                            {customForm.certificateId || 'JVK-CERT-SAMPLE'}
+                          </p>
+                        </div>
 
-                      {/* Certificate ID */}
-                      <div 
-                        style={{ top: '70.5%', left: '12.1%' }}
-                        className="absolute text-[6.5px] sm:text-[8.5px] font-mono font-bold text-gray-900 tracking-tight"
-                      >
-                        {customForm.certificateId || 'JVK-CERT-SAMPLE'}
-                      </div>
-
-                      {/* 2. Recipient Name (Calligraphy Center at top ~47.5%) */}
-                      <div 
-                        style={{ top: '47.5%', left: '20%', right: '20%' }}
-                        className="absolute flex items-center justify-center text-center pointer-events-none"
-                      >
-                        <span className="font-serif italic font-extrabold text-[#0A4F2A] text-[12px] sm:text-[16px] md:text-[18px] tracking-wide drop-shadow-xs line-clamp-1">
-                          {customForm.studentName || 'Learner Full Name'}
-                        </span>
-                      </div>
-
-                      {/* 3. Dynamic Course Title (Center at top ~61.5%) */}
-                      <div 
-                        style={{ top: '61.5%', left: '24%', right: '24%' }}
-                        className="absolute flex items-center justify-center text-center pointer-events-none"
-                      >
-                        <span className="font-bold text-gray-900 text-[8px] sm:text-[10px] md:text-[11px] bg-slate-50/90 px-2 py-0.5 rounded shadow-xs line-clamp-1">
-                          {customForm.courseTitle || ''}
-                        </span>
-                      </div>
-
-                      {/* 4. Bottom Signatures: Instructor Name (left) & Director (right) */}
-                      {/* Instructor Name (Center ~34.4%, Top ~86.7%) */}
-                      <div 
-                        style={{ top: '86.7%', left: '24%', width: '21%' }}
-                        className="absolute text-center leading-tight pointer-events-none"
-                      >
-                        <p className="text-[6.5px] sm:text-[8.5px] font-bold text-[#0A4F2A] uppercase tracking-wider truncate">
-                          {customForm.instructorName || 'Lead Instructor'}
-                        </p>
-                        <p className="text-[5px] sm:text-[6.5px] text-gray-600 truncate">
-                          {customForm.instructorTitle || 'Lead Technical Trainer'}
-                        </p>
-                      </div>
-
-                      {/* Director Name (Center ~63.8%, Top ~86.7%) */}
-                      <div 
-                        style={{ top: '86.7%', left: '53.3%', width: '21%' }}
-                        className="absolute text-center leading-tight pointer-events-none"
-                      >
-                        <p className="text-[6.5px] sm:text-[8.5px] font-bold text-[#0A4F2A] uppercase tracking-wider truncate">
-                          K RAMA RAJU
-                        </p>
-                        <p className="text-[5px] sm:text-[6.5px] text-gray-600 truncate">
-                          Founder & Director
-                        </p>
+                        {/* Issue Date (Right) */}
+                        <div className="absolute bottom-[16%] right-[6%] w-[32%] flex justify-center">
+                          <p className="text-[7px] sm:text-[10px] font-bold text-gray-900 text-center">
+                            {customForm.completionDate
+                              ? new Date(customForm.completionDate).toLocaleDateString('en-IN', { day: '2-digit', month: 'long', year: 'numeric' })
+                              : new Date().toLocaleDateString('en-IN', { day: '2-digit', month: 'long', year: 'numeric' })}
+                          </p>
+                        </div>
                       </div>
 
                     </div>

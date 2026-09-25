@@ -58,7 +58,7 @@ const sendCourseEnrollmentEmail = async ({ to, studentName, course, invoiceNumbe
         <div style="font-family: 'Inter', Arial, sans-serif; max-width: 600px; margin: 0 auto; background-color: #F8FAFC; padding: 25px; border-radius: 16px; color: #333333;">
           <div style="text-align: center; margin-bottom: 25px;">
             <h1 style="color: #1e40af; margin: 0; font-size: 24px;">JVK Technologies</h1>
-            <p style="color: #666666; font-size: 13px; margin: 4px 0 0 0;">Next-Generation IT Solutions</p>
+            <p style="color: #666666; font-size: 13px; margin: 4px 0 0 0;">Industry-Aligned Software Training &amp; Technology Careers</p>
           </div>
 
           <div style="background-color: #ffffff; padding: 25px; border-radius: 12px; border: 1px solid #e5e7eb; box-shadow: 0 4px 12px rgba(0,0,0,0.03);">
@@ -106,7 +106,7 @@ const sendCourseEnrollmentEmail = async ({ to, studentName, course, invoiceNumbe
           </div>
 
           <div style="text-align: center; margin-top: 20px; font-size: 12px; color: #9ca3af;">
-            <p style="margin: 0;">JVK Technologies • IT Hub, India</p>
+            <p style="margin: 0;">JVK Technologies Pvt. Ltd.  •  Hyderabad, Telangana, India</p>
             <p style="margin: 4px 0 0 0;">Need assistance? Email us at <a href="mailto:support@jvktech.com" style="color: #1e40af;">support@jvktech.com</a></p>
           </div>
         </div>
@@ -147,7 +147,7 @@ const sendCourseCompletionEmail = async ({ to, studentName, course, certId, cert
         <div style="font-family: 'Inter', Arial, sans-serif; max-width: 600px; margin: 0 auto; background-color: #F8FAFC; padding: 25px; border-radius: 16px; color: #333333;">
           <div style="text-align: center; margin-bottom: 25px;">
             <h1 style="color: #1e40af; margin: 0; font-size: 24px;">JVK Technologies</h1>
-            <p style="color: #666666; font-size: 13px; margin: 4px 0 0 0;">Next-Generation IT Solutions</p>
+            <p style="color: #666666; font-size: 13px; margin: 4px 0 0 0;">Industry-Aligned Software Training &amp; Technology Careers</p>
           </div>
 
           <div style="background-color: #ffffff; padding: 25px; border-radius: 12px; border: 1px solid #e5e7eb; box-shadow: 0 4px 12px rgba(0,0,0,0.03);">
@@ -183,7 +183,8 @@ const sendCourseCompletionEmail = async ({ to, studentName, course, certId, cert
           </div>
 
           <div style="text-align: center; margin-top: 20px; font-size: 12px; color: #9ca3af;">
-            <p style="margin: 0;">JVK Technologies • All Rights Reserved</p>
+            <p style="margin: 0;">JVK Technologies Pvt. Ltd.  •  Hyderabad, Telangana, India</p>
+            <p style="margin: 4px 0 0 0;">Questions? <a href="mailto:support@jvktech.com" style="color: #1e40af;">support@jvktech.com</a></p>
           </div>
         </div>
       `,
@@ -240,7 +241,8 @@ const sendForgotPasswordOtpEmail = async ({ to, name, otp, resetLink, role = 'us
         <div style="font-family: 'Inter', Arial, sans-serif; max-width: 540px; margin: 0 auto; background-color: #F8FAFC; padding: 25px; border-radius: 16px; color: #333333;">
           <div style="text-align: center; margin-bottom: 20px;">
             <h1 style="color: #1e40af; margin: 0; font-size: 22px;">JVK Technologies</h1>
-            <p style="color: #666666; font-size: 12px; margin: 4px 0 0 0;">${roleTitle} Security Verification</p>
+            <p style="color: #666666; font-size: 12px; margin: 4px 0 0 0;">Industry-Aligned Software Training &amp; Technology Careers</p>
+            <p style="color: #888888; font-size: 11px; margin: 2px 0 0 0;">${roleTitle} Security Verification</p>
           </div>
 
           <div style="background-color: #ffffff; padding: 26px; border-radius: 14px; border: 1px solid #e5e7eb; box-shadow: 0 4px 14px rgba(0,0,0,0.03); text-align: center;">
@@ -274,7 +276,8 @@ const sendForgotPasswordOtpEmail = async ({ to, name, otp, resetLink, role = 'us
           </div>
 
           <div style="text-align: center; margin-top: 20px; font-size: 11px; color: #9ca3af;">
-            <p style="margin: 0;">JVK Technologies • Security & Verification Unit</p>
+            <p style="margin: 0;">JVK Technologies Pvt. Ltd.  •  Security &amp; Verification Unit</p>
+            <p style="margin: 3px 0 0 0;">support@jvktech.com  •  jvktechnologies.com</p>
           </div>
         </div>
       `
@@ -306,7 +309,7 @@ const sendInstructorCredentialsEmail = async ({ to, name, email, password, speci
         <div style="font-family: 'Inter', Arial, sans-serif; max-width: 600px; margin: 0 auto; background-color: #F8FAFC; padding: 25px; border-radius: 16px; color: #333333;">
           <div style="text-align: center; margin-bottom: 25px;">
             <h1 style="color: #1e40af; margin: 0; font-size: 24px;">JVK Technologies</h1>
-            <p style="color: #666666; font-size: 13px; margin: 4px 0 0 0;">Next-Generation IT Solutions</p>
+            <p style="color: #666666; font-size: 13px; margin: 4px 0 0 0;">Industry-Aligned Software Training &amp; Technology Careers</p>
           </div>
 
           <div style="background-color: #ffffff; padding: 28px; border-radius: 14px; border: 1px solid #e5e7eb; box-shadow: 0 4px 14px rgba(0,0,0,0.04);">
@@ -361,8 +364,8 @@ const sendInstructorCredentialsEmail = async ({ to, name, email, password, speci
           </div>
 
           <div style="text-align: center; margin-top: 20px; font-size: 12px; color: #9ca3af;">
-            <p style="margin: 0;">JVK Technologies • IT Hub, India</p>
-            <p style="margin: 4px 0 0 0;">Questions? Contact Admin at <a href="mailto:support@jvktech.com" style="color: #1e40af;">support@jvktech.com</a></p>
+            <p style="margin: 0;">JVK Technologies Pvt. Ltd.  •  Hyderabad, Telangana, India</p>
+            <p style="margin: 4px 0 0 0;">Questions? <a href="mailto:support@jvktech.com" style="color: #1e40af;">support@jvktech.com</a>  •  <a href="https://jvktechnologies.com" style="color: #1e40af;">jvktechnologies.com</a></p>
           </div>
         </div>
       `
@@ -394,7 +397,7 @@ const sendRegistrationOtpEmail = async ({ to, name, otp }) => {
         <div style="font-family: 'Inter', Arial, sans-serif; max-width: 540px; margin: 0 auto; background-color: #F8FAFC; padding: 25px; border-radius: 16px; color: #333333;">
           <div style="text-align: center; margin-bottom: 20px;">
             <h1 style="color: #1e40af; margin: 0; font-size: 22px;">JVK Technologies</h1>
-            <p style="color: #666666; font-size: 12px; margin: 4px 0 0 0;">Next-Generation IT Solutions</p>
+            <p style="color: #666666; font-size: 12px; margin: 4px 0 0 0;">Industry-Aligned Software Training &amp; Technology Careers</p>
           </div>
 
           <div style="background-color: #ffffff; padding: 26px; border-radius: 14px; border: 1px solid #e5e7eb; box-shadow: 0 4px 14px rgba(0,0,0,0.03); text-align: center;">
@@ -419,7 +422,8 @@ const sendRegistrationOtpEmail = async ({ to, name, otp }) => {
           </div>
 
           <div style="text-align: center; margin-top: 20px; font-size: 12px; color: #9ca3af;">
-            <p style="margin: 0;">JVK Technologies • All Rights Reserved</p>
+            <p style="margin: 0;">JVK Technologies Pvt. Ltd.  •  All Rights Reserved</p>
+            <p style="margin: 3px 0 0 0;">support@jvktech.com  •  jvktechnologies.com</p>
           </div>
         </div>
       `

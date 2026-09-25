@@ -136,7 +136,7 @@ router.post('/:id/reschedule', protect, admin, async (req, res) => {
     const startTimeObj = new Date(newDate);
     startTimeObj.setHours(hours, minutes, 0, 0);
 
-    const classTitle = newTitle || liveClass.title || `${liveClass.courseId?.title || 'SDF'} Class`;
+    const classTitle = newTitle || liveClass.title || `${liveClass.courseId?.title || 'JVK'} Class`;
     const classDuration = parseInt(durationMinutes, 10) || liveClass.durationMinutes || 60;
 
     const zoomDetails = await createZoomMeeting(classTitle, startTimeObj.toISOString(), classDuration);

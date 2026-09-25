@@ -50,27 +50,32 @@ const generateInvoicePDF = (data) => {
 
       // 2. Organization Branding (Left)
       let headerTextX = 40;
+      let hasLogo = false;
       if (logoPath) {
         try {
-          doc.image(logoPath, 40, 52, { width: 55 });
-          headerTextX = 105;
+          // New logo is wider and includes the company name text
+          doc.image(logoPath, 40, 52, { width: 130 });
+          headerTextX = 180;
+          hasLogo = true;
         } catch (e) {
           console.error("Logo image load error in PDF:", e);
         }
       }
 
-      doc.fillColor('#4F46E5')
-         .fontSize(16)
-         .font('Helvetica-Bold')
-         .text('JVK TECHNOLOGIES PVT. LTD.', headerTextX, 52);
+      if (!hasLogo) {
+        doc.fillColor('#4F46E5')
+           .fontSize(16)
+           .font('Helvetica-Bold')
+           .text('JVK TECHNOLOGIES PVT. LTD.', headerTextX, 52);
+      }
 
       doc.fillColor('#4B5563')
          .fontSize(8.5)
          .font('Helvetica')
-         .text('Industry-Aligned Software Training & Technology Careers', headerTextX, 70)
-         .text('Professional Learning Management Platform', headerTextX, 81)
-         .text('IT Hub, India', headerTextX, 92)
-         .text('Email: support@jvktech.com • Web: jvktechnologies.com', headerTextX, 103);
+         .text('Industry-Aligned Software Training & Technology Careers', headerTextX, hasLogo ? 58 : 70)
+         .text('Professional Learning Management Platform', headerTextX, hasLogo ? 69 : 81)
+         .text('IT Hub, Hyderabad, Telangana - 500081', headerTextX, hasLogo ? 80 : 92)
+         .text('Email: support@jvktech.com • Web: jvktechnologies.com', headerTextX, hasLogo ? 91 : 103);
 
       // 3. Invoice Badge & Meta Box (Right)
       const rightColX = 370;
@@ -231,9 +236,9 @@ const generateInvoicePDF = (data) => {
       doc.fillColor('#166534')
          .fontSize(9)
          .font('Helvetica-Bold')
-         .text('TOTAL PAID:', calcX, sumTop + 54)
+         .text('TOTAL PAID:', calcX, sumTop + 58)
          .fontSize(14)
-         .text(`Rs. ${data.amountPaid || 0}.00`, valX - 10, sumTop + 62, { width: 80, align: 'right' });
+         .text(`Rs. ${data.amountPaid || 0}.00`, calcX, sumTop + 54, { width: 195, align: 'right' });
 
       // 7. Live Program Access Notes
       const notesTop = sumTop + 96;
@@ -299,43 +304,44 @@ const generateInvoicePDF = (data) => {
 };
 
 /**
- * Generate a High-Resolution PDF Certificate of Completion with Official SDF Green & Gold Template,
- * Recipient Script Typography, Dynamic Course Title, Sidebar Metadata, and Instructor Details (No Signature).
- * @param {Object} data - { studentName, courseTitle, completionDate, certificateId, studentId, instructorName, instructorTitle, instructorSubtitle, category, level, duration }
+ * Generate a Clean Certificate of Completion PDF for JVK Technologies.
+ * Displays: Student Name, Course Name, Verification ID, and Issue Date — perfectly aligned.
+ * @param {Object} data - { studentName, courseTitle, completionDate, certificateId }
  * @returns {Promise<Buffer>}
  */
 const generateCertificatePDF = (data) => {
   return new Promise((resolve, reject) => {
     try {
-      // Landscape A4 for certificate (841.89 x 595.28 pt)
+      // Landscape A4 (841.89 × 595.28 pt)
       const doc = new PDFDocument({ size: 'A4', layout: 'landscape', margin: 0 });
       const buffers = [];
 
       doc.on('data', buffers.push.bind(buffers));
-      doc.on('end', () => {
-        const pdfData = Buffer.concat(buffers);
-        resolve(pdfData);
-      });
+      doc.on('end', () => resolve(Buffer.concat(buffers)));
 
-      const width = doc.page.width;
-      const height = doc.page.height;
+      const W = doc.page.width;   // ~841.89 pt
+      const H = doc.page.height;  // ~595.28 pt
+      const cx = W / 2;           // horizontal centre
 
-      // Certificate Template Background Candidates
+      // ── BACKGROUND ────────────────────────────────────────────────────
       const templateCandidates = [
-        path.join(__dirname, '../assets/certificate_template.jpg'),
-        path.join(__dirname, '../../client/public/certificate_template.jpg')
+        path.join(__dirname, '../assets/certificate_template.png'),
+        path.join(__dirname, '../../client/public/certificate_template.png')
       ];
       const templatePath = templateCandidates.find(p => fs.existsSync(p));
 
       if (templatePath) {
-        doc.image(templatePath, 0, 0, { width, height });
+        doc.image(templatePath, 0, 0, { width: W, height: H });
       } else {
-        // Fallback vintage background if template not found
-        doc.rect(0, 0, width, height).fill('#FCFAF6');
-        doc.rect(18, 18, width - 36, height - 36).strokeColor('#0A4F2A').lineWidth(2).stroke();
+        // Premium built-in fallback — dark navy with gold accents
+        doc.rect(0, 0, W, H).fill('#0F172A');
+        doc.rect(0, 0, W, 8).fill('#D4AF37');
+        doc.rect(0, H - 8, W, 8).fill('#D4AF37');
+        doc.rect(22, 22, W - 44, H - 44).strokeColor('#D4AF37').lineWidth(1.5).stroke();
+        doc.rect(28, 28, W - 56, H - 56).strokeColor('#D4AF37').lineWidth(0.4).stroke();
       }
 
-      // Register Google Script Font (Alex Brush) for authentic calligraphy name
+      // ── SCRIPT FONT ───────────────────────────────────────────────────
       const fontCandidates = [
         path.join(__dirname, '../assets/fonts/AlexBrush-Regular.ttf'),
         path.join(__dirname, '../assets/fonts/GreatVibes-Regular.ttf')
@@ -344,123 +350,147 @@ const generateCertificatePDF = (data) => {
       let scriptFont = 'Times-BoldItalic';
       if (scriptFontPath) {
         try {
-          doc.registerFont('AlexBrushFont', scriptFontPath);
-          scriptFont = 'AlexBrushFont';
-        } catch (e) {
-          console.error("Font registration error:", e);
-        }
+          doc.registerFont('ScriptFont', scriptFontPath);
+          scriptFont = 'ScriptFont';
+        } catch (e) { /* fallback */ }
       }
 
-      // 1. Left Sidebar Meta Information (Left-aligned with labels at x = 102 pt)
-      const metaX = 102;
-      const metaWidth = 100;
+      // ── COLORS — adapt to whether a light template or dark fallback ───
+      const hasTemplate  = !!templatePath;
+      const headingColor = hasTemplate ? '#0A4F2A' : '#D4AF37';
+      const labelColor   = hasTemplate ? '#6B7280' : '#94A3B8';
+      const valueColor   = hasTemplate ? '#111827' : '#F1F5F9';
+      const nameColor    = hasTemplate ? '#1E3A8A' : '#D4AF37';
+      const divider      = hasTemplate ? '#1E3A8A' : '#D4AF37';
+      const boxFill      = hasTemplate ? '#F9FAFB' : null;
+      const boxStroke    = hasTemplate ? '#D1D5DB' : '#D4AF37';
 
-      // Student ID (Under STUDENT ID label)
-      doc.fillColor('#111827')
-         .font('Helvetica-Bold')
-         .fontSize(8)
-         .text(data.studentId || 'SDWFY250501', metaX, 237, { width: metaWidth, align: 'left' });
+      // ── 1. ORG HEADER ─────────────────────────────────────────────────
+      if (!hasTemplate) {
+        doc.fillColor(headingColor).font('Helvetica-Bold').fontSize(12)
+           .text('JVK TECHNOLOGIES PVT. LTD.', 0, 46, { width: W, align: 'center' });
 
-      // Issue Date (Under ISSUE DATE label)
-      const issueDate = data.completionDate || new Date().toLocaleDateString('en-IN', { day: '2-digit', month: 'long', year: 'numeric' });
-      doc.fillColor('#111827')
-         .font('Helvetica-Bold')
-         .fontSize(8)
-         .text(issueDate, metaX, 305, { width: metaWidth, align: 'left' });
+        doc.fillColor(labelColor).font('Helvetica').fontSize(8)
+           .text('Industry-Aligned Software Training & Technology Careers  •  Hyderabad, India', 0, 63, { width: W, align: 'center' });
 
-      // Course Duration (Under COURSE DURATION label, seamless parchment cover over placeholder)
-      doc.rect(98, 363, 105, 18).fill('#FAF7F2');
+        // Divider
+        doc.moveTo(cx - 200, 78).lineTo(cx + 200, 78).strokeColor(divider).lineWidth(0.8).stroke();
+      }
+
+      // ── 2. TITLE ──────────────────────────────────────────────────────
+      if (!hasTemplate) {
+        doc.fillColor(headingColor).font('Helvetica-Bold').fontSize(28)
+           .text('CERTIFICATE OF COMPLETION', 0, 96, { width: W, align: 'center', characterSpacing: 1.5 });
+      }
+
+      // ── 3. PREAMBLE ───────────────────────────────────────────────────
+      if (!hasTemplate) {
+        doc.fillColor(labelColor).font('Helvetica').fontSize(10)
+           .text('This is to proudly certify that', 0, 140, { width: W, align: 'center' });
+      }
+
+      // ── 4. STUDENT NAME ────────────────────────────────
+      const studentName = (data.studentName || 'Learner Name').trim();
+      const nLen = studentName.length;
+      const nSize = nLen > 32 ? 36 : nLen > 24 ? 42 : nLen > 16 ? 50 : 60;
       
-      let line1 = '30 Days';
-      let line2 = '(20 Hours)';
-      if (data.duration) {
-        if (data.duration.includes('\n')) {
-          const parts = data.duration.split('\n');
-          line1 = parts[0].trim();
-          line2 = parts[1].trim();
-        } else if (data.duration.includes('(')) {
-          const idx = data.duration.indexOf('(');
-          line1 = data.duration.slice(0, idx).trim();
-          line2 = data.duration.slice(idx).trim();
-        } else {
-          line1 = data.duration;
-          line2 = '';
-        }
+      const nameY = hasTemplate ? 250 : 160;
+
+      doc.fillColor(nameColor).font(scriptFont).fontSize(nSize)
+         .text(studentName, 0, nameY, { width: W, align: 'center' });
+
+      const afterName = nameY + nSize + 10;
+
+      if (!hasTemplate) {
+        // Decorative underline
+        doc.moveTo(cx - 230, afterName).lineTo(cx + 230, afterName)
+           .strokeColor(divider).lineWidth(0.9).stroke();
       }
 
-      doc.fillColor('#111827')
-         .font('Helvetica-Bold')
-         .fontSize(8)
-         .text(line1, metaX, 348, { width: metaWidth, align: 'left' });
-
-      if (line2) {
-        doc.text(line2, metaX, 368, { width: metaWidth, align: 'left' });
+      // ── 5. "has successfully completed" ──────────────────────────────
+      if (!hasTemplate) {
+        doc.fillColor(labelColor).font('Helvetica').fontSize(10)
+           .text('has successfully completed the course', 0, afterName + 10, { width: W, align: 'center' });
       }
 
-      // Certificate ID (Under CERTIFICATE ID label)
-      const certId = data.certificateId || (data.studentId ? `SDWFY${data.studentId}` : `SDWFY${Date.now().toString().slice(-8)}`);
-      doc.fillColor('#111827')
-         .font('Helvetica-Bold')
-         .fontSize(7.5)
-         .text(certId, metaX, 420, { width: metaWidth, align: 'left' });
+      // ── 6. COURSE NAME ────────────────────────────────────────────────
+      const courseTitle = (data.courseTitle || 'Professional Training Program').trim();
+      const ctLen = courseTitle.length;
+      const ctSize = ctLen > 60 ? 16 : ctLen > 40 ? 18 : 22;
+      
+      const ctY = hasTemplate ? 375 : afterName + 30;
 
-      // 2. Recipient Name (Center, perfectly balanced above green line)
-      const studentName = data.studentName || 'Learner Name';
-      const nameLen = studentName.length;
-      const fontSize = nameLen > 30 ? 28 : (nameLen > 22 ? 32 : (nameLen > 15 ? 36 : 40));
+      doc.fillColor(hasTemplate ? '#1E3A8A' : valueColor).font('Helvetica-Bold').fontSize(ctSize)
+         .text(courseTitle, 60, ctY, { width: W - 120, align: 'center' });
 
-      doc.fillColor('#0A4F2A')
-         .font(scriptFont)
-         .fontSize(fontSize)
-         .text(studentName, 170, 296, { width: 500, align: 'center' });
+      // ── 7. META ROW: Issue Date | Verification ID ─────────────────────
+      const metaY = hasTemplate ? 495 : ctY + ctSize + 32;
 
-      // 3. Course Title (Center, below 'has successfully completed the')
-      const defaultCourse = 'Yoga for Wellness and Inner Balance';
-      const courseTitle = data.courseTitle || defaultCourse;
-
-      if (courseTitle && courseTitle.trim().toLowerCase() !== defaultCourse.toLowerCase()) {
-        // Overlay dynamic course title cleanly
-        doc.rect(200, 366, 440, 22).fill('#FAF7F2');
-        doc.fillColor('#111827')
-           .font('Helvetica-Bold')
-           .fontSize(13.5)
-           .text(courseTitle, 200, 369, { width: 440, align: 'center' });
+      if (!hasTemplate) {
+        // thin rule above meta
+        doc.moveTo(cx - 260, metaY - 12).lineTo(cx + 260, metaY - 12)
+           .strokeColor(divider).lineWidth(0.4).opacity(0.5).stroke();
+        doc.opacity(1);
       }
 
-      // 4. Bottom Instructor Details & Director Details (Centered directly under the template diamond ornaments at x≈289.4pt and x≈536.9pt)
-      // Left: Instructor Details
-      const instWidth = 160;
-      const instBoxX = 289.4 - (instWidth / 2); // 209.4 pt
+      const boxW = 225;
+      const boxH = 52;
+      const gap  = hasTemplate ? 110 : 32;
+      const b1X  = cx - boxW - gap / 2;  // left box (Verification ID in template)
+      const b2X  = cx + gap / 2;         // right box (Issue Date in template)
 
-      const instName = (data.instructorName || 'RISHI KRISHNA').toUpperCase();
-      const instTitle = data.instructorTitle || 'Yoga Instructor';
-      const instSub = data.instructorSubtitle || 'Certified Yoga Professional';
+      if (!hasTemplate) {
+        // Draw boxes
+        [b1X, b2X].forEach(bx => {
+          if (boxFill) {
+            doc.rect(bx, metaY, boxW, boxH).fill(boxFill);
+          }
+          doc.rect(bx, metaY, boxW, boxH).strokeColor(boxStroke).lineWidth(0.6).stroke();
+        });
+      }
 
-      doc.fillColor('#0A4F2A')
-         .font('Helvetica-Bold')
-         .fontSize(9.5)
-         .text(instName, instBoxX, 516, { width: instWidth, align: 'center' });
+      // Box 1: Issue Date (or Verification ID for template)
+      const issueDate = data.completionDate ||
+        new Date().toLocaleDateString('en-IN', { day: '2-digit', month: 'long', year: 'numeric' });
+      
+      const certId = data.certificateId ||
+        `JVK-CERT-${Date.now().toString().slice(-8).toUpperCase()}`;
 
-      doc.fillColor('#374151')
-         .font('Helvetica')
-         .fontSize(8)
-         .text(instTitle, instBoxX, 528, { width: instWidth, align: 'center' })
-         .text(instSub, instBoxX, 539, { width: instWidth, align: 'center' });
+      if (!hasTemplate) {
+        // Old layout: Left is Issue Date, Right is Verification ID
+        doc.fillColor(labelColor).font('Helvetica').fontSize(7.5)
+           .text('ISSUE DATE', b1X, metaY + 10, { width: boxW, align: 'center', characterSpacing: 1 });
+        doc.fillColor(valueColor).font('Helvetica-Bold').fontSize(12)
+           .text(issueDate, b1X, metaY + 26, { width: boxW, align: 'center' });
 
-      // Right: Director Details
-      const dirWidth = 160;
-      const dirBoxX = 536.9 - (dirWidth / 2); // 456.9 pt
+        doc.fillColor(labelColor).font('Helvetica').fontSize(7.5)
+           .text('VERIFICATION ID', b2X, metaY + 10, { width: boxW, align: 'center', characterSpacing: 1 });
+        doc.fillColor(valueColor).font('Helvetica-Bold').fontSize(12)
+           .text(certId, b2X, metaY + 26, { width: boxW, align: 'center' });
+      } else {
+        // New template layout: Left is Verification ID, Right is Issue Date (from the image)
+        // Also they don't need boxes, just text aligned with the lines in the image
+        // Increased width to 260 to ensure it fits on a single line
+        doc.fillColor(valueColor).font('Helvetica-Bold').fontSize(11)
+           .text(certId, 85, 495, { width: 260, align: 'center' });
+        
+        doc.fillColor(valueColor).font('Helvetica-Bold').fontSize(11)
+           .text(issueDate, W - 85 - 260, 495, { width: 260, align: 'center' });
+      }
 
-      doc.fillColor('#0A4F2A')
-         .font('Helvetica-Bold')
-         .fontSize(9.5)
-         .text('SWAMY DWIJA', dirBoxX, 516, { width: dirWidth, align: 'center' });
+      // ── 8. FOOTER ─────────────────────────────────────────────────────
+      if (!hasTemplate) {
+        const footerY = H - 38;
+        doc.moveTo(cx - 260, footerY - 8).lineTo(cx + 260, footerY - 8)
+           .strokeColor(divider).lineWidth(0.3).opacity(0.4).stroke();
+        doc.opacity(1);
 
-      doc.fillColor('#374151')
-         .font('Helvetica')
-         .fontSize(8)
-         .text(data.directorTitle || 'Founder & Director', dirBoxX, 528, { width: dirWidth, align: 'center' })
-         .text(data.directorSubtitle || 'Swamy Dwija Foundation', dirBoxX, 539, { width: dirWidth, align: 'center' });
+        doc.fillColor(labelColor).font('Helvetica').fontSize(7)
+           .text(
+             'JVK Technologies Pvt. Ltd.  •  support@jvktech.com  •  jvktechnologies.com  •  Hyderabad, Telangana, India',
+             0, footerY, { width: W, align: 'center' }
+           );
+      }
 
       doc.end();
     } catch (err) {

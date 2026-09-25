@@ -35,7 +35,7 @@ const AdminLayout = () => {
       <aside className="hidden md:flex md:static inset-y-0 left-0 w-64 lg:w-72 bg-white/75 backdrop-blur-2xl text-gray-800 flex-col shadow-[4px_0_30px_rgba(0,0,0,0.03)] z-30 shrink-0 border-r border-white/60">
         <div className="h-20 flex items-center justify-between px-6 border-b border-gray-100/80 bg-white/40 sticky top-0">
           <div className="flex items-center gap-3">
-            <img src="/logo.png" alt="SDF Logo" className="h-9 w-auto object-contain drop-shadow-sm" />
+            <img src="/logo.png" alt="JVK Logo" className="h-9 w-auto object-contain drop-shadow-sm" />
             <div className="flex flex-col">
               <span className="font-extrabold text-sm tracking-wider text-blue-700">JVK ADMIN</span>
               <span className="text-[10px] font-semibold text-gray-400 uppercase tracking-widest">Management Hub</span>
@@ -102,7 +102,7 @@ const AdminLayout = () => {
           
           {/* Mobile centered logo */}
           <div className="md:hidden flex items-center justify-center w-full relative">
-            <img src="/logo.png" alt="SDF Logo" className="h-12 w-auto drop-shadow-sm" />
+            <img src="/logo.png" alt="JVK Logo" className="h-12 w-auto drop-shadow-sm" />
           </div>
 
           {/* Desktop Left */}
@@ -173,3 +173,4 @@ const AdminLayout = () => {
 };
 
 export default AdminLayout;
+

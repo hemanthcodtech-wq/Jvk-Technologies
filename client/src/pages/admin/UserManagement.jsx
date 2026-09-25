@@ -229,12 +229,12 @@ const UserManagement = () => {
                           <div className="grid grid-cols-2 gap-2 text-xs bg-gray-50/80 p-3 rounded-xl border border-gray-100">
                             <div>
                               <span className="text-gray-400 block font-medium">Invoice:</span>
-                              <span className="font-mono font-bold text-gray-800">{enrollment.invoiceNumber || 'SDF-INV-Generated'}</span>
+                              <span className="font-mono font-bold text-gray-800">{enrollment.invoiceNumber || 'JVK-INV-Generated'}</span>
                             </div>
                             <div>
                               <span className="text-gray-400 block font-medium">Certificate:</span>
                               <span className={`font-mono font-bold ${enrollment.completed ? 'text-indigo-600' : 'text-amber-600'}`}>
-                                {enrollment.completed ? (enrollment.certificateId || 'SDF-CERT-Issued') : 'Pending Completion'}
+                                {enrollment.completed ? (enrollment.certificateId || 'JVK-CERT-Issued') : 'Pending Completion'}
                               </span>
                             </div>
                           </div>

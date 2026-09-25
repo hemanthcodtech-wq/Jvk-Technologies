@@ -23,6 +23,28 @@ const PublicLayout = () => {
   const cleanWhatsapp = contact.whatsappNumber.replace(/[^0-9]/g, '');
 
   const [livePrograms, setLivePrograms] = useState([]);
+  const [certIdToVerify, setCertIdToVerify] = useState('');
+  const [isVerifying, setIsVerifying] = useState(false);
+
+  const handleVerifyCertificate = async () => {
+    if (!certIdToVerify.trim()) {
+      alert('Please enter a valid Certificate ID');
+      return;
+    }
+    setIsVerifying(true);
+    try {
+      const res = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/courses/public/verify-certificate/${certIdToVerify.trim()}`);
+      if (res.data.success && res.data.certificateUrl) {
+        window.open(res.data.certificateUrl, '_blank');
+      } else {
+        alert('Certificate not found. Please verify the ID and try again.');
+      }
+    } catch (error) {
+      alert(error.response?.data?.message || 'Error verifying certificate. Please try again.');
+    } finally {
+      setIsVerifying(false);
+    }
+  };
 
   useEffect(() => {
     const fetchLivePrograms = async () => {
@@ -251,6 +273,30 @@ const PublicLayout = () => {
                 <li><Link to="/privacy" className="hover:text-[#00d2ff] transition-colors">Privacy Policy</Link></li>
                 <li><Link to="/refund-policy" className="hover:text-[#00d2ff] transition-colors">Refund & Cancellation Policy</Link></li>
               </ul>
+
+              {/* Certificate Verification Input Box */}
+              <div className="pt-4 mt-2 border-t border-slate-700/50">
+                <h4 className="text-xs font-bold text-white mb-2 flex items-center gap-2">
+                  <span className="w-1.5 h-1.5 rounded-full bg-[#00d2ff]"></span>
+                  Verify Certificate
+                </h4>
+                <div className="flex w-full max-w-sm">
+                  <input 
+                    type="text" 
+                    value={certIdToVerify}
+                    onChange={(e) => setCertIdToVerify(e.target.value)}
+                    placeholder="Enter Certificate ID..." 
+                    className="flex-1 bg-slate-800/80 border border-slate-700 text-white text-xs px-3 py-2.5 rounded-l-lg focus:outline-none focus:border-[#00d2ff] placeholder:text-gray-500 transition-colors"
+                  />
+                  <button 
+                    onClick={handleVerifyCertificate}
+                    disabled={isVerifying}
+                    className="bg-blue-600 hover:bg-blue-500 disabled:opacity-50 disabled:cursor-not-allowed text-white text-xs font-bold px-4 py-2.5 rounded-r-lg transition-colors border border-blue-600 hover:border-blue-500"
+                  >
+                    {isVerifying ? 'Wait...' : 'Verify'}
+                  </button>
+                </div>
+              </div>
             </div>
 
           </div>

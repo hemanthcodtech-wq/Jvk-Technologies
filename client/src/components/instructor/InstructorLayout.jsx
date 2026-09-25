@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Outlet, NavLink, useNavigate, Link } from 'react-router-dom';
 import { 
   FaTachometerAlt, FaVideo, FaBookOpen, FaUserTie, 
-  FaSignOutAlt, FaExternalLinkAlt, FaSpa, FaOm, FaBars, FaTimes,
+  FaSignOutAlt, FaExternalLinkAlt, FaLaptopCode, FaCode, FaBars, FaTimes,
   FaUserGraduate, FaUserEdit, FaPhone, FaEnvelope
 } from 'react-icons/fa';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -11,7 +11,7 @@ const InstructorLayout = () => {
   const navigate = useNavigate();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const rawUser = localStorage.getItem('instructorUser');
-  const instructor = rawUser ? JSON.parse(rawUser) : { name: 'Yoga Instructor', speciality: 'Yoga Master' };
+  const instructor = rawUser ? JSON.parse(rawUser) : { name: 'Lead Instructor', speciality: 'Technical Mentor' };
 
   const handleLogout = () => {
     localStorage.removeItem('instructorToken');
@@ -20,7 +20,7 @@ const InstructorLayout = () => {
   };
 
   const navItems = [
-    { name: 'Guru Dashboard', path: '/instructor/dashboard', icon: FaTachometerAlt },
+    { name: 'Instructor Dashboard', path: '/instructor/dashboard', icon: FaTachometerAlt },
   ];
 
   return (
@@ -30,23 +30,23 @@ const InstructorLayout = () => {
       <aside className="hidden md:flex md:static inset-y-0 left-0 w-64 lg:w-72 bg-white/80 backdrop-blur-2xl text-gray-800 flex-col shadow-[4px_0_30px_rgba(0,0,0,0.03)] z-30 shrink-0 border-r border-white/60">
         <div className="h-20 flex items-center justify-between px-6 border-b border-gray-100/80 bg-white/40 sticky top-0">
           <div className="flex items-center gap-3">
-            <img src="/logo.png" alt="SDF Logo" className="h-9 w-auto object-contain drop-shadow-sm" />
+            <img src="/logo.png" alt="JVK Logo" className="h-9 w-auto object-contain drop-shadow-sm" />
             <div className="flex flex-col">
-              <span className="font-extrabold text-sm tracking-wider text-brand-green-dark">INSTRUCTOR PANEL</span>
+              <span className="font-extrabold text-sm tracking-wider text-blue-900">INSTRUCTOR PANEL</span>
               <span className="text-[10px] font-semibold text-gray-400 uppercase tracking-widest">Faculty Portal</span>
             </div>
           </div>
         </div>
 
         {/* Instructor Mini Badge */}
-        <div className="p-4 mx-4 my-4 bg-emerald-50/90 border border-emerald-200/80 rounded-2xl">
+        <div className="p-4 mx-4 my-4 bg-blue-50/90 border border-blue-200/80 rounded-2xl">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-brand-green text-white flex items-center justify-center font-black text-sm shadow-xs">
-              {instructor.name ? instructor.name.charAt(0).toUpperCase() : <FaSpa />}
+            <div className="w-10 h-10 rounded-xl bg-blue-600 text-white flex items-center justify-center font-black text-sm shadow-xs">
+              {instructor.name ? instructor.name.charAt(0).toUpperCase() : <FaLaptopCode />}
             </div>
             <div className="min-w-0 flex-1">
               <div className="font-bold text-xs text-gray-900 truncate">{instructor.name || 'Instructor'}</div>
-              <div className="text-[11px] text-emerald-800 font-extrabold truncate">{instructor.speciality || 'Yoga Guru'}</div>
+              <div className="text-[11px] text-blue-800 font-extrabold truncate">{instructor.speciality || 'Technical Mentor'}</div>
             </div>
           </div>
         </div>
@@ -60,8 +60,8 @@ const InstructorLayout = () => {
               className={({ isActive }) =>
                 `flex items-center gap-3.5 px-4 py-3.5 rounded-2xl transition-all duration-300 ${
                   isActive 
-                    ? 'bg-brand-green text-white shadow-[0_8px_20px_rgba(41,120,56,0.25)] font-bold' 
-                    : 'text-gray-600 hover:bg-white/80 hover:text-brand-green font-semibold hover:shadow-xs'
+                    ? 'bg-blue-600 text-white shadow-[0_8px_20px_rgba(41,120,56,0.25)] font-bold' 
+                    : 'text-gray-600 hover:bg-white/80 hover:text-blue-600 font-semibold hover:shadow-xs'
                 }`
               }
             >
@@ -79,9 +79,9 @@ const InstructorLayout = () => {
             to="/"
             target="_blank"
             rel="noreferrer"
-            className="flex items-center gap-3.5 px-4 py-3 rounded-2xl text-gray-600 hover:bg-white/80 hover:text-brand-green font-semibold transition-all text-sm group"
+            className="flex items-center gap-3.5 px-4 py-3 rounded-2xl text-gray-600 hover:bg-white/80 hover:text-blue-600 font-semibold transition-all text-sm group"
           >
-            <FaExternalLinkAlt size={14} className="text-gray-400 group-hover:text-brand-green" />
+            <FaExternalLinkAlt size={14} className="text-gray-400 group-hover:text-blue-600" />
             <span>Public Courses</span>
           </Link>
         </nav>
@@ -112,19 +112,19 @@ const InstructorLayout = () => {
             >
               <FaBars size={16} />
             </button>
-            <img src="/logo.png" alt="SDF Logo" className="h-10 w-auto object-contain" />
+            <img src="/logo.png" alt="JVK Logo" className="h-10 w-auto object-contain" />
           </div>
 
           <div className="hidden md:flex items-center gap-3">
             <h2 className="text-base lg:text-lg font-extrabold text-gray-800 tracking-tight">
-              Swamy Dwija Foundation • Instructor Workspace
+              JVK Technologies • Instructor Workspace
             </h2>
           </div>
 
           {/* User Status / Avatar */}
           <div className="flex items-center gap-2.5 sm:gap-4">
-            <div className="flex items-center gap-1.5 px-2.5 py-1 sm:px-3 sm:py-1.5 bg-emerald-50 border border-emerald-200/80 rounded-full text-emerald-800 text-[11px] sm:text-xs font-bold">
-              <span className="w-2 h-2 rounded-full bg-emerald-500 animate-ping"></span>
+            <div className="flex items-center gap-1.5 px-2.5 py-1 sm:px-3 sm:py-1.5 bg-blue-50 border border-blue-200/80 rounded-full text-blue-800 text-[11px] sm:text-xs font-bold">
+              <span className="w-2 h-2 rounded-full bg-blue-500 animate-ping"></span>
               <span>Faculty Active</span>
             </div>
 
@@ -132,7 +132,7 @@ const InstructorLayout = () => {
               onClick={() => setMobileMenuOpen(true)}
               className="flex items-center gap-2 pl-2 border-l border-gray-200/80 cursor-pointer"
             >
-              <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-xl bg-brand-green text-white flex items-center justify-center font-black text-xs shadow-md">
+              <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-xl bg-blue-600 text-white flex items-center justify-center font-black text-xs shadow-md">
                 {instructor.name ? instructor.name.charAt(0).toUpperCase() : 'I'}
               </div>
               <div className="hidden sm:flex flex-col">
@@ -162,7 +162,7 @@ const InstructorLayout = () => {
             to="/instructor/dashboard"
             className={({ isActive }) =>
               `flex flex-col items-center gap-1 text-[11px] font-bold transition-all ${
-                isActive ? 'text-brand-green' : 'text-gray-400 hover:text-gray-600'
+                isActive ? 'text-blue-600' : 'text-gray-400 hover:text-gray-600'
               }`
             }
           >
@@ -206,9 +206,9 @@ const InstructorLayout = () => {
             >
               <div className="flex items-center justify-between pb-4 border-b border-gray-100 mb-4">
                 <div className="flex items-center gap-2">
-                  <img src="/logo.png" alt="SDF Logo" className="h-9 w-auto" />
+                  <img src="/logo.png" alt="JVK Logo" className="h-9 w-auto" />
                   <div className="flex flex-col">
-                    <span className="font-black text-xs text-brand-green-dark">INSTRUCTOR PANEL</span>
+                    <span className="font-black text-xs text-blue-900">INSTRUCTOR PANEL</span>
                     <span className="text-[9px] text-gray-400 uppercase font-bold">Faculty Hub</span>
                   </div>
                 </div>
@@ -221,18 +221,18 @@ const InstructorLayout = () => {
               </div>
 
               {/* Profile Card in Drawer */}
-              <div className="p-4 bg-emerald-50/80 border border-emerald-200/80 rounded-2xl mb-5 space-y-2">
+              <div className="p-4 bg-blue-50/80 border border-blue-200/80 rounded-2xl mb-5 space-y-2">
                 <div className="flex items-center gap-3">
-                  <div className="w-12 h-12 rounded-2xl bg-brand-green text-white flex items-center justify-center font-black text-lg shadow-sm">
+                  <div className="w-12 h-12 rounded-2xl bg-blue-600 text-white flex items-center justify-center font-black text-lg shadow-sm">
                     {instructor.name ? instructor.name.charAt(0).toUpperCase() : 'I'}
                   </div>
                   <div className="min-w-0 flex-1">
                     <div className="font-extrabold text-sm text-gray-900 truncate">{instructor.name || 'Instructor'}</div>
-                    <div className="text-xs text-emerald-800 font-bold truncate">{instructor.speciality || 'Yoga Guru'}</div>
+                    <div className="text-xs text-blue-800 font-bold truncate">{instructor.speciality || 'Technical Mentor'}</div>
                   </div>
                 </div>
                 {instructor.emailOrPhone && (
-                  <div className="text-[11px] text-gray-500 truncate pt-1 border-t border-emerald-100">
+                  <div className="text-[11px] text-gray-500 truncate pt-1 border-t border-blue-100">
                     📧 {instructor.emailOrPhone}
                   </div>
                 )}
@@ -250,12 +250,12 @@ const InstructorLayout = () => {
                   onClick={() => setMobileMenuOpen(false)}
                   className={({ isActive }) =>
                     `flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-bold transition-all ${
-                      isActive ? 'bg-brand-green text-white shadow-sm' : 'text-gray-700 hover:bg-gray-50'
+                      isActive ? 'bg-blue-600 text-white shadow-sm' : 'text-gray-700 hover:bg-gray-50'
                     }`
                   }
                 >
                   <FaTachometerAlt />
-                  <span>Guru Dashboard</span>
+                  <span>Instructor Dashboard</span>
                 </NavLink>
 
                 <Link
@@ -290,3 +290,4 @@ const InstructorLayout = () => {
 };
 
 export default InstructorLayout;
+

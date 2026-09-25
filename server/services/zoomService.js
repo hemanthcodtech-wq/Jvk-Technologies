@@ -39,7 +39,7 @@ const createZoomMeeting = async (topic, startTime, durationMinutes = 60, options
     const response = await axios.post(
       'https://api.zoom.us/v2/users/me/meetings',
       {
-        topic: topic || 'SDF Live Class',
+        topic: topic || 'JVK Live Class',
         type: 2, // Scheduled meeting
         start_time: startTime, // ISO format
         duration: durationMinutes,
@@ -79,7 +79,7 @@ const createZoomMeeting = async (topic, startTime, durationMinutes = 60, options
     
     // Graceful fallback for local offline development
     const mockId = Math.floor(1000000000 + Math.random() * 9000000000).toString();
-    const mockPass = 'sdf' + Math.floor(100 + Math.random() * 900);
+    const mockPass = 'jvk' + Math.floor(100 + Math.random() * 900);
     return {
       success: false,
       joinUrl: `https://zoom.us/j/${mockId}?pwd=${mockPass}`,
@@ -150,7 +150,7 @@ const generateMeetingSdkToken = ({ meetingNumber, role = 0 }) => {
  * Handle Zoom Webhook URL Validation challenge (endpoint.url_validation)
  */
 const handleWebhookUrlValidation = (plainToken) => {
-  const secret = process.env.ZOOM_WEBHOOK_SECRET_TOKEN || process.env.ZOOM_CLIENT_SECRET || 'sdf_zoom_secret';
+  const secret = process.env.ZOOM_WEBHOOK_SECRET_TOKEN || process.env.ZOOM_CLIENT_SECRET || 'jvk_zoom_secret';
   const encryptedToken = crypto
     .createHmac('sha256', secret)
     .update(plainToken)

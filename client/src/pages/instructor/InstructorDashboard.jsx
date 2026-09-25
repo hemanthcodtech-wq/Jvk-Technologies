@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
-  FaSpa, FaOm, FaChalkboardTeacher, FaVideo, FaUsers, 
+  FaLaptopCode, FaCode, FaChalkboardTeacher, FaVideo, FaUsers, 
   FaCalendarAlt, FaClock, FaCheckCircle, FaAward, FaEdit, 
   FaPhone, FaEnvelope, FaBookOpen, FaExternalLinkAlt, FaTimes,
   FaShieldAlt, FaLayerGroup, FaPlayCircle, FaPlus, FaTrash,
@@ -224,7 +224,7 @@ const InstructorDashboard = () => {
         {/* Back navigation */}
         <button
           onClick={() => { setSelectedCourse(null); setSelectedCourseData(null); }}
-          className="text-brand-green-dark hover:text-brand-green flex items-center gap-2 font-black text-sm transition-all cursor-pointer bg-white/70 backdrop-blur-md px-4 py-2.5 rounded-2xl border border-gray-200/80 shadow-xs w-max"
+          className="text-blue-900 hover:text-blue-600 flex items-center gap-2 font-black text-sm transition-all cursor-pointer bg-white/70 backdrop-blur-md px-4 py-2.5 rounded-2xl border border-gray-200/80 shadow-xs w-max"
         >
           <FaArrowLeft size={13} /> Back to Courses & Dashboard
         </button>
@@ -232,7 +232,7 @@ const InstructorDashboard = () => {
         {/* Course Header Banner */}
         <div className="relative overflow-hidden bg-gradient-to-r from-[#06331A] via-[#0A4F2A] to-[#15803D] rounded-[2.5rem] p-6 lg:p-10 text-white shadow-[0_15px_40px_rgba(10,79,42,0.18)]">
           <div className="absolute -right-10 -bottom-10 opacity-10 pointer-events-none text-[180px]">
-            <FaOm />
+            <FaCode />
           </div>
 
           <div className="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-6">
@@ -241,13 +241,13 @@ const InstructorDashboard = () => {
                 <span className="px-3.5 py-1 rounded-full bg-white/15 backdrop-blur-md border border-white/20 text-[#D4AF37] text-xs font-black tracking-wider uppercase">
                   {course.category}
                 </span>
-                <span className="px-3 py-1 rounded-full bg-emerald-900/60 text-emerald-200 text-xs font-bold flex items-center gap-1.5">
-                  <FaClock size={11} className="text-emerald-400" />
+                <span className="px-3 py-1 rounded-full bg-blue-900/60 text-blue-200 text-xs font-bold flex items-center gap-1.5">
+                  <FaClock size={11} className="text-blue-400" />
                   {course.timings || (course.startTime ? `${course.startTime} to ${course.endTime}` : '06:00 to 07:15')}
                 </span>
               </div>
               <h1 className="text-2xl lg:text-3xl font-black tracking-tight">{course.title}</h1>
-              <p className="text-emerald-100/90 text-sm max-w-2xl line-clamp-2">
+              <p className="text-blue-100/90 text-sm max-w-2xl line-clamp-2">
                 {course.description}
               </p>
             </div>
@@ -272,7 +272,7 @@ const InstructorDashboard = () => {
             <div className="bg-[#1C2826] rounded-3xl p-6 text-white shadow-xl relative overflow-hidden space-y-4">
               <div className="flex items-center justify-between border-b border-white/10 pb-4">
                 <div className="flex items-center gap-3">
-                  <div className="w-12 h-12 rounded-2xl bg-white/10 flex items-center justify-center text-emerald-400 text-xl font-bold">
+                  <div className="w-12 h-12 rounded-2xl bg-white/10 flex items-center justify-center text-blue-400 text-xl font-bold">
                     <FaBookOpen />
                   </div>
                   <div>
@@ -289,7 +289,7 @@ const InstructorDashboard = () => {
                 </div>
                 <div className="p-3 bg-white/5 rounded-2xl border border-white/5">
                   <span className="text-[10px] uppercase font-bold text-gray-400 block">Materials</span>
-                  <span className="text-base font-black text-emerald-400">{materials.length} Uploaded</span>
+                  <span className="text-base font-black text-blue-400">{materials.length} Uploaded</span>
                 </div>
               </div>
             </div>
@@ -300,12 +300,12 @@ const InstructorDashboard = () => {
                 onClick={() => setCourseActiveTab('classes')}
                 className={`w-full rounded-2xl py-4 px-5 flex items-center justify-between border transition-all cursor-pointer ${
                   courseActiveTab === 'classes'
-                    ? 'bg-brand-green border-brand-green text-white shadow-md shadow-brand-green/20'
+                    ? 'bg-blue-600 border-blue-600 text-white shadow-md shadow-blue-600/20'
                     : 'bg-white/80 border-gray-200 hover:bg-white text-gray-700'
                 }`}
               >
                 <span className="text-sm font-extrabold flex items-center gap-2.5">
-                  <FaVideo size={14} className={courseActiveTab === 'classes' ? 'text-white' : 'text-brand-green'} />
+                  <FaVideo size={14} className={courseActiveTab === 'classes' ? 'text-white' : 'text-blue-600'} />
                   <span>Scheduled Live Classes ({classes.length})</span>
                 </span>
                 <FaChevronRight className="text-xs opacity-70" />
@@ -315,12 +315,12 @@ const InstructorDashboard = () => {
                 onClick={() => setCourseActiveTab('materials')}
                 className={`w-full rounded-2xl py-4 px-5 flex items-center justify-between border transition-all cursor-pointer ${
                   courseActiveTab === 'materials'
-                    ? 'bg-brand-green border-brand-green text-white shadow-md shadow-brand-green/20'
+                    ? 'bg-blue-600 border-blue-600 text-white shadow-md shadow-blue-600/20'
                     : 'bg-white/80 border-gray-200 hover:bg-white text-gray-700'
                 }`}
               >
                 <span className="text-sm font-extrabold flex items-center gap-2.5">
-                  <FaBook size={14} className={courseActiveTab === 'materials' ? 'text-white' : 'text-brand-green'} />
+                  <FaBook size={14} className={courseActiveTab === 'materials' ? 'text-white' : 'text-blue-600'} />
                   <span>Class Materials & Recordings ({materials.length})</span>
                 </span>
                 <FaChevronRight className="text-xs opacity-70" />
@@ -330,12 +330,12 @@ const InstructorDashboard = () => {
                 onClick={() => setCourseActiveTab('students')}
                 className={`w-full rounded-2xl py-4 px-5 flex items-center justify-between border transition-all cursor-pointer ${
                   courseActiveTab === 'students'
-                    ? 'bg-brand-green border-brand-green text-white shadow-md shadow-brand-green/20'
+                    ? 'bg-blue-600 border-blue-600 text-white shadow-md shadow-blue-600/20'
                     : 'bg-white/80 border-gray-200 hover:bg-white text-gray-700'
                 }`}
               >
                 <span className="text-sm font-extrabold flex items-center gap-2.5">
-                  <FaUsers size={14} className={courseActiveTab === 'students' ? 'text-white' : 'text-brand-green'} />
+                  <FaUsers size={14} className={courseActiveTab === 'students' ? 'text-white' : 'text-blue-600'} />
                   <span>Enrolled Student Roster ({enrollments.length})</span>
                 </span>
                 <FaChevronRight className="text-xs opacity-70" />
@@ -356,7 +356,7 @@ const InstructorDashboard = () => {
 
                 {loadingCourseDetails ? (
                   <div className="flex justify-center p-12">
-                    <div className="w-8 h-8 border-3 border-brand-green border-t-transparent rounded-full animate-spin"></div>
+                    <div className="w-8 h-8 border-3 border-blue-600 border-t-transparent rounded-full animate-spin"></div>
                   </div>
                 ) : classes.length > 0 ? (
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -373,12 +373,12 @@ const InstructorDashboard = () => {
                         <div
                           key={cls._id || idx}
                           className={`bg-white rounded-3xl p-5 border flex flex-col justify-between shadow-xs hover:shadow-md transition-all ${
-                            isToday ? 'border-brand-green ring-2 ring-brand-green/20' : 'border-gray-200/80'
+                            isToday ? 'border-blue-600 ring-2 ring-blue-600/20' : 'border-gray-200/80'
                           }`}
                         >
                           <div>
                             <div className="flex items-center justify-between gap-2 mb-3">
-                              <span className="text-[10px] font-extrabold px-2.5 py-1 rounded-full uppercase tracking-wider bg-emerald-50 text-emerald-800 border border-emerald-200">
+                              <span className="text-[10px] font-extrabold px-2.5 py-1 rounded-full uppercase tracking-wider bg-blue-50 text-blue-800 border border-blue-200">
                                 Session {idx + 1}
                               </span>
                               {isToday && (
@@ -404,12 +404,12 @@ const InstructorDashboard = () => {
 
                             <div className="flex items-center gap-3 text-xs text-gray-500 font-semibold mb-4">
                               <span className="flex items-center gap-1">
-                                <FaCalendarAlt className="text-brand-green" size={12} />
+                                <FaCalendarAlt className="text-blue-600" size={12} />
                                 {new Date(cls.date).toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' })}
                               </span>
                               <span>•</span>
                               <span className="flex items-center gap-1">
-                                <FaClock className="text-brand-green" size={12} />
+                                <FaClock className="text-blue-600" size={12} />
                                 {cls.time || course.timings || '06:00 AM'}
                               </span>
                             </div>
@@ -419,7 +419,7 @@ const InstructorDashboard = () => {
                             {cls.zoomLink ? (
                               <button
                                 onClick={() => setActiveLiveClass(cls)}
-                                className="w-full py-2.5 bg-brand-green hover:bg-brand-green-dark text-white rounded-xl font-bold text-xs shadow-sm hover:shadow flex items-center justify-center gap-2 transition-all cursor-pointer"
+                                className="w-full py-2.5 bg-blue-600 hover:bg-blue-900 text-white rounded-xl font-bold text-xs shadow-sm hover:shadow flex items-center justify-center gap-2 transition-all cursor-pointer"
                               >
                                 <FaPlayCircle size={13} />
                                 <span>Start Live Classroom ↗</span>
@@ -427,7 +427,7 @@ const InstructorDashboard = () => {
                             ) : (
                               <button
                                 onClick={() => setIsAddMaterialOpen(true)}
-                                className="w-full py-2 bg-emerald-50 hover:bg-brand-green hover:text-white text-emerald-800 rounded-xl font-bold text-xs transition-all cursor-pointer"
+                                className="w-full py-2 bg-blue-50 hover:bg-blue-600 hover:text-white text-blue-800 rounded-xl font-bold text-xs transition-all cursor-pointer"
                               >
                                 + Add Notes / Recording
                               </button>
@@ -455,7 +455,7 @@ const InstructorDashboard = () => {
                   </div>
                   <button
                     onClick={() => setIsAddMaterialOpen(true)}
-                    className="px-4 py-2.5 bg-brand-green hover:bg-brand-green-dark text-white font-extrabold text-xs rounded-xl shadow-sm flex items-center gap-2 cursor-pointer w-max"
+                    className="px-4 py-2.5 bg-blue-600 hover:bg-blue-900 text-white font-extrabold text-xs rounded-xl shadow-sm flex items-center gap-2 cursor-pointer w-max"
                   >
                     <FaPlus size={11} />
                     <span>Upload New Material</span>
@@ -470,7 +470,7 @@ const InstructorDashboard = () => {
                         className="bg-white rounded-3xl p-5 border border-gray-200/80 shadow-xs flex flex-col justify-between"
                       >
                         <div className="flex items-start gap-3.5 mb-4">
-                          <div className="w-12 h-12 rounded-2xl bg-emerald-50 text-emerald-700 flex items-center justify-center text-xl shrink-0">
+                          <div className="w-12 h-12 rounded-2xl bg-blue-50 text-blue-700 flex items-center justify-center text-xl shrink-0">
                             {mat.materialType === 'Recording' ? <FaVideo className="text-red-500" /> : <FaFilePdf className="text-blue-500" />}
                           </div>
                           <div className="flex-1 min-w-0">
@@ -489,7 +489,7 @@ const InstructorDashboard = () => {
                         <div className="pt-3 border-t border-gray-100 flex items-center justify-between gap-2">
                           <button
                             onClick={() => setViewingMaterial(mat)}
-                            className="px-4 py-2 bg-brand-green text-white hover:bg-brand-green-dark rounded-xl text-xs font-bold flex items-center gap-1.5 cursor-pointer"
+                            className="px-4 py-2 bg-blue-600 text-white hover:bg-blue-900 rounded-xl text-xs font-bold flex items-center gap-1.5 cursor-pointer"
                           >
                             <span>Preview</span>
                             <FaExternalLinkAlt size={10} />
@@ -512,7 +512,7 @@ const InstructorDashboard = () => {
                     <p className="text-xs font-bold text-gray-600">No materials or recordings added yet for this course.</p>
                     <button
                       onClick={() => setIsAddMaterialOpen(true)}
-                      className="px-5 py-2.5 bg-brand-green text-white text-xs font-bold rounded-xl cursor-pointer"
+                      className="px-5 py-2.5 bg-blue-600 text-white text-xs font-bold rounded-xl cursor-pointer"
                     >
                       + Add First Class Recording or Study PDF
                     </button>
@@ -537,7 +537,7 @@ const InstructorDashboard = () => {
                         className="bg-white p-4 rounded-2xl border border-gray-200/80 shadow-xs flex items-center justify-between text-xs"
                       >
                         <div className="flex items-center gap-3">
-                          <div className="w-8 h-8 rounded-full bg-brand-green/10 text-brand-green-dark font-black flex items-center justify-center">
+                          <div className="w-8 h-8 rounded-full bg-blue-600/10 text-blue-900 font-black flex items-center justify-center">
                             {i + 1}
                           </div>
                           <div>
@@ -547,7 +547,7 @@ const InstructorDashboard = () => {
                         </div>
 
                         <div className="text-right">
-                          <span className="font-bold text-brand-green bg-brand-green/10 px-2.5 py-1 rounded-lg text-[11px]">
+                          <span className="font-bold text-blue-600 bg-blue-600/10 px-2.5 py-1 rounded-lg text-[11px]">
                             Progress: {enr.progress || 0}%
                           </span>
                         </div>
@@ -597,7 +597,7 @@ const InstructorDashboard = () => {
                 </div>
 
                 {materialMsg && (
-                  <div className="mb-4 p-4 bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs font-bold rounded-2xl">
+                  <div className="mb-4 p-4 bg-blue-50 border border-blue-200 text-blue-800 text-xs font-bold rounded-2xl">
                     {materialMsg}
                   </div>
                 )}
@@ -612,7 +612,7 @@ const InstructorDashboard = () => {
                       required
                       value={materialForm.date}
                       onChange={(e) => setMaterialForm({ ...materialForm, date: e.target.value })}
-                      className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-2xl text-sm font-medium focus:bg-white focus:ring-2 focus:ring-brand-green/20 outline-none"
+                      className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-2xl text-sm font-medium focus:bg-white focus:ring-2 focus:ring-blue-600/20 outline-none"
                     />
                   </div>
 
@@ -623,7 +623,7 @@ const InstructorDashboard = () => {
                     <select
                       value={materialForm.materialType}
                       onChange={(e) => setMaterialForm({ ...materialForm, materialType: e.target.value })}
-                      className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-2xl text-sm font-medium focus:bg-white focus:ring-2 focus:ring-brand-green/20 outline-none"
+                      className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-2xl text-sm font-medium focus:bg-white focus:ring-2 focus:ring-blue-600/20 outline-none"
                     >
                       <option value="Recording">📹 Video Session Recording</option>
                       <option value="PDF">📄 PDF Notes & Study Guide</option>
@@ -641,7 +641,7 @@ const InstructorDashboard = () => {
                       placeholder="e.g. Session 3: Java Full Stack | Module 3: Spring Boot APIs"
                       value={materialForm.topicsCovered}
                       onChange={(e) => setMaterialForm({ ...materialForm, topicsCovered: e.target.value })}
-                      className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-2xl text-sm font-medium focus:bg-white focus:ring-2 focus:ring-brand-green/20 outline-none"
+                      className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-2xl text-sm font-medium focus:bg-white focus:ring-2 focus:ring-blue-600/20 outline-none"
                     />
                   </div>
 
@@ -655,7 +655,7 @@ const InstructorDashboard = () => {
                       placeholder="https://drive.google.com/file/d/... or YouTube / Cloud URL"
                       value={materialForm.driveLink}
                       onChange={(e) => setMaterialForm({ ...materialForm, driveLink: e.target.value })}
-                      className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-2xl text-sm font-medium focus:bg-white focus:ring-2 focus:ring-brand-green/20 outline-none"
+                      className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-2xl text-sm font-medium focus:bg-white focus:ring-2 focus:ring-blue-600/20 outline-none"
                     />
                   </div>
 
@@ -670,7 +670,7 @@ const InstructorDashboard = () => {
                     <button
                       type="submit"
                       disabled={materialSubmitting}
-                      className="px-7 py-3 rounded-2xl bg-brand-green hover:bg-brand-green-dark text-white font-extrabold text-xs shadow-md disabled:opacity-60 cursor-pointer"
+                      className="px-7 py-3 rounded-2xl bg-blue-600 hover:bg-blue-900 text-white font-extrabold text-xs shadow-md disabled:opacity-60 cursor-pointer"
                     >
                       {materialSubmitting ? 'Publishing...' : 'Publish Material'}
                     </button>
@@ -734,18 +734,18 @@ const InstructorDashboard = () => {
       {/* Top Banner Card */}
       <div className="relative overflow-hidden bg-gradient-to-r from-[#06331A] via-[#0A4F2A] to-[#15803D] rounded-[2.5rem] p-6 lg:p-10 text-white shadow-[0_15px_40px_rgba(10,79,42,0.18)]">
         <div className="absolute -right-10 -bottom-10 opacity-10 pointer-events-none text-[180px]">
-          <FaOm />
+          <FaCode />
         </div>
 
         <div className="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-6">
           <div className="space-y-2">
             <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-[#D4AF37] text-xs font-black tracking-wider uppercase">
-              <FaSpa /> Official Instructor Panel
+              <FaLaptopCode /> Official Instructor Panel
             </div>
             <h1 className="text-2xl lg:text-4xl font-black tracking-tight">
               Namaste, {profile.name || 'Instructor'} 🙏
             </h1>
-            <p className="text-emerald-100/90 text-sm max-w-xl">
+            <p className="text-blue-100/90 text-sm max-w-xl">
               Access your full course curriculum, class schedules, enrolled learners, and publish session recordings and materials for completed classes.
             </p>
           </div>
@@ -767,7 +767,7 @@ const InstructorDashboard = () => {
         
         {/* Assigned Programs */}
         <div className="bg-white/80 backdrop-blur-xl p-5 rounded-3xl border border-white/80 shadow-xs flex items-center gap-4">
-          <div className="w-13 h-13 rounded-2xl bg-emerald-100 text-emerald-800 flex items-center justify-center text-2xl font-black shrink-0">
+          <div className="w-13 h-13 rounded-2xl bg-blue-100 text-blue-800 flex items-center justify-center text-2xl font-black shrink-0">
             <FaBookOpen />
           </div>
           <div className="min-w-0">
@@ -780,8 +780,8 @@ const InstructorDashboard = () => {
 
         {/* Speciality Badge */}
         <div className="bg-white/80 backdrop-blur-xl p-5 rounded-3xl border border-white/80 shadow-xs flex items-center gap-4">
-          <div className="w-13 h-13 rounded-2xl bg-brand-green/10 text-brand-green flex items-center justify-center text-2xl font-black shrink-0">
-            <FaSpa />
+          <div className="w-13 h-13 rounded-2xl bg-blue-600/10 text-blue-600 flex items-center justify-center text-2xl font-black shrink-0">
+            <FaLaptopCode />
           </div>
           <div className="min-w-0">
             <span className="text-xs font-bold text-gray-400 uppercase tracking-wider block">Discipline / Skill</span>
@@ -824,20 +824,20 @@ const InstructorDashboard = () => {
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 px-1">
           <div>
             <h2 className="text-xl font-black text-gray-900 flex items-center gap-2">
-              <FaGraduationCap className="text-brand-green" /> My Assigned Programs (Full Course Access)
+              <FaGraduationCap className="text-blue-600" /> My Assigned Programs (Full Course Access)
             </h2>
             <p className="text-xs text-gray-500 mt-0.5">
               Click any course to manage its timetable, view student roster, and publish class materials.
             </p>
           </div>
-          <span className="text-xs font-bold px-3 py-1 bg-emerald-50 text-emerald-800 border border-emerald-200/70 rounded-full w-max">
+          <span className="text-xs font-bold px-3 py-1 bg-blue-50 text-blue-800 border border-blue-200/70 rounded-full w-max">
             {assignedCourses.length} Assigned Program{assignedCourses.length !== 1 ? 's' : ''}
           </span>
         </div>
 
         {loading ? (
           <div className="flex justify-center p-12">
-            <div className="w-8 h-8 border-3 border-brand-green border-t-transparent rounded-full animate-spin"></div>
+            <div className="w-8 h-8 border-3 border-blue-600 border-t-transparent rounded-full animate-spin"></div>
           </div>
         ) : assignedCourses.length > 0 ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -853,16 +853,16 @@ const InstructorDashboard = () => {
                       <img src={course.thumbnailUrl} alt={course.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
                     ) : (
                       <div className="w-full h-full flex items-center justify-center bg-gray-100 text-gray-300">
-                        <FaSpa size={36} />
+                        <FaLaptopCode size={36} />
                       </div>
                     )}
-                    <div className="absolute top-2.5 right-2.5 bg-white/95 px-2.5 py-1 rounded-xl text-[10px] font-extrabold text-brand-green shadow-xs uppercase">
+                    <div className="absolute top-2.5 right-2.5 bg-white/95 px-2.5 py-1 rounded-xl text-[10px] font-extrabold text-blue-600 shadow-xs uppercase">
                       {course.category}
                     </div>
 
                     {/* Class Timing Banner */}
                     <div className="absolute bottom-2.5 left-2.5 bg-black/80 backdrop-blur-md px-3 py-1.5 rounded-xl text-xs font-bold text-white shadow-md flex items-center gap-1.5">
-                      <FaClock className="text-emerald-400" size={11} />
+                      <FaClock className="text-blue-400" size={11} />
                       <span>{course.timings || (course.startTime ? `${course.startTime} to ${course.endTime}` : '06:00 to 07:15')}</span>
                     </div>
                   </div>
@@ -870,7 +870,7 @@ const InstructorDashboard = () => {
 
                 <div className="p-6 flex-1 flex flex-col justify-between space-y-4">
                   <div>
-                    <h3 className="font-extrabold text-base text-gray-900 leading-snug line-clamp-2 mb-2 group-hover:text-brand-green transition-colors">
+                    <h3 className="font-extrabold text-base text-gray-900 leading-snug line-clamp-2 mb-2 group-hover:text-blue-600 transition-colors">
                       {course.title}
                     </h3>
                     
@@ -882,11 +882,11 @@ const InstructorDashboard = () => {
                       </div>
                       <div>
                         <span className="text-[10px] font-bold text-gray-400 uppercase block">Total Sessions</span>
-                        <span className="font-black text-brand-green-dark">{course.totalSessionsCount || 0} Classes</span>
+                        <span className="font-black text-blue-900">{course.totalSessionsCount || 0} Classes</span>
                       </div>
                       <div>
                         <span className="text-[10px] font-bold text-gray-400 uppercase block">Materials</span>
-                        <span className="font-bold text-emerald-800">{course.materials?.length || 0} Uploaded</span>
+                        <span className="font-bold text-blue-800">{course.materials?.length || 0} Uploaded</span>
                       </div>
                       <div>
                         <span className="text-[10px] font-bold text-gray-400 uppercase block">Level</span>
@@ -910,7 +910,7 @@ const InstructorDashboard = () => {
                   <div className="pt-3 border-t border-gray-100 flex flex-col gap-2">
                     <button
                       onClick={() => handleOpenCourseDetails(course)}
-                      className="w-full py-3 bg-brand-green hover:bg-brand-green-dark text-white rounded-xl font-extrabold text-xs shadow-md hover:shadow-lg transition-all flex items-center justify-center gap-2 cursor-pointer"
+                      className="w-full py-3 bg-blue-600 hover:bg-blue-900 text-white rounded-xl font-extrabold text-xs shadow-md hover:shadow-lg transition-all flex items-center justify-center gap-2 cursor-pointer"
                     >
                       <FaBookOpen size={13} />
                       <span>Open Course & Materials Manager ↗</span>
@@ -938,18 +938,18 @@ const InstructorDashboard = () => {
             <div className="flex items-center justify-between pb-2 border-b border-gray-100">
               <div>
                 <h2 className="text-lg font-black text-gray-900 flex items-center gap-2">
-                  <FaVideo className="text-brand-green" /> Upcoming Live Zoom Schedule
+                  <FaVideo className="text-blue-600" /> Upcoming Live Zoom Schedule
                 </h2>
                 <p className="text-xs text-gray-400 mt-0.5">Chronological list of upcoming live sessions across your courses</p>
               </div>
-              <span className="px-3 py-1 bg-emerald-50 text-emerald-800 border border-emerald-200/80 rounded-full text-xs font-bold">
+              <span className="px-3 py-1 bg-blue-50 text-blue-800 border border-blue-200/80 rounded-full text-xs font-bold">
                 {upcomingClasses.length} Scheduled
               </span>
             </div>
 
             {loading ? (
               <div className="flex justify-center py-12">
-                <div className="w-8 h-8 border-3 border-brand-green border-t-transparent rounded-full animate-spin"></div>
+                <div className="w-8 h-8 border-3 border-blue-600 border-t-transparent rounded-full animate-spin"></div>
               </div>
             ) : upcomingClasses.length > 0 ? (
               <div className="space-y-3.5">
@@ -959,17 +959,17 @@ const InstructorDashboard = () => {
                     className="p-5 bg-gradient-to-br from-white to-[#FAF7F2] border border-gray-200/70 rounded-2xl shadow-xs hover:shadow-md transition-shadow flex flex-col sm:flex-row sm:items-center justify-between gap-4"
                   >
                     <div className="space-y-1.5">
-                      <div className="inline-flex items-center gap-2 px-2.5 py-0.5 bg-emerald-100/70 text-emerald-800 rounded-md text-[11px] font-extrabold">
-                        {cls.courseId?.title || 'Yoga Program'}
+                      <div className="inline-flex items-center gap-2 px-2.5 py-0.5 bg-blue-100/70 text-blue-800 rounded-md text-[11px] font-extrabold">
+                        {cls.courseId?.title || 'Software Program'}
                       </div>
                       <h3 className="font-extrabold text-base text-gray-900">{cls.title}</h3>
                       <div className="flex flex-wrap items-center gap-4 text-xs font-medium text-gray-500">
                         <span className="flex items-center gap-1.5">
-                          <FaCalendarAlt className="text-brand-green" />
+                          <FaCalendarAlt className="text-blue-600" />
                           {new Date(cls.date).toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' })}
                         </span>
                         <span className="flex items-center gap-1.5">
-                          <FaClock className="text-brand-green" />
+                          <FaClock className="text-blue-600" />
                           {cls.time || cls.courseId?.timings || '06:00 AM IST'}
                         </span>
                       </div>
@@ -981,7 +981,7 @@ const InstructorDashboard = () => {
                           href={cls.zoomLink || cls.zoomJoinUrl}
                           target="_blank"
                           rel="noreferrer"
-                          className="px-5 py-2.5 bg-brand-green hover:bg-brand-green-dark text-white rounded-xl font-bold text-xs shadow-sm hover:shadow transition-all flex items-center gap-2 cursor-pointer"
+                          className="px-5 py-2.5 bg-blue-600 hover:bg-blue-900 text-white rounded-xl font-bold text-xs shadow-sm hover:shadow transition-all flex items-center gap-2 cursor-pointer"
                         >
                           <FaPlayCircle size={13} />
                           <span>Start Session ↗</span>
@@ -1012,7 +1012,7 @@ const InstructorDashboard = () => {
                 {profile.name ? profile.name.charAt(0).toUpperCase() : 'G'}
               </div>
               <h3 className="font-black text-lg text-gray-900">{profile.name}</h3>
-              <p className="text-xs text-brand-green font-extrabold mt-0.5">{profile.speciality || 'Yoga Guru'}</p>
+              <p className="text-xs text-blue-600 font-extrabold mt-0.5">{profile.speciality || 'Technical Mentor'}</p>
               <p className="text-xs text-gray-400">{profile.emailOrPhone}</p>
             </div>
 
@@ -1027,7 +1027,7 @@ const InstructorDashboard = () => {
               </div>
               <div className="flex justify-between items-center py-1.5 border-b border-gray-100">
                 <span className="text-gray-400 font-medium">Status:</span>
-                <span className="font-bold text-emerald-700 uppercase">Active Master</span>
+                <span className="font-bold text-blue-700 uppercase">Active Master</span>
               </div>
             </div>
 
@@ -1042,7 +1042,7 @@ const InstructorDashboard = () => {
 
             <button
               onClick={() => setIsEditProfileOpen(true)}
-              className="w-full py-3 bg-brand-green/10 hover:bg-brand-green hover:text-white text-brand-green-dark font-extrabold text-xs rounded-xl transition-all cursor-pointer"
+              className="w-full py-3 bg-blue-600/10 hover:bg-blue-600 hover:text-white text-blue-900 font-extrabold text-xs rounded-xl transition-all cursor-pointer"
             >
               Update Profile Information
             </button>
@@ -1082,7 +1082,7 @@ const InstructorDashboard = () => {
               </div>
 
               {profileMsg && (
-                <div className="mb-4 p-4 bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs font-bold rounded-2xl">
+                <div className="mb-4 p-4 bg-blue-50 border border-blue-200 text-blue-800 text-xs font-bold rounded-2xl">
                   {profileMsg}
                 </div>
               )}
@@ -1097,7 +1097,7 @@ const InstructorDashboard = () => {
                     value={profileForm.name}
                     onChange={(e) => setProfileForm({ ...profileForm, name: e.target.value })}
                     required
-                    className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-2xl text-sm font-medium focus:bg-white focus:ring-2 focus:ring-brand-green/20 outline-none"
+                    className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-2xl text-sm font-medium focus:bg-white focus:ring-2 focus:ring-blue-600/20 outline-none"
                   />
                 </div>
 
@@ -1109,7 +1109,7 @@ const InstructorDashboard = () => {
                     type="tel"
                     value={profileForm.phone}
                     onChange={(e) => setProfileForm({ ...profileForm, phone: e.target.value })}
-                    className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-2xl text-sm font-medium focus:bg-white focus:ring-2 focus:ring-brand-green/20 outline-none"
+                    className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-2xl text-sm font-medium focus:bg-white focus:ring-2 focus:ring-blue-600/20 outline-none"
                   />
                 </div>
 
@@ -1121,7 +1121,7 @@ const InstructorDashboard = () => {
                     type="text"
                     value={profileForm.speciality}
                     onChange={(e) => setProfileForm({ ...profileForm, speciality: e.target.value })}
-                    className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-2xl text-sm font-medium focus:bg-white focus:ring-2 focus:ring-brand-green/20 outline-none"
+                    className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-2xl text-sm font-medium focus:bg-white focus:ring-2 focus:ring-blue-600/20 outline-none"
                   />
                 </div>
 
@@ -1133,7 +1133,7 @@ const InstructorDashboard = () => {
                     rows="3"
                     value={profileForm.bio}
                     onChange={(e) => setProfileForm({ ...profileForm, bio: e.target.value })}
-                    className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-2xl text-sm font-medium focus:bg-white focus:ring-2 focus:ring-brand-green/20 outline-none resize-none"
+                    className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-2xl text-sm font-medium focus:bg-white focus:ring-2 focus:ring-blue-600/20 outline-none resize-none"
                   ></textarea>
                 </div>
 
@@ -1148,7 +1148,7 @@ const InstructorDashboard = () => {
                   <button
                     type="submit"
                     disabled={profileSaving}
-                    className="px-7 py-3 rounded-2xl bg-brand-green hover:bg-brand-green-dark text-white font-extrabold text-xs shadow-md disabled:opacity-60 cursor-pointer"
+                    className="px-7 py-3 rounded-2xl bg-blue-600 hover:bg-blue-900 text-white font-extrabold text-xs shadow-md disabled:opacity-60 cursor-pointer"
                   >
                     {profileSaving ? 'Saving...' : 'Save Profile'}
                   </button>

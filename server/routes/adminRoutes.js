@@ -206,7 +206,7 @@ router.post('/resend-invoice/:enrollmentId', protect, admin, async (req, res) =>
       studentName = enrollment.studentEmail.split('@')[0];
     }
 
-    const invoiceNumber = enrollment.invoiceNumber || `SDF-INV-${Date.now().toString().slice(-6)}`;
+    const invoiceNumber = enrollment.invoiceNumber || `JVK-INV-${Date.now().toString().slice(-6)}`;
 
     // Generate Invoice PDF
     const invoicePdfBuffer = await generateInvoicePDF({
@@ -222,7 +222,7 @@ router.post('/resend-invoice/:enrollmentId', protect, admin, async (req, res) =>
 
     // Upload to Cloudinary if not present
     if (!enrollment.invoiceUrl) {
-      const cloudUrl = await uploadBufferToCloudinary(invoicePdfBuffer, invoiceNumber, 'sdf_invoices');
+      const cloudUrl = await uploadBufferToCloudinary(invoicePdfBuffer, invoiceNumber, 'jvk_invoices');
       if (cloudUrl) {
         enrollment.invoiceUrl = cloudUrl;
         await enrollment.save();
@@ -311,7 +311,7 @@ router.post('/certificate/custom-generate-and-send', protect, admin, async (req,
 
     const finalCertId = certificateId && certificateId.trim()
       ? certificateId.trim()
-      : `SDF-CERT-${Date.now().toString().slice(-6)}${Math.floor(100 + Math.random() * 900)}`;
+      : `JVK-CERT-${Date.now().toString().slice(-6)}${Math.floor(100 + Math.random() * 900)}`;
 
     const formattedDate = completionDate
       ? (typeof completionDate === 'string' && completionDate.includes('-') && completionDate.length === 10
@@ -360,7 +360,7 @@ router.post('/certificate/custom-generate-and-send', protect, admin, async (req,
     // Upload to Cloudinary
     let certificateUrl = null;
     try {
-      certificateUrl = await uploadBufferToCloudinary(certPdfBuffer, finalCertId, 'sdf_certificates');
+      certificateUrl = await uploadBufferToCloudinary(certPdfBuffer, finalCertId, 'jvk_certificates');
     } catch (cErr) {
       console.error('Cloudinary certificate upload error:', cErr.message);
     }
@@ -386,14 +386,18 @@ router.post('/certificate/custom-generate-and-send', protect, admin, async (req,
     let emailSent = false;
     if (sendEmail && studentEmail) {
       try {
-        await sendCertificateEmail(
-          studentEmail.trim(),
-          studentName.trim(),
-          courseTitle.trim(),
-          certPdfBuffer,
-          finalCertId
-        );
-        emailSent = true;
+        const emailResult = await sendCourseCompletionEmail({
+          to: studentEmail.trim(),
+          studentName: studentName.trim(),
+          course: { title: courseTitle.trim() },
+          certId: finalCertId,
+          certificatePdfBuffer: certPdfBuffer
+        });
+        if (emailResult.success) {
+          emailSent = true;
+        } else {
+          console.error('Failed to send certificate email:', emailResult.error);
+        }
       } catch (emailErr) {
         console.error('Failed to send certificate email:', emailErr.message);
       }
@@ -441,7 +445,7 @@ router.post('/certificate/preview-pdf', protect, admin, async (req, res) => {
           : completionDate)
       : new Date().toLocaleDateString('en-IN', { day: '2-digit', month: 'long', year: 'numeric' });
 
-    const finalCertId = certificateId || `SDF-CERT-PREVIEW`;
+    const finalCertId = certificateId || `JVK-CERT-PREVIEW`;
 
     let finalInstructorName = instructorName;
     let finalInstructorTitle = instructorTitle;

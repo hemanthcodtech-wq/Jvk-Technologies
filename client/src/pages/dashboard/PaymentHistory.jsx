@@ -154,7 +154,7 @@ const PaymentHistory = () => {
               {/* Modal Top Bar */}
               <div className="bg-brand-700 p-6 text-white flex justify-between items-center">
                 <div className="flex items-center gap-3">
-                  <img src="/logo.png" alt="SDF Logo" className="h-10 w-auto bg-white/10 p-1.5 rounded-lg" />
+                  <img src="/logo.png" alt="JVK Logo" className="h-10 w-auto bg-white/10 p-1.5 rounded-lg" />
                   <div>
                     <h3 className="font-extrabold text-base leading-tight">Swamy Dwija Foundation</h3>
                     <p className="text-xs text-brand-600-light/80">Official Payment Receipt</p>
@@ -173,7 +173,7 @@ const PaymentHistory = () => {
                 <div className="flex justify-between items-start border-b border-gray-100 pb-4">
                   <div>
                     <span className="text-xs text-gray-400 font-bold uppercase tracking-wider block">Receipt Number</span>
-                    <span className="font-mono text-sm font-bold text-gray-800">SDF-INV-{selectedReceipt._id.slice(-6).toUpperCase()}</span>
+                    <span className="font-mono text-sm font-bold text-gray-800">{selectedReceipt.invoiceNumber || `JVK-INV-${selectedReceipt._id.slice(-6).toUpperCase()}`}</span>
                   </div>
                   <div className="text-right">
                     <span className="text-xs text-gray-400 font-bold uppercase tracking-wider block">Date Paid</span>
@@ -235,4 +235,5 @@ const PaymentHistory = () => {
 };
 
 export default PaymentHistory;
+
 

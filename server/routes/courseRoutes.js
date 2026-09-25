@@ -33,6 +33,25 @@ router.get('/:id/enrollments', protect, admin, async (req, res) => {
   }
 });
 
+// Verify Certificate (public)
+router.get('/public/verify-certificate/:certId', async (req, res) => {
+  try {
+    const Enrollment = require('../models/Enrollment');
+    const certId = req.params.certId.trim();
+    if (!certId) return res.status(400).json({ success: false, message: 'Certificate ID is required' });
+    
+    const enrollment = await Enrollment.findOne({ certificateId: certId });
+    
+    if (!enrollment || !enrollment.certificateUrl) {
+      return res.status(404).json({ success: false, message: 'Certificate not found or invalid. Please check the Certificate ID.' });
+    }
+
+    res.json({ success: true, certificateUrl: enrollment.certificateUrl });
+  } catch (error) {
+    res.status(500).json({ success: false, message: 'Server Error', error: error.message });
+  }
+});
+
 // Get all courses (public)
 router.get('/public', async (req, res) => {
   try {
@@ -423,7 +442,7 @@ router.post('/:id/complete', protect, async (req, res) => {
       return res.status(404).json({ success: false, message: 'You are not enrolled in this course' });
     }
 
-    const certId = enrollment.certificateId || `SDF-CERT-${Date.now().toString().slice(-6)}${Math.floor(100 + Math.random() * 900)}`;
+    const certId = enrollment.certificateId || `JVK-CERT-${Date.now().toString().slice(-6)}${Math.floor(100 + Math.random() * 900)}`;
     const completionDate = enrollment.completionDate || new Date();
 
     enrollment.progress = 100;
@@ -465,7 +484,7 @@ router.post('/:id/complete', protect, async (req, res) => {
     }).then(async (certPdfBuffer) => {
       // Upload to Cloudinary
       try {
-        const cloudUrl = await uploadBufferToCloudinary(certPdfBuffer, certId, 'sdf_certificates');
+        const cloudUrl = await uploadBufferToCloudinary(certPdfBuffer, certId, 'jvk_certificates');
         if (cloudUrl) {
           enrollment.certificateUrl = cloudUrl;
           await enrollment.save();
@@ -514,7 +533,7 @@ router.post('/certificate/:enrollmentId/update-name', protect, async (req, res) 
     }
 
     enrollment.studentName = studentName.trim();
-    const certId = enrollment.certificateId || `SDF-CERT-${Date.now().toString().slice(-6)}`;
+    const certId = enrollment.certificateId || `JVK-CERT-${Date.now().toString().slice(-6)}`;
     const compDate = enrollment.completionDate || new Date();
 
     const certPdfBuffer = await generateCertificatePDF({
@@ -525,7 +544,7 @@ router.post('/certificate/:enrollmentId/update-name', protect, async (req, res) 
     });
 
     try {
-      const cloudUrl = await uploadBufferToCloudinary(certPdfBuffer, certId, 'sdf_certificates');
+      const cloudUrl = await uploadBufferToCloudinary(certPdfBuffer, certId, 'jvk_certificates');
       if (cloudUrl) {
         enrollment.certificateUrl = cloudUrl;
       }
@@ -561,7 +580,7 @@ router.post('/admin/issue-certificate/:enrollmentId', protect, admin, async (req
       return res.status(404).json({ success: false, message: 'Enrollment not found' });
     }
 
-    const certId = enrollment.certificateId || `SDF-CERT-${Date.now().toString().slice(-6)}${Math.floor(100 + Math.random() * 900)}`;
+    const certId = enrollment.certificateId || `JVK-CERT-${Date.now().toString().slice(-6)}${Math.floor(100 + Math.random() * 900)}`;
     const completionDate = new Date();
 
     enrollment.progress = 100;
@@ -586,7 +605,7 @@ router.post('/admin/issue-certificate/:enrollmentId', protect, admin, async (req
       certificateId: certId
     });
 
-    const cloudUrl = await uploadBufferToCloudinary(certPdfBuffer, certId, 'sdf_certificates');
+    const cloudUrl = await uploadBufferToCloudinary(certPdfBuffer, certId, 'jvk_certificates');
     if (cloudUrl) {
       enrollment.certificateUrl = cloudUrl;
       await enrollment.save();
@@ -623,7 +642,7 @@ router.get('/certificate/:enrollmentId/download', protect, async (req, res) => {
       studentName = enrollment.studentEmail.split('@')[0];
     }
 
-    const certId = enrollment.certificateId || `SDF-CERT-${enrollment._id.toString().slice(-6).toUpperCase()}`;
+    const certId = enrollment.certificateId || `JVK-CERT-${enrollment._id.toString().slice(-6).toUpperCase()}`;
     const compDate = enrollment.completionDate || enrollment.updatedAt || new Date();
 
     const certBuffer = await generateCertificatePDF({

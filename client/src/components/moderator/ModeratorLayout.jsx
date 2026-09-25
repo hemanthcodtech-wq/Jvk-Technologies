@@ -29,7 +29,7 @@ const ModeratorLayout = () => {
       <aside className="hidden md:flex md:static inset-y-0 left-0 w-64 lg:w-72 bg-white/80 backdrop-blur-2xl text-gray-800 flex-col shadow-[4px_0_30px_rgba(0,0,0,0.03)] z-30 shrink-0 border-r border-white/60">
         <div className="h-20 flex items-center justify-between px-6 border-b border-gray-100/80 bg-white/40 sticky top-0">
           <div className="flex items-center gap-3">
-            <img src="/logo.png" alt="SDF Logo" className="h-9 w-auto object-contain drop-shadow-sm" />
+            <img src="/logo.png" alt="JVK Logo" className="h-9 w-auto object-contain drop-shadow-sm" />
             <div className="flex flex-col">
               <span className="font-extrabold text-sm tracking-wider text-brand-green-dark">MODERATOR PANEL</span>
               <span className="text-[10px] font-semibold text-gray-400 uppercase tracking-widest">Governance Unit</span>
@@ -111,7 +111,7 @@ const ModeratorLayout = () => {
             >
               <FaBars size={16} />
             </button>
-            <img src="/logo.png" alt="SDF Logo" className="h-10 w-auto object-contain" />
+            <img src="/logo.png" alt="JVK Logo" className="h-10 w-auto object-contain" />
           </div>
 
           <div className="hidden md:flex items-center gap-3">
@@ -205,7 +205,7 @@ const ModeratorLayout = () => {
             >
               <div className="flex items-center justify-between pb-4 border-b border-gray-100 mb-4">
                 <div className="flex items-center gap-2">
-                  <img src="/logo.png" alt="SDF Logo" className="h-9 w-auto" />
+                  <img src="/logo.png" alt="JVK Logo" className="h-9 w-auto" />
                   <div className="flex flex-col">
                     <span className="font-black text-xs text-brand-green-dark">MODERATOR PANEL</span>
                     <span className="text-[9px] text-gray-400 uppercase font-bold">Governance Unit</span>
@@ -289,3 +289,4 @@ const ModeratorLayout = () => {
 };
 
 export default ModeratorLayout;
+
