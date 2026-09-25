@@ -94,14 +94,18 @@ const PublicNavbar = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
           <div className="flex justify-between items-center w-full">
             
-            {/* Left Brand: Large prominent logo without text beside it */}
+            {/* Left Brand: Large prominent logo with text beside it */}
             <div className="flex items-center gap-3">
-              <Link to="/" className="flex items-center group py-0.5" title="JVK Technologies Pvt Ltd">
+              <Link to="/" className="flex items-center group py-0.5 gap-2.5" title="JVK Technologies">
                 <img 
                   src="/logo.png" 
-                  alt="JVK Technologies Pvt Ltd" 
+                  alt="JVK Technologies" 
                   className="h-12 sm:h-14 md:h-16 lg:h-18 w-auto object-contain transition-transform duration-300 group-hover:scale-105 drop-shadow-xs" 
                 />
+                <div className="flex flex-col justify-center">
+                  <span className="text-[17px] sm:text-[19px] md:text-[22px] font-black tracking-tight text-slate-900 leading-none">JVK</span>
+                  <span className="text-[10px] sm:text-[11px] font-bold tracking-[0.2em] text-indigo-600 leading-none mt-1">TECHNOLOGIES</span>
+                </div>
               </Link>
             </div>
 

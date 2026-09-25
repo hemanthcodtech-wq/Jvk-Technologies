@@ -162,7 +162,9 @@ const Home = () => {
     { name: 'TypeScript & Node.js', icon: SiTypescript, color: 'text-indigo-600', bg: 'bg-indigo-50 border-indigo-200' },
     { name: 'AWS Cloud Architecture', icon: FaAws, color: 'text-amber-600', bg: 'bg-amber-50 border-amber-200' },
     { name: 'Docker & Kubernetes', icon: FaDocker, color: 'text-sky-600', bg: 'bg-sky-50 border-sky-200' },
-    { name: 'PostgreSQL & MongoDB', icon: SiPostgresql, color: 'text-teal-600', bg: 'bg-teal-50 border-teal-200' }
+    { name: 'PostgreSQL & MongoDB', icon: SiPostgresql, color: 'text-teal-600', bg: 'bg-teal-50 border-teal-200' },
+    { name: 'ServiceNow', icon: FaBriefcase, color: 'text-purple-600', bg: 'bg-purple-50 border-purple-200' },
+    { name: 'Salesforce', icon: FaCloud, color: 'text-sky-600', bg: 'bg-sky-50 border-sky-200' }
   ];
 
   // Top hiring partners
@@ -581,7 +583,9 @@ const Home = () => {
                 { id: 'all', label: 'All tracks' },
                 { id: 'fullstack', label: 'Full stack' },
                 { id: 'ai', label: 'Python & AI' },
-                { id: 'cloud', label: 'Cloud & DevOps' }
+                { id: 'cloud', label: 'Cloud & DevOps' },
+                { id: 'servicenow', label: 'ServiceNow' },
+                { id: 'salesforce', label: 'Salesforce' }
               ].map((tab) => (
                 <button
                   key={tab.id}
@@ -607,6 +611,8 @@ const Home = () => {
                  if (activeTab === 'fullstack' && (title.includes('full stack') || cat.includes('stack'))) return true;
                  if (activeTab === 'ai' && (title.includes('python') || title.includes('ai') || cat.includes('ai'))) return true;
                  if (activeTab === 'cloud' && (title.includes('cloud') || title.includes('devops') || cat.includes('cloud'))) return true;
+                 if (activeTab === 'servicenow' && title.includes('servicenow')) return true;
+                 if (activeTab === 'salesforce' && title.includes('salesforce')) return true;
                  return false;
               })
               .slice(0, 6)

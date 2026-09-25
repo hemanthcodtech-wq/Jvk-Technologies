@@ -40,20 +40,30 @@ const TopNav = () => {
       <div className="flex items-center h-full md:gap-10">
         {/* Desktop Logo */}
         <div className="hidden md:flex items-center">
-          <img
-            src="/logo.png" alt="JVK Technologies"
-            className="h-12 w-auto object-contain cursor-pointer hover:opacity-90 transition-opacity"
-            onClick={() => navigate('/')}
-          />
+          <div className="flex items-center gap-2 cursor-pointer hover:opacity-90 transition-opacity" onClick={() => navigate('/')}>
+            <img
+              src="/logo.png" alt="JVK Technologies"
+              className="h-12 w-auto object-contain"
+            />
+            <div className="flex flex-col justify-center">
+              <span className="text-[18px] font-black tracking-tight text-slate-900 leading-none">JVK</span>
+              <span className="text-[9px] font-bold tracking-[0.2em] text-indigo-600 leading-none mt-1">TECHNOLOGIES</span>
+            </div>
+          </div>
         </div>
 
         {/* Mobile centered logo */}
         <div className="md:hidden absolute left-1/2 -translate-x-1/2 flex items-center pointer-events-auto">
-          <img
-            src="/logo.png" alt="JVK Technologies"
-            className="h-10 w-auto object-contain cursor-pointer"
-            onClick={() => navigate('/')}
-          />
+          <div className="flex items-center gap-2 cursor-pointer" onClick={() => navigate('/')}>
+            <img
+              src="/logo.png" alt="JVK Technologies"
+              className="h-10 w-auto object-contain"
+            />
+            <div className="flex flex-col justify-center">
+              <span className="text-[16px] font-black tracking-tight text-slate-900 leading-none">JVK</span>
+              <span className="text-[8px] font-bold tracking-[0.2em] text-indigo-600 leading-none mt-1">TECHNOLOGIES</span>
+            </div>
+          </div>
         </div>
 
         {/* Desktop Nav */}
