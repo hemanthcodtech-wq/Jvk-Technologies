@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { motion, AnimatePresence } from 'framer-motion';
-import { 
-  FaPlus, FaEdit, FaTrash, FaTimes, FaCloudUploadAlt, 
-  FaImage, FaChalkboardTeacher, FaClock, 
+import {
+  FaPlus, FaEdit, FaTrash, FaTimes, FaCloudUploadAlt,
+  FaImage, FaChalkboardTeacher, FaClock,
   FaCheckCircle, FaUserCheck, FaCalendarAlt, FaHistory,
   FaPlayCircle, FaExternalLinkAlt, FaSyncAlt, FaWhatsapp
 } from 'react-icons/fa';
@@ -18,21 +18,21 @@ const CourseManagement = () => {
   const [editingCourse, setEditingCourse] = useState(null);
 
   const [formData, setFormData] = useState({
-    title: '', 
-    description: '', 
-    category: 'Yoga', 
-    price: '', 
-    duration: '', 
-    durationMonths: 1, 
-    startDate: '', 
-    endDate: '', 
-    startTime: '06:00', 
-    endTime: '07:15', 
-    selectedSessionDates: [], 
-    topics: '', 
-    level: 'Beginner', 
-    language: 'English', 
-    accessValidity: '2 Months', 
+    title: '',
+    description: '',
+    category: 'Yoga',
+    price: '',
+    duration: '',
+    durationMonths: 1,
+    startDate: '',
+    endDate: '',
+    startTime: '06:00',
+    endTime: '07:15',
+    selectedSessionDates: [],
+    topics: '',
+    level: 'Beginner',
+    language: 'English',
+    accessValidity: '2 Months',
     whatYouWillLearn: '',
     instructorId: '',
     whatsappGroupLink: ''
@@ -60,7 +60,7 @@ const CourseManagement = () => {
   });
   const [rescheduling, setRescheduling] = useState(false);
   const [rescheduleMsg, setRescheduleMsg] = useState('');
-  
+
   // Files
   const [thumbnailFile, setThumbnailFile] = useState(null);
   const [uploading, setUploading] = useState(false);
@@ -79,7 +79,7 @@ const CourseManagement = () => {
     try {
       const headers = { Authorization: `Bearer ${localStorage.getItem('adminToken')}` };
       const instRes = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/admin/instructors`, { headers });
-      
+
       if (instRes.data?.success) {
         setInstructors(instRes.data.data.filter(i => i.status !== 'inactive'));
       }
@@ -134,8 +134,8 @@ const CourseManagement = () => {
         price: course.price !== undefined ? course.price : 0,
         duration: course.duration || '',
         durationMonths: course.durationMonths || 1,
-        startDate: course.startDate ? (() => { const d = new Date(course.startDate); return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`; })() : '',
-        endDate: course.endDate ? (() => { const d = new Date(course.endDate); return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`; })() : '',
+        startDate: course.startDate ? (() => { const d = new Date(course.startDate); return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`; })() : '',
+        endDate: course.endDate ? (() => { const d = new Date(course.endDate); return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`; })() : '',
         startTime: course.startTime || (course.timings ? course.timings.split(' to ')[0] : '06:00'),
         endTime: course.endTime || (course.timings ? course.timings.split(' to ')[1] : '07:15'),
         selectedSessionDates: course.sessionDates || [],
@@ -149,22 +149,22 @@ const CourseManagement = () => {
       });
     } else {
       setEditingCourse(null);
-      setFormData({ 
-        title: '', 
-        description: '', 
-        category: settings.categories.length > 0 ? settings.categories[0] : 'Yoga', 
-        price: '', 
-        duration: '', 
-        durationMonths: 1, 
-        startDate: '', 
-        endDate: '', 
-        startTime: '06:00', 
-        endTime: '07:15', 
-        selectedSessionDates: [], 
-        topics: '', 
-        level: 'Beginner', 
-        language: 'English', 
-        accessValidity: '2 Months', 
+      setFormData({
+        title: '',
+        description: '',
+        category: settings.categories.length > 0 ? settings.categories[0] : 'Yoga',
+        price: '',
+        duration: '',
+        durationMonths: 1,
+        startDate: '',
+        endDate: '',
+        startTime: '06:00',
+        endTime: '07:15',
+        selectedSessionDates: [],
+        topics: '',
+        level: 'Beginner',
+        language: 'English',
+        accessValidity: '2 Months',
         whatYouWillLearn: '',
         instructorId: instructors.length > 0 ? instructors[0]._id : '',
         whatsappGroupLink: ''
@@ -245,7 +245,7 @@ const CourseManagement = () => {
 
       if (res.data.success) {
         setRescheduleMsg('Class session rescheduled successfully with a fresh Zoom meeting!');
-        
+
         // Refresh timetable list
         if (timetableCourse) {
           const refreshRes = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/classes`, {
@@ -287,7 +287,7 @@ const CourseManagement = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setUploading(true);
-    
+
     let computedDurationMonths = 1;
     if (formData.startDate && formData.endDate) {
       const sDate = new Date(formData.startDate);
@@ -295,7 +295,7 @@ const CourseManagement = () => {
       const months = (eDate.getFullYear() - sDate.getFullYear()) * 12 + (eDate.getMonth() - sDate.getMonth());
       computedDurationMonths = months > 0 ? months : 1;
     }
-    
+
     try {
       const data = new FormData();
       Object.keys(formData).forEach(key => {
@@ -317,7 +317,7 @@ const CourseManagement = () => {
       });
       if (thumbnailFile) data.append('thumbnail', thumbnailFile);
 
-      const headers = { 
+      const headers = {
         Authorization: `Bearer ${localStorage.getItem('adminToken')}`,
         'Content-Type': 'multipart/form-data'
       };
@@ -340,7 +340,7 @@ const CourseManagement = () => {
 
   return (
     <div className="space-y-8 pb-24 md:pb-8 font-inter">
-      
+
       {/* Top Banner Header */}
       <div className="bg-white/60 backdrop-blur-2xl rounded-[2.5rem] p-6 lg:p-8 border border-white/80 shadow-[0_8px_32px_rgba(0,0,0,0.03)] flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
@@ -352,7 +352,7 @@ const CourseManagement = () => {
             Configure programs, assign lead instructors, manage daily class timetables, and reschedule sessions with Zoom.
           </p>
         </div>
-        
+
         <button
           onClick={() => handleOpenModal()}
           className="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3.5 px-6 rounded-2xl shadow-[0_6px_20px_rgba(41,120,56,0.3)] transition-all flex items-center gap-2.5 w-max text-xs lg:text-sm group cursor-pointer"
@@ -373,9 +373,9 @@ const CourseManagement = () => {
             const assignedInstructorSpeciality = course.instructorId?.speciality;
 
             return (
-              <motion.div 
+              <motion.div
                 key={course._id}
-                initial={{ opacity: 0, scale: 0.96 }} 
+                initial={{ opacity: 0, scale: 0.96 }}
                 animate={{ opacity: 1, scale: 1 }}
                 className="bg-white/75 backdrop-blur-2xl rounded-[2.25rem] border border-white/80 flex flex-col shadow-[0_8px_30px_rgba(0,0,0,0.03)] hover:shadow-[0_16px_40px_rgba(0,0,0,0.08)] hover:-translate-y-1.5 transition-all duration-300 overflow-hidden group"
               >
@@ -400,7 +400,7 @@ const CourseManagement = () => {
                     )}
                   </div>
                 </div>
-                
+
                 {/* Structured Content Section */}
                 <div className="p-6 flex-1 flex flex-col">
                   <div className="flex justify-between items-start mb-3">
@@ -429,7 +429,7 @@ const CourseManagement = () => {
                       </span>
                     </div>
                   </div>
-                  
+
                   <div className="grid grid-cols-2 gap-2 text-xs text-gray-600 mb-6 bg-slate-50 p-3.5 rounded-2xl border border-gray-200/50">
                     <div>
                       <span className="text-[10px] uppercase font-bold text-gray-400 block">Fee</span>
@@ -450,18 +450,18 @@ const CourseManagement = () => {
                       </span>
                     </div>
                   </div>
-                  
+
                   {/* Actions Footer */}
                   <div className="mt-auto pt-4 border-t border-gray-100 flex items-center justify-between gap-2 flex-wrap">
                     <div className="flex items-center gap-1.5">
-                      <button 
-                        onClick={() => handleViewEnrollments(course)} 
+                      <button
+                        onClick={() => handleViewEnrollments(course)}
                         className="px-3 py-1.5 bg-indigo-600/10 text-indigo-600 hover:bg-indigo-600 hover:text-white transition-all rounded-xl text-xs font-bold cursor-pointer"
                       >
                         Students
                       </button>
-                      <button 
-                        onClick={() => handleOpenTimetable(course)} 
+                      <button
+                        onClick={() => handleOpenTimetable(course)}
                         className="px-3 py-1.5 bg-indigo-100/80 text-indigo-950 hover:bg-indigo-700 hover:text-white transition-all rounded-xl text-xs font-bold flex items-center gap-1 cursor-pointer border border-indigo-300/60"
                         title="Manage Sessions & Reschedule Classes"
                       >
@@ -471,16 +471,16 @@ const CourseManagement = () => {
                     </div>
 
                     <div className="flex items-center gap-1.5">
-                      <button 
-                        onClick={() => handleOpenModal(course)} 
-                        className="w-8 h-8 flex items-center justify-center rounded-xl bg-indigo-50 text-indigo-800 hover:bg-indigo-600 hover:text-white transition-all shadow-xs cursor-pointer" 
+                      <button
+                        onClick={() => handleOpenModal(course)}
+                        className="w-8 h-8 flex items-center justify-center rounded-xl bg-indigo-50 text-indigo-800 hover:bg-indigo-600 hover:text-white transition-all shadow-xs cursor-pointer"
                         title="Edit Course"
                       >
                         <FaEdit size={12} />
                       </button>
-                      <button 
-                        onClick={() => handleDelete(course._id)} 
-                        className="w-8 h-8 flex items-center justify-center rounded-xl bg-red-50 text-red-600 hover:bg-red-600 hover:text-white transition-all shadow-xs cursor-pointer" 
+                      <button
+                        onClick={() => handleDelete(course._id)}
+                        className="w-8 h-8 flex items-center justify-center rounded-xl bg-red-50 text-red-600 hover:bg-red-600 hover:text-white transition-all shadow-xs cursor-pointer"
                         title="Delete Course"
                       >
                         <FaTrash size={12} />
@@ -503,25 +503,25 @@ const CourseManagement = () => {
       <AnimatePresence>
         {isEnrolledModalOpen && (
           <div className="fixed inset-0 z-40 flex justify-end">
-            <motion.div 
+            <motion.div
               initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
               className="absolute inset-0 bg-indigo-700/20 backdrop-blur-sm"
               onClick={() => setIsEnrolledModalOpen(false)}
             />
-            <motion.div 
+            <motion.div
               initial={{ x: '100%' }} animate={{ x: 0 }} exit={{ x: '100%' }} transition={{ type: 'spring', bounce: 0, duration: 0.4 }}
               className="bg-white/40 backdrop-blur-3xl border-l border-white/60 shadow-[-20px_0_40px_rgba(0,0,0,0.08)] w-full max-w-md h-full overflow-y-auto relative z-10 p-6 flex flex-col"
             >
-              <button 
+              <button
                 onClick={() => setIsEnrolledModalOpen(false)}
                 className="absolute top-6 right-6 text-gray-500 hover:text-indigo-600 bg-white/60 backdrop-blur-md p-2.5 rounded-full border border-white/50 shadow-sm transition-all z-20 cursor-pointer"
               >
                 <FaTimes />
               </button>
-              
+
               <h2 className="text-xl font-bold text-gray-800 mb-2 mt-2">Enrolled Students</h2>
               <p className="text-indigo-600 font-semibold text-sm mb-6 line-clamp-1">{enrolledCourse?.title}</p>
-              
+
               <div className="flex-1 overflow-y-auto pr-2">
                 {loadingEnrollments ? (
                   <div className="flex justify-center p-8"><div className="w-6 h-6 border-2 border-indigo-600 border-t-transparent rounded-full animate-spin"></div></div>
@@ -552,16 +552,16 @@ const CourseManagement = () => {
       <AnimatePresence>
         {isTimetableOpen && (
           <div className="fixed inset-0 z-40 flex justify-end">
-            <motion.div 
+            <motion.div
               initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
               className="absolute inset-0 bg-indigo-700/20 backdrop-blur-sm"
               onClick={() => setIsTimetableOpen(false)}
             />
-            <motion.div 
+            <motion.div
               initial={{ x: '100%' }} animate={{ x: 0 }} exit={{ x: '100%' }} transition={{ type: 'spring', bounce: 0, duration: 0.4 }}
               className="bg-white/50 backdrop-blur-3xl border-l border-white/60 shadow-[-20px_0_40px_rgba(0,0,0,0.08)] w-full max-w-2xl h-full overflow-y-auto relative z-10 p-6 md:p-8 flex flex-col"
             >
-              <button 
+              <button
                 onClick={() => setIsTimetableOpen(false)}
                 className="absolute top-6 right-6 text-gray-500 hover:text-indigo-600 bg-white/60 backdrop-blur-md p-2.5 rounded-full border border-white/50 shadow-sm transition-all z-20 cursor-pointer"
               >
@@ -592,7 +592,7 @@ const CourseManagement = () => {
                     const formattedDate = d.toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric', weekday: 'short' });
 
                     return (
-                      <div 
+                      <div
                         key={cls._id}
                         className="bg-white/80 backdrop-blur-md p-4 md:p-5 rounded-2xl border border-white/90 shadow-sm hover:shadow-md transition-all flex flex-col sm:flex-row sm:items-center justify-between gap-4"
                       >
@@ -649,14 +649,14 @@ const CourseManagement = () => {
       <AnimatePresence>
         {isRescheduleOpen && (
           <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
-            <motion.div 
+            <motion.div
               initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
               className="absolute inset-0 bg-black/60 backdrop-blur-sm"
               onClick={() => !rescheduling && setIsRescheduleOpen(false)}
             />
-            <motion.div 
-              initial={{ opacity: 0, scale: 0.95, y: 15 }} 
-              animate={{ opacity: 1, scale: 1, y: 0 }} 
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95, y: 15 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.95, y: 15 }}
               className="relative bg-white w-full max-w-lg rounded-[2.25rem] p-6 md:p-8 shadow-2xl z-10"
             >
@@ -667,7 +667,7 @@ const CourseManagement = () => {
                   </h2>
                   <p className="text-xs text-gray-400 mt-0.5 line-clamp-1">{selectedClassToReschedule?.title}</p>
                 </div>
-                <button 
+                <button
                   onClick={() => !rescheduling && setIsRescheduleOpen(false)}
                   className="w-9 h-9 rounded-full bg-gray-100 hover:bg-gray-200 flex items-center justify-center text-gray-500 cursor-pointer"
                 >
@@ -682,15 +682,15 @@ const CourseManagement = () => {
               )}
 
               <form onSubmit={handleRescheduleSubmit} className="space-y-4">
-                
+
                 <div className="space-y-1.5">
                   <label className="block text-xs font-extrabold text-gray-700 uppercase tracking-wider">
                     Session Title / Topic
                   </label>
-                  <input 
-                    type="text" 
+                  <input
+                    type="text"
                     required
-                    value={rescheduleForm.newTitle} 
+                    value={rescheduleForm.newTitle}
                     onChange={e => setRescheduleForm({ ...rescheduleForm, newTitle: e.target.value })}
                     className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-2xl text-sm font-medium focus:bg-white focus:ring-2 focus:ring-indigo-600/20 outline-none"
                   />
@@ -701,10 +701,10 @@ const CourseManagement = () => {
                     <label className="block text-xs font-extrabold text-gray-700 uppercase tracking-wider">
                       New Date *
                     </label>
-                    <input 
-                      type="date" 
+                    <input
+                      type="date"
                       required
-                      value={rescheduleForm.newDate} 
+                      value={rescheduleForm.newDate}
                       onChange={e => setRescheduleForm({ ...rescheduleForm, newDate: e.target.value })}
                       className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-2xl text-sm font-medium focus:bg-white focus:ring-2 focus:ring-indigo-600/20 outline-none"
                     />
@@ -714,10 +714,10 @@ const CourseManagement = () => {
                     <label className="block text-xs font-extrabold text-gray-700 uppercase tracking-wider">
                       New Start Time *
                     </label>
-                    <input 
-                      type="time" 
+                    <input
+                      type="time"
                       required
-                      value={rescheduleForm.newTime} 
+                      value={rescheduleForm.newTime}
                       onChange={e => setRescheduleForm({ ...rescheduleForm, newTime: e.target.value })}
                       className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-2xl text-sm font-medium focus:bg-white focus:ring-2 focus:ring-indigo-600/20 outline-none"
                     />
@@ -728,7 +728,7 @@ const CourseManagement = () => {
                   <label className="block text-xs font-extrabold text-gray-700 uppercase tracking-wider">
                     Duration (Minutes)
                   </label>
-                  <select 
+                  <select
                     value={rescheduleForm.durationMinutes}
                     onChange={e => setRescheduleForm({ ...rescheduleForm, durationMinutes: parseInt(e.target.value, 10) })}
                     className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-2xl text-sm font-medium focus:bg-white focus:ring-2 focus:ring-indigo-600/20 outline-none"
@@ -746,7 +746,7 @@ const CourseManagement = () => {
                 </div>
 
                 <div className="flex items-center justify-end gap-3 pt-4 border-t border-gray-100">
-                  <button 
+                  <button
                     type="button"
                     disabled={rescheduling}
                     onClick={() => setIsRescheduleOpen(false)}
@@ -754,7 +754,7 @@ const CourseManagement = () => {
                   >
                     Cancel
                   </button>
-                  <button 
+                  <button
                     type="submit"
                     disabled={rescheduling}
                     className="px-7 py-3 rounded-2xl bg-indigo-600 hover:bg-indigo-700 text-white font-extrabold text-xs shadow-md disabled:opacity-60 flex items-center gap-2 cursor-pointer"
@@ -775,12 +775,12 @@ const CourseManagement = () => {
       <AnimatePresence>
         {isModalOpen && (
           <div className="fixed inset-0 z-40 flex justify-end">
-            <motion.div 
+            <motion.div
               initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
               className="absolute inset-0 bg-indigo-700/20 backdrop-blur-sm"
               onClick={() => !uploading && setIsModalOpen(false)}
             />
-            <motion.div 
+            <motion.div
               initial={{ x: '100%' }} animate={{ x: 0 }} exit={{ x: '100%' }} transition={{ type: 'spring', bounce: 0, duration: 0.4 }}
               className="bg-white/40 backdrop-blur-3xl border-l border-white/60 shadow-[-20px_0_40px_rgba(0,0,0,0.08)] w-full max-w-2xl h-full overflow-y-auto relative z-10 p-6 md:p-10 flex flex-col overflow-x-hidden"
             >
@@ -788,22 +788,22 @@ const CourseManagement = () => {
               <div className="absolute top-[-5%] right-[-10%] w-72 h-72 bg-indigo-600/30 rounded-full blur-[90px] pointer-events-none"></div>
               <div className="absolute bottom-[20%] left-[-10%] w-64 h-64 bg-[#d67b22]/20 rounded-full blur-[90px] pointer-events-none"></div>
 
-              <button 
+              <button
                 onClick={() => !uploading && setIsModalOpen(false)}
                 className="absolute top-6 right-6 text-gray-500 hover:text-indigo-600 bg-white/60 backdrop-blur-md p-2.5 rounded-full border border-white/50 shadow-sm transition-all z-20 cursor-pointer"
               >
                 <FaTimes />
               </button>
-              
+
               <h2 className="text-2xl font-bold text-gray-800 mb-6 relative z-10">{editingCourse ? 'Edit Course' : 'Create New Course'}</h2>
-              
+
               <form onSubmit={handleSubmit} className="space-y-6 flex-1 flex flex-col relative z-10">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6 flex-1">
-                  
+
                   {/* Course Title */}
                   <div className="col-span-full">
                     <label className="block text-sm font-semibold text-gray-700 mb-1.5">Course Title *</label>
-                    <input type="text" required value={formData.title} onChange={e => setFormData({...formData, title: e.target.value})} className="w-full p-3.5 bg-white/50 backdrop-blur-md border border-white/60 rounded-xl focus:border-indigo-600 focus:bg-white/70 focus:ring-2 focus:ring-indigo-600/20 outline-none shadow-[inset_0_2px_4px_rgba(0,0,0,0.02)] transition-all font-medium" placeholder="e.g. Full Stack Web Development" />
+                    <input type="text" required value={formData.title} onChange={e => setFormData({ ...formData, title: e.target.value })} className="w-full p-3.5 bg-white/50 backdrop-blur-md border border-white/60 rounded-xl focus:border-indigo-600 focus:bg-white/70 focus:ring-2 focus:ring-indigo-600/20 outline-none shadow-[inset_0_2px_4px_rgba(0,0,0,0.02)] transition-all font-medium" placeholder="e.g. Full Stack Web Development" />
                   </div>
 
                   {/* ASSIGN INSTRUCTOR SELECTOR */}
@@ -811,9 +811,9 @@ const CourseManagement = () => {
                     <label className="block text-sm font-semibold text-gray-700 mb-1.5 flex items-center gap-1.5">
                       <FaChalkboardTeacher className="text-indigo-600" /> Assign Lead Instructor *
                     </label>
-                    <select 
-                      value={formData.instructorId} 
-                      onChange={e => setFormData({...formData, instructorId: e.target.value})} 
+                    <select
+                      value={formData.instructorId}
+                      onChange={e => setFormData({ ...formData, instructorId: e.target.value })}
                       className="w-full p-3.5 bg-white/50 backdrop-blur-md border border-white/60 rounded-xl outline-none focus:bg-white/70 focus:border-indigo-600 transition-all shadow-[inset_0_2px_4px_rgba(0,0,0,0.02)] font-medium"
                     >
                       <option value="">-- Select Registered Instructor --</option>
@@ -831,12 +831,12 @@ const CourseManagement = () => {
                       <FaWhatsapp className="text-[#25D366]" size={16} /> Official Batch WhatsApp Group Link
                     </label>
                     <div className="relative">
-                      <input 
-                        type="url" 
-                        value={formData.whatsappGroupLink} 
-                        onChange={e => setFormData({...formData, whatsappGroupLink: e.target.value})} 
-                        className="w-full p-3.5 pl-10 bg-white/50 backdrop-blur-md border border-white/60 rounded-xl focus:border-indigo-600 focus:bg-white/70 focus:ring-2 focus:ring-indigo-600/20 outline-none shadow-[inset_0_2px_4px_rgba(0,0,0,0.02)] transition-all font-medium text-sm" 
-                        placeholder="https://chat.whatsapp.com/..." 
+                      <input
+                        type="url"
+                        value={formData.whatsappGroupLink}
+                        onChange={e => setFormData({ ...formData, whatsappGroupLink: e.target.value })}
+                        className="w-full p-3.5 pl-10 bg-white/50 backdrop-blur-md border border-white/60 rounded-xl focus:border-indigo-600 focus:bg-white/70 focus:ring-2 focus:ring-indigo-600/20 outline-none shadow-[inset_0_2px_4px_rgba(0,0,0,0.02)] transition-all font-medium text-sm"
+                        placeholder="https://chat.whatsapp.com/..."
                       />
                       <FaWhatsapp className="absolute left-3.5 top-4 text-[#25D366]" size={16} />
                     </div>
@@ -848,21 +848,21 @@ const CourseManagement = () => {
                   {/* Fee */}
                   <div>
                     <label className="block text-sm font-semibold text-gray-700 mb-1.5">Course Fee (₹ INR) *</label>
-                    <input 
-                      type="number" 
+                    <input
+                      type="number"
                       min="0"
-                      required 
-                      value={formData.price} 
-                      onChange={e => setFormData({...formData, price: e.target.value})} 
-                      className="w-full p-3.5 bg-white/50 backdrop-blur-md border border-white/60 rounded-xl focus:border-indigo-600 focus:bg-white/70 focus:ring-2 focus:ring-indigo-600/20 outline-none shadow-[inset_0_2px_4px_rgba(0,0,0,0.02)] transition-all font-semibold" 
-                      placeholder="e.g. 999" 
+                      required
+                      value={formData.price}
+                      onChange={e => setFormData({ ...formData, price: e.target.value })}
+                      className="w-full p-3.5 bg-white/50 backdrop-blur-md border border-white/60 rounded-xl focus:border-indigo-600 focus:bg-white/70 focus:ring-2 focus:ring-indigo-600/20 outline-none shadow-[inset_0_2px_4px_rgba(0,0,0,0.02)] transition-all font-semibold"
+                      placeholder="e.g. 999"
                     />
                   </div>
-                  
+
                   {/* Category */}
                   <div>
                     <label className="block text-sm font-semibold text-gray-700 mb-1.5">Category *</label>
-                    <select value={formData.category} onChange={e => setFormData({...formData, category: e.target.value})} className="w-full p-3.5 bg-white/50 backdrop-blur-md border border-white/60 rounded-xl outline-none focus:bg-white/70 focus:border-indigo-600 transition-all shadow-[inset_0_2px_4px_rgba(0,0,0,0.02)] font-medium">
+                    <select value={formData.category} onChange={e => setFormData({ ...formData, category: e.target.value })} className="w-full p-3.5 bg-white/50 backdrop-blur-md border border-white/60 rounded-xl outline-none focus:bg-white/70 focus:border-indigo-600 transition-all shadow-[inset_0_2px_4px_rgba(0,0,0,0.02)] font-medium">
                       {settings.categories.map((cat, idx) => (
                         <option key={idx} value={cat}>{cat}</option>
                       ))}
@@ -873,7 +873,7 @@ const CourseManagement = () => {
                   {/* Language */}
                   <div>
                     <label className="block text-sm font-semibold text-gray-700 mb-1.5">Instruction Language</label>
-                    <select value={formData.language} onChange={e => setFormData({...formData, language: e.target.value})} className="w-full p-3.5 bg-white/50 backdrop-blur-md border border-white/60 rounded-xl outline-none focus:bg-white/70 focus:border-indigo-600 transition-all shadow-[inset_0_2px_4px_rgba(0,0,0,0.02)] font-medium">
+                    <select value={formData.language} onChange={e => setFormData({ ...formData, language: e.target.value })} className="w-full p-3.5 bg-white/50 backdrop-blur-md border border-white/60 rounded-xl outline-none focus:bg-white/70 focus:border-indigo-600 transition-all shadow-[inset_0_2px_4px_rgba(0,0,0,0.02)] font-medium">
                       <option value="English">English</option>
                       <option value="Telugu">Telugu</option>
                       <option value="English & Telugu">English & Telugu</option>
@@ -885,7 +885,7 @@ const CourseManagement = () => {
                   {/* Access Validity */}
                   <div>
                     <label className="block text-sm font-semibold text-gray-700 mb-1.5">Access Validity After Completion</label>
-                    <select value={formData.accessValidity} onChange={e => setFormData({...formData, accessValidity: e.target.value})} className="w-full p-3.5 bg-white/50 backdrop-blur-md border border-white/60 rounded-xl outline-none focus:bg-white/70 focus:border-indigo-600 transition-all shadow-[inset_0_2px_4px_rgba(0,0,0,0.02)] font-medium">
+                    <select value={formData.accessValidity} onChange={e => setFormData({ ...formData, accessValidity: e.target.value })} className="w-full p-3.5 bg-white/50 backdrop-blur-md border border-white/60 rounded-xl outline-none focus:bg-white/70 focus:border-indigo-600 transition-all shadow-[inset_0_2px_4px_rgba(0,0,0,0.02)] font-medium">
                       <option value="1 Month">1 Month Access</option>
                       <option value="2 Months">2 Months Access</option>
                       <option value="3 Months">3 Months Access</option>
@@ -898,7 +898,7 @@ const CourseManagement = () => {
                   {/* Level */}
                   <div>
                     <label className="block text-sm font-semibold text-gray-700 mb-1.5">Proficiency Level</label>
-                    <select value={formData.level} onChange={e => setFormData({...formData, level: e.target.value})} className="w-full p-3.5 bg-white/50 backdrop-blur-md border border-white/60 rounded-xl outline-none focus:bg-white/70 focus:border-indigo-600 transition-all shadow-[inset_0_2px_4px_rgba(0,0,0,0.02)] font-medium">
+                    <select value={formData.level} onChange={e => setFormData({ ...formData, level: e.target.value })} className="w-full p-3.5 bg-white/50 backdrop-blur-md border border-white/60 rounded-xl outline-none focus:bg-white/70 focus:border-indigo-600 transition-all shadow-[inset_0_2px_4px_rgba(0,0,0,0.02)] font-medium">
                       <option>Beginner</option><option>Intermediate</option><option>Advanced</option>
                     </select>
                   </div>
@@ -906,24 +906,24 @@ const CourseManagement = () => {
                   {/* Dates */}
                   <div>
                     <label className="block text-sm font-semibold text-gray-700 mb-1.5">Start Date</label>
-                    <input type="date" value={formData.startDate} onChange={e => setFormData({...formData, startDate: e.target.value})} className="w-full p-3.5 bg-white/50 backdrop-blur-md border border-white/60 rounded-xl outline-none focus:bg-white/70 focus:border-indigo-600 transition-all shadow-[inset_0_2px_4px_rgba(0,0,0,0.02)] font-medium" />
+                    <input type="date" value={formData.startDate} onChange={e => setFormData({ ...formData, startDate: e.target.value })} className="w-full p-3.5 bg-white/50 backdrop-blur-md border border-white/60 rounded-xl outline-none focus:bg-white/70 focus:border-indigo-600 transition-all shadow-[inset_0_2px_4px_rgba(0,0,0,0.02)] font-medium" />
                   </div>
                   <div>
                     <label className="block text-sm font-semibold text-gray-700 mb-1.5">End Date</label>
-                    <input type="date" value={formData.endDate} onChange={e => setFormData({...formData, endDate: e.target.value})} className="w-full p-3.5 bg-white/50 backdrop-blur-md border border-white/60 rounded-xl outline-none focus:bg-white/70 focus:border-indigo-600 transition-all shadow-[inset_0_2px_4px_rgba(0,0,0,0.02)] font-medium" />
+                    <input type="date" value={formData.endDate} onChange={e => setFormData({ ...formData, endDate: e.target.value })} className="w-full p-3.5 bg-white/50 backdrop-blur-md border border-white/60 rounded-xl outline-none focus:bg-white/70 focus:border-indigo-600 transition-all shadow-[inset_0_2px_4px_rgba(0,0,0,0.02)] font-medium" />
                   </div>
 
                   {/* Session Timings */}
                   <div className="col-span-full">
                     <label className="block text-sm font-semibold text-gray-700 mb-1.5">Daily Session Timings</label>
                     <div className="flex flex-col sm:flex-row gap-3">
-                      
+
                       {/* Start Time Picker */}
                       <div className="flex items-center gap-2">
                         <span className="text-sm font-bold text-gray-500 w-12">Start:</span>
                         <div className="flex items-center gap-1 bg-white/50 backdrop-blur-md border border-white/60 rounded-xl p-1 shadow-[inset_0_2px_4px_rgba(0,0,0,0.02)]">
-                          <select 
-                            value={formData.startTime ? (parseInt(formData.startTime.split(':')[0]) % 12 || 12).toString().padStart(2, '0') : '06'} 
+                          <select
+                            value={formData.startTime ? (parseInt(formData.startTime.split(':')[0]) % 12 || 12).toString().padStart(2, '0') : '06'}
                             onChange={e => {
                               const h = parseInt(e.target.value);
                               const isPM = formData.startTime && parseInt(formData.startTime.split(':')[0]) >= 12;
@@ -931,32 +931,32 @@ const CourseManagement = () => {
                               let newH = h;
                               if (isPM && h !== 12) newH += 12;
                               if (!isPM && h === 12) newH = 0;
-                              setFormData({...formData, startTime: `${newH.toString().padStart(2, '0')}:${min}`});
+                              setFormData({ ...formData, startTime: `${newH.toString().padStart(2, '0')}:${min}` });
                             }}
                             className="p-2 bg-transparent outline-none appearance-none cursor-pointer font-medium"
                           >
-                            {[...Array(12)].map((_, i) => <option key={i+1} value={(i+1).toString().padStart(2, '0')}>{(i+1).toString().padStart(2, '0')}</option>)}
+                            {[...Array(12)].map((_, i) => <option key={i + 1} value={(i + 1).toString().padStart(2, '0')}>{(i + 1).toString().padStart(2, '0')}</option>)}
                           </select>
                           <span className="font-bold">:</span>
-                          <select 
-                            value={formData.startTime ? formData.startTime.split(':')[1] : '00'} 
+                          <select
+                            value={formData.startTime ? formData.startTime.split(':')[1] : '00'}
                             onChange={e => {
                               const h = formData.startTime ? formData.startTime.split(':')[0] : '06';
-                              setFormData({...formData, startTime: `${h}:${e.target.value}`});
+                              setFormData({ ...formData, startTime: `${h}:${e.target.value}` });
                             }}
                             className="p-2 bg-transparent outline-none appearance-none cursor-pointer font-medium"
                           >
                             {['00', '15', '30', '45'].map(m => <option key={m} value={m}>{m}</option>)}
                           </select>
-                          <select 
-                            value={formData.startTime && parseInt(formData.startTime.split(':')[0]) >= 12 ? 'PM' : 'AM'} 
+                          <select
+                            value={formData.startTime && parseInt(formData.startTime.split(':')[0]) >= 12 ? 'PM' : 'AM'}
                             onChange={e => {
                               const isPM = e.target.value === 'PM';
                               let h = parseInt(formData.startTime ? formData.startTime.split(':')[0] : '6');
                               const min = formData.startTime ? formData.startTime.split(':')[1] : '00';
                               if (isPM && h < 12) h += 12;
                               if (!isPM && h >= 12) h -= 12;
-                              setFormData({...formData, startTime: `${h.toString().padStart(2, '0')}:${min}`});
+                              setFormData({ ...formData, startTime: `${h.toString().padStart(2, '0')}:${min}` });
                             }}
                             className="p-2 bg-transparent outline-none appearance-none cursor-pointer font-bold text-indigo-600"
                           >
@@ -969,8 +969,8 @@ const CourseManagement = () => {
                       <div className="flex items-center gap-2">
                         <span className="text-sm font-bold text-gray-500 w-12">End:</span>
                         <div className="flex items-center gap-1 bg-white/50 backdrop-blur-md border border-white/60 rounded-xl p-1 shadow-[inset_0_2px_4px_rgba(0,0,0,0.02)]">
-                          <select 
-                            value={formData.endTime ? (parseInt(formData.endTime.split(':')[0]) % 12 || 12).toString().padStart(2, '0') : '07'} 
+                          <select
+                            value={formData.endTime ? (parseInt(formData.endTime.split(':')[0]) % 12 || 12).toString().padStart(2, '0') : '07'}
                             onChange={e => {
                               const h = parseInt(e.target.value);
                               const isPM = formData.endTime && parseInt(formData.endTime.split(':')[0]) >= 12;
@@ -978,32 +978,32 @@ const CourseManagement = () => {
                               let newH = h;
                               if (isPM && h !== 12) newH += 12;
                               if (!isPM && h === 12) newH = 0;
-                              setFormData({...formData, endTime: `${newH.toString().padStart(2, '0')}:${min}`});
+                              setFormData({ ...formData, endTime: `${newH.toString().padStart(2, '0')}:${min}` });
                             }}
                             className="p-2 bg-transparent outline-none appearance-none cursor-pointer font-medium"
                           >
-                            {[...Array(12)].map((_, i) => <option key={i+1} value={(i+1).toString().padStart(2, '0')}>{(i+1).toString().padStart(2, '0')}</option>)}
+                            {[...Array(12)].map((_, i) => <option key={i + 1} value={(i + 1).toString().padStart(2, '0')}>{(i + 1).toString().padStart(2, '0')}</option>)}
                           </select>
                           <span className="font-bold">:</span>
-                          <select 
-                            value={formData.endTime ? formData.endTime.split(':')[1] : '15'} 
+                          <select
+                            value={formData.endTime ? formData.endTime.split(':')[1] : '15'}
                             onChange={e => {
                               const h = formData.endTime ? formData.endTime.split(':')[0] : '07';
-                              setFormData({...formData, endTime: `${h}:${e.target.value}`});
+                              setFormData({ ...formData, endTime: `${h}:${e.target.value}` });
                             }}
                             className="p-2 bg-transparent outline-none appearance-none cursor-pointer font-medium"
                           >
                             {['00', '15', '30', '45'].map(m => <option key={m} value={m}>{m}</option>)}
                           </select>
-                          <select 
-                            value={formData.endTime && parseInt(formData.endTime.split(':')[0]) >= 12 ? 'PM' : 'AM'} 
+                          <select
+                            value={formData.endTime && parseInt(formData.endTime.split(':')[0]) >= 12 ? 'PM' : 'AM'}
                             onChange={e => {
                               const isPM = e.target.value === 'PM';
                               let h = parseInt(formData.endTime ? formData.endTime.split(':')[0] : '7');
                               const min = formData.endTime ? formData.endTime.split(':')[1] : '15';
                               if (isPM && h < 12) h += 12;
                               if (!isPM && h >= 12) h -= 12;
-                              setFormData({...formData, endTime: `${h.toString().padStart(2, '0')}:${min}`});
+                              setFormData({ ...formData, endTime: `${h.toString().padStart(2, '0')}:${min}` });
                             }}
                             className="p-2 bg-transparent outline-none appearance-none cursor-pointer font-bold text-indigo-600"
                           >
@@ -1031,13 +1031,13 @@ const CourseManagement = () => {
                             const start = new Date(formData.startDate);
                             const end = new Date(formData.endDate);
                             const displayMonth = currentMonth || new Date(start.getFullYear(), start.getMonth(), 1);
-                            
+
                             const nextMonth = () => setCurrentMonth(new Date(displayMonth.getFullYear(), displayMonth.getMonth() + 1, 1));
                             const prevMonth = () => setCurrentMonth(new Date(displayMonth.getFullYear(), displayMonth.getMonth() - 1, 1));
 
                             const daysInMonth = new Date(displayMonth.getFullYear(), displayMonth.getMonth() + 1, 0).getDate();
                             const firstDayOfMonth = new Date(displayMonth.getFullYear(), displayMonth.getMonth(), 1).getDay();
-                            
+
                             const days = [];
                             for (let i = 0; i < firstDayOfMonth; i++) days.push(null);
                             for (let i = 1; i <= daysInMonth; i++) days.push(new Date(displayMonth.getFullYear(), displayMonth.getMonth(), i));
@@ -1057,15 +1057,15 @@ const CourseManagement = () => {
                                 <div className="grid grid-cols-7 gap-1 text-center">
                                   {days.map((day, idx) => {
                                     if (!day) return <div key={`empty-${idx}`} className="p-2"></div>;
-                                    
-                                    const dateStr = `${day.getFullYear()}-${String(day.getMonth()+1).padStart(2, '0')}-${String(day.getDate()).padStart(2, '0')}`;
+
+                                    const dateStr = `${day.getFullYear()}-${String(day.getMonth() + 1).padStart(2, '0')}-${String(day.getDate()).padStart(2, '0')}`;
                                     const isSelected = formData.selectedSessionDates.includes(dateStr);
-                                    
-                                    day.setHours(0,0,0,0);
-                                    const startCmp = new Date(start); startCmp.setHours(0,0,0,0);
-                                    const endCmp = new Date(end); endCmp.setHours(0,0,0,0);
+
+                                    day.setHours(0, 0, 0, 0);
+                                    const startCmp = new Date(start); startCmp.setHours(0, 0, 0, 0);
+                                    const endCmp = new Date(end); endCmp.setHours(0, 0, 0, 0);
                                     const isDisabled = day < startCmp || day > endCmp;
-                                    
+
                                     const isHoliday = holidays[dateStr];
                                     const isSunday = day.getDay() === 0;
                                     const isSpecialDay = isHoliday || isSunday;
@@ -1082,12 +1082,11 @@ const CourseManagement = () => {
                                               setFormData({ ...formData, selectedSessionDates: [...formData.selectedSessionDates, dateStr].sort() });
                                             }
                                           }}
-                                          className={`w-8 h-8 flex items-center justify-center rounded-full text-sm font-medium transition-colors cursor-pointer ${
-                                            isDisabled ? 'text-gray-300 cursor-not-allowed' :
-                                            isSelected ? 'bg-indigo-600 text-white shadow-md' : 
-                                            isSpecialDay ? 'text-red-500 bg-red-50 hover:bg-red-100' :
-                                            'text-gray-700 hover:bg-gray-100'
-                                          }`}
+                                          className={`w-8 h-8 flex items-center justify-center rounded-full text-sm font-medium transition-colors cursor-pointer ${isDisabled ? 'text-gray-300 cursor-not-allowed' :
+                                              isSelected ? 'bg-indigo-600 text-white shadow-md' :
+                                                isSpecialDay ? 'text-red-500 bg-red-50 hover:bg-red-100' :
+                                                  'text-gray-700 hover:bg-gray-100'
+                                            }`}
                                         >
                                           {day.getDate()}
                                         </button>
@@ -1104,7 +1103,7 @@ const CourseManagement = () => {
                             );
                           })()}
                         </div>
-                        
+
                         {/* Selected Dates List */}
                         <div className="flex-1 flex flex-col">
                           <h4 className="text-xs font-bold uppercase text-gray-500 mb-3 tracking-wider">Selected Sessions ({formData.selectedSessionDates.length})</h4>
@@ -1120,7 +1119,7 @@ const CourseManagement = () => {
                                   <div key={date} className="flex items-center gap-2 bg-white text-gray-700 pl-3 pr-2 py-1.5 rounded-lg text-sm font-medium border border-indigo-600/20 shadow-sm">
                                     <span className="text-indigo-600 font-bold text-xs">{dayName}</span>
                                     <span>{dateFmt}</span>
-                                    <button type="button" onClick={() => handleRemoveSessionDate(date)} className="text-gray-300 hover:text-red-500 ml-1 p-0.5 rounded transition-colors cursor-pointer"><FaTimes size={12}/></button>
+                                    <button type="button" onClick={() => handleRemoveSessionDate(date)} className="text-gray-300 hover:text-red-500 ml-1 p-0.5 rounded transition-colors cursor-pointer"><FaTimes size={12} /></button>
                                   </div>
                                 )
                               })
@@ -1133,17 +1132,17 @@ const CourseManagement = () => {
 
                   <div className="col-span-full">
                     <label className="block text-sm font-semibold text-gray-700 mb-1.5">About This Course</label>
-                    <textarea required rows="3" value={formData.description} onChange={e => setFormData({...formData, description: e.target.value})} className="w-full p-3.5 bg-white/50 backdrop-blur-md border border-white/60 rounded-xl focus:border-indigo-600 focus:bg-white/70 focus:ring-2 focus:ring-indigo-600/20 outline-none shadow-[inset_0_2px_4px_rgba(0,0,0,0.02)] transition-all resize-none font-medium" placeholder="This course helps you relax your mind..."></textarea>
+                    <textarea required rows="3" value={formData.description} onChange={e => setFormData({ ...formData, description: e.target.value })} className="w-full p-3.5 bg-white/50 backdrop-blur-md border border-white/60 rounded-xl focus:border-indigo-600 focus:bg-white/70 focus:ring-2 focus:ring-indigo-600/20 outline-none shadow-[inset_0_2px_4px_rgba(0,0,0,0.02)] transition-all resize-none font-medium" placeholder="This course helps you relax your mind..."></textarea>
                   </div>
-                  
+
                   <div className="col-span-full">
                     <label className="block text-sm font-semibold text-gray-700 mb-1.5">Topics Covered (One per line)</label>
-                    <textarea required rows="3" value={formData.topics} onChange={e => setFormData({...formData, topics: e.target.value})} className="w-full p-3.5 bg-white/50 backdrop-blur-md border border-white/60 rounded-xl focus:border-indigo-600 focus:bg-white/70 focus:ring-2 focus:ring-indigo-600/20 outline-none shadow-[inset_0_2px_4px_rgba(0,0,0,0.02)] transition-all resize-none font-medium" placeholder={`Introduction to Asana\nPranayama Breathing\nVedic Meditation`}></textarea>
+                    <textarea required rows="3" value={formData.topics} onChange={e => setFormData({ ...formData, topics: e.target.value })} className="w-full p-3.5 bg-white/50 backdrop-blur-md border border-white/60 rounded-xl focus:border-indigo-600 focus:bg-white/70 focus:ring-2 focus:ring-indigo-600/20 outline-none shadow-[inset_0_2px_4px_rgba(0,0,0,0.02)] transition-all resize-none font-medium" placeholder={``}></textarea>
                   </div>
-                  
+
                   <div className="col-span-full">
                     <label className="block text-sm font-semibold text-gray-700 mb-1.5">What You Will Learn (One per line)</label>
-                    <textarea required rows="3" value={formData.whatYouWillLearn} onChange={e => setFormData({...formData, whatYouWillLearn: e.target.value})} className="w-full p-3.5 bg-white/50 backdrop-blur-md border border-white/60 rounded-xl focus:border-indigo-600 focus:bg-white/70 focus:ring-2 focus:ring-indigo-600/20 outline-none shadow-[inset_0_2px_4px_rgba(0,0,0,0.02)] transition-all resize-none font-medium" placeholder={`Stress relief techniques\nBreathing exercises\nHolistic wellness practices`}></textarea>
+                    <textarea required rows="3" value={formData.whatYouWillLearn} onChange={e => setFormData({ ...formData, whatYouWillLearn: e.target.value })} className="w-full p-3.5 bg-white/50 backdrop-blur-md border border-white/60 rounded-xl focus:border-indigo-600 focus:bg-white/70 focus:ring-2 focus:ring-indigo-600/20 outline-none shadow-[inset_0_2px_4px_rgba(0,0,0,0.02)] transition-all resize-none font-medium" placeholder={``}></textarea>
                   </div>
 
                   {/* Media Uploads */}

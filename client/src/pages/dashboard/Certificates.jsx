@@ -272,7 +272,7 @@ const Certificates = () => {
                   >
                     {/* Official Certificate Template Background Image */}
                     <img 
-                      src="/certificate_template.jpg" 
+                      src="/certificate_template.png" 
                       alt="Certificate Background" 
                       className="absolute inset-0 w-full h-full object-fill pointer-events-none"
                     />
