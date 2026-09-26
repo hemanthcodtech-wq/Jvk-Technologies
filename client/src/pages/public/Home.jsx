@@ -435,17 +435,14 @@ const Home = () => {
               </div>
 
               {/* Main Headline */}
-              <h1 className="text-[2.6rem] font-black leading-[1.08] tracking-tight text-[#0F172A] sm:text-[3.25rem] md:text-[3.75rem] lg:text-[4.1rem]">
-                <span className="block">Learn New</span>
-                <span className="block">Technologies, Build</span>
-                <span className="block">Strong Skills,<span className="text-[#6366F1]"> and</span></span>
-                <span className="block text-[#6366F1]">Move Towards Your</span>
-                <span className="block text-[#6366F1]">Dream Job!</span>
+              <h1 className="text-[2.2rem] font-black leading-[1.1] tracking-tight text-[#0F172A] sm:text-[2.8rem] md:text-[3.2rem] lg:text-[3.6rem]">
+                <span className="block">Learn. Build.</span>
+                <span className="block text-[#6366F1]">Transform Your Career</span>
               </h1>
 
               {/* Subtitle */}
               <p className="mt-5 max-w-[500px] text-[15.5px] leading-[1.65] text-[#475569] sm:text-[16.5px] font-medium">
-                Industry-driven software training in Java Full Stack, Python, MERN, Cloud & DevOps with real-world capstone projects and 100% dedicated placement assistance.
+                Master ServiceNow, AI & Java Full Stack with AI through practical, industry-focused training designed to turn your skills into real career opportunities.
               </p>
 
               {/* Action Buttons */}
@@ -480,6 +477,35 @@ const Home = () => {
                     <span>{item.text}</span>
                   </div>
                 ))}
+              </div>
+              
+              {/* Stats Grid (Moved to Left Content) */}
+              <div className="mt-8 w-full max-w-[500px] relative z-20">
+                <div className="grid grid-cols-2 gap-3">
+                  {[
+                    { value: stats.studentsCount || 10000, suffix: stats.studentsSuffix || '+', label: 'Engineers Trained', icon: FaUsers, color: 'text-indigo-600', bg: 'bg-indigo-50 border-indigo-100' },
+                    { value: stats.coursesCount || 20, suffix: stats.coursesSuffix || '+', label: 'Tech Specializations', icon: FaLaptopCode, color: 'text-cyan-600', bg: 'bg-cyan-50 border-cyan-100' },
+                    { value: stats.satisfactionRate || 98, suffix: '%', label: 'Placement Success', icon: FaAward, color: 'text-amber-600', bg: 'bg-amber-50 border-amber-100' },
+                    { value: 150, suffix: '+', label: 'Hiring Partners', icon: FaBuilding, color: 'text-emerald-600', bg: 'bg-emerald-50 border-emerald-100' }
+                  ].map((s, idx) => (
+                    <div 
+                      key={idx} 
+                      className="p-2.5 sm:p-3 rounded-xl bg-slate-50 border border-slate-200/90 flex items-center gap-3 hover:shadow-sm hover:border-indigo-300 hover:bg-white transition-all group text-left"
+                    >
+                      <div className={`w-8 h-8 shrink-0 rounded-lg ${s.bg} ${s.color} border flex items-center justify-center text-sm group-hover:scale-110 transition-transform`}>
+                        <s.icon />
+                      </div>
+                      <div>
+                        <div className="text-sm sm:text-base font-black text-slate-900 font-['Sora'] leading-none tracking-tight mb-1">
+                          <AnimatedCounter from={0} to={s.value} suffix={s.suffix} duration={2} />
+                        </div>
+                        <div className="text-[9px] sm:text-[10px] font-bold text-slate-500 uppercase tracking-wider leading-none">
+                          {s.label}
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
               </div>
               
               {/* Mobile Tech Icons Grid (Visible on small screens) */}
@@ -518,27 +544,7 @@ const Home = () => {
             </div>
           </div>
 
-          {/* Stats Bar */}
-          <div className="mt-14 mx-auto w-full max-w-[1120px] rounded-3xl border border-slate-100 bg-white px-6 sm:px-10 py-7 sm:py-8 shadow-[0_15px_40px_rgba(0,0,0,0.05)] relative z-20">
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-0 divide-y-0 md:divide-x md:divide-slate-100">
-              {[
-                { label: 'Students Trained', value: '15,000+', icon: FaUsers },
-                { label: 'Hiring MNCs', value: '150+', icon: FaBriefcase },
-                { label: 'Student Rating', value: '4.8/5', icon: FaStar },
-                { label: 'Placement Success', value: '90%', icon: FaChartBar }
-              ].map((item, i) => (
-                <div key={i} className="flex flex-col items-center justify-center text-center px-4">
-                  <item.icon className="mb-2.5 text-[28px] text-[#6366f1]" />
-                  <div className="text-[26px] sm:text-[30px] font-black tracking-tight text-[#0F172A] leading-tight mb-1">
-                    {item.value}
-                  </div>
-                  <div className="text-[12.5px] sm:text-[13px] font-semibold text-[#64748B]">
-                    {item.label}
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
+          {/* Removed Stats Bar from here as it was moved into the left column */}
         </div>
       </section>
 
@@ -752,47 +758,47 @@ const Home = () => {
 
           <div className="mt-14 grid gap-8 md:grid-cols-3">
             {[
-              { title: t('home_why1_title'), desc: t('home_why1_desc'), icon: FaUserTie, bg: 'bg-indigo-100 text-indigo-600 border-indigo-200' },
-              { title: t('home_why2_title'), desc: t('home_why2_desc'), icon: FaLaptopCode, bg: 'bg-amber-100 text-amber-600 border-amber-200' },
-              { title: t('home_why3_title'), desc: t('home_why3_desc'), icon: FaAward, bg: 'bg-emerald-100 text-emerald-600 border-emerald-200' }
+              { title: 'Career-Focused Training', desc: 'JVK Technologies is a career-focused technology training platform specializing in ServiceNow, AI, and Java Full Stack with AI.', icon: FaLaptopCode, bg: 'bg-indigo-100 text-indigo-600 border-indigo-200' },
+              { title: 'Industry-Ready Professionals', desc: 'We provide practical, project-based training, real-time scenarios, interview preparation, career guidance, and placement assistance to build industry-ready professionals.', icon: FaUserTie, bg: 'bg-amber-100 text-amber-600 border-amber-200' },
+              { title: 'Our Mission', desc: 'Our mission is to transform Learning into Skills, Skills into Confidence, and Confidence into Career Opportunities.', icon: FaAward, bg: 'bg-emerald-100 text-emerald-600 border-emerald-200' }
             ].map((item) => (
-              <div key={item.title} className="rounded-[28px] border border-slate-200 bg-white p-8 text-center shadow-[0_10px_30px_rgba(15,23,42,0.02)] transition-all hover:-translate-y-1 hover:border-indigo-200 hover:shadow-[0_18px_40px_rgba(99,102,241,0.10)]">
-                <div className={`mx-auto mb-6 flex h-16 w-16 items-center justify-center rounded-2xl border ${item.bg} text-3xl`}>
+              <div key={item.title} className="rounded-2xl border border-slate-200 bg-white p-5 sm:p-6 text-center shadow-sm transition-all hover:-translate-y-1 hover:border-indigo-200 hover:shadow-lg">
+                <div className={`mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-xl border ${item.bg} text-xl`}>
                   <item.icon />
                 </div>
-                <h3 className="text-xl font-black text-slate-900">{item.title}</h3>
-                <p className="mt-3 text-sm leading-7 text-slate-600">{item.desc}</p>
+                <h3 className="text-lg font-black text-slate-900">{item.title}</h3>
+                <p className="mt-2 text-[13px] sm:text-sm leading-relaxed text-slate-600">{item.desc}</p>
               </div>
             ))}
           </div>
         </div>
       </section>
 
-      <section className="relative overflow-hidden bg-gradient-to-r from-indigo-700 via-indigo-600 to-violet-700 py-24 text-white">
+      <section className="relative overflow-hidden bg-gradient-to-r from-indigo-700 via-indigo-600 to-violet-700 py-16 text-white">
         <div className="absolute -left-10 top-0 h-48 w-48 rounded-full bg-white/10 blur-3xl" />
         <div className="absolute -right-10 bottom-0 h-52 w-52 rounded-full bg-cyan-300/10 blur-3xl" />
 
-        <div className="relative z-10 mx-auto max-w-4xl px-4 text-center sm:px-6 lg:px-8">
-          <div className="mb-5 inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/10 px-3.5 py-1.5 text-[11px] font-bold uppercase tracking-[0.18em] text-indigo-50">
+        <div className="relative z-10 mx-auto max-w-3xl px-4 text-center sm:px-6 lg:px-8">
+          <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/10 px-3 py-1 text-[10px] sm:text-[11px] font-bold uppercase tracking-wider text-indigo-50">
             <FaBolt className="text-amber-300" /> Next batch starts this week
           </div>
 
-          <h2 className="text-3xl font-black tracking-tight text-white md:text-5xl">{t('home_cta_title')}</h2>
-          <p className="mx-auto mt-5 max-w-2xl text-base leading-8 text-indigo-100 md:text-lg">{t('home_cta_sub')}</p>
+          <h2 className="text-2xl font-black tracking-tight text-white sm:text-3xl md:text-4xl">{t('home_cta_title')}</h2>
+          <p className="mx-auto mt-3 max-w-xl text-sm leading-relaxed text-indigo-100 sm:text-base">{t('home_cta_sub')}</p>
 
-          <div className="mt-8 flex flex-col items-center justify-center gap-4 sm:flex-row">
-            <a href={`tel:${contact.callNumber}`} className="inline-flex w-full items-center justify-center gap-2 rounded-2xl bg-white px-8 py-4 text-base font-black text-indigo-900 shadow-xl transition-all hover:bg-slate-50 sm:w-auto">
+          <div className="mt-7 flex flex-col items-center justify-center gap-3 sm:flex-row">
+            <a href={`tel:${contact.callNumber}`} className="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-white px-6 py-3 text-sm font-black text-indigo-900 shadow-lg transition-all hover:bg-slate-50 hover:-translate-y-0.5 sm:w-auto">
               <FaPhoneAlt />
               Call Admissions: {contact.callNumber}
             </a>
 
-            <a href={`https://wa.me/${cleanWhatsapp}?text=Hello%20JVK%20Technologies,%20I%20would%20like%20to%20join%20the%20next%20batch.`} target="_blank" rel="noreferrer" className="inline-flex w-full items-center justify-center gap-2 rounded-2xl bg-emerald-500 px-8 py-4 text-base font-black text-white shadow-xl transition-all hover:bg-emerald-600 sm:w-auto">
-              <FaWhatsapp size={18} />
+            <a href={`https://wa.me/${cleanWhatsapp}?text=Hello%20JVK%20Technologies,%20I%20would%20like%20to%20join%20the%20next%20batch.`} target="_blank" rel="noreferrer" className="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-emerald-500 px-6 py-3 text-sm font-black text-white shadow-lg transition-all hover:bg-emerald-600 hover:-translate-y-0.5 sm:w-auto">
+              <FaWhatsapp size={16} />
               Chat on WhatsApp
             </a>
           </div>
 
-          <p className="mt-7 text-xs text-indigo-100">📍 {contact.address}</p>
+          <p className="mt-5 text-[11px] text-indigo-200">📍 {contact.address}</p>
         </div>
       </section>
     </div>
