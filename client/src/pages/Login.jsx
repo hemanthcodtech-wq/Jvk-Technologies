@@ -33,7 +33,6 @@ const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [formData, setFormData] = useState({ emailOrPhone: '', password: '' });
   const [isLoading, setIsLoading] = useState(false);
-  const [isGoogleLoading, setIsGoogleLoading] = useState(false);
   const [agreed, setAgreed] = useState(true);
   const [error, setError] = useState('');
   const navigate = useNavigate();
@@ -78,7 +77,7 @@ const Login = () => {
       if (res.data.success) redirectAfterLogin(res.data);
     } catch (err) {
       setError(err.response?.data?.message || 'Google login failed. Please try again.');
-    } finally { setIsGoogleLoading(false); }
+    }
   };
 
   useEffect(() => {
@@ -94,16 +93,27 @@ const Login = () => {
     const initGoogle = () => {
       if (window.google) {
         window.google.accounts.id.initialize({ client_id: GOOGLE_CLIENT_ID, callback: handleGoogleResponse });
+        
+        // Render the official Google Sign-In button
+        const btnContainer = document.getElementById('google-signin-btn-container');
+        if (btnContainer) {
+          const parentWidth = btnContainer.parentElement?.clientWidth;
+          window.google.accounts.id.renderButton(btnContainer, {
+            theme: 'outline',
+            size: 'large',
+            shape: 'rectangular',
+            text: 'continue_with',
+            width: parentWidth > 100 ? parentWidth : 350,
+            logo_alignment: 'center'
+          });
+        }
+        
+        // Optional: Also show the One Tap prompt on load
+        window.google.accounts.id.prompt();
       }
     };
     loadGoogleScript();
   }, []);
-
-  const handleGoogleButtonClick = () => {
-    if (!agreed) { setError('Please agree to the Terms & Conditions and Privacy Policy.'); return; }
-    if (!GOOGLE_CLIENT_ID) { setError('Google login is not configured yet. Please use email & password to sign in.'); return; }
-    if (window.google) window.google.accounts.id.prompt();
-  };
 
   const inputClass = "w-full pl-10 pr-4 py-3 bg-indigo-50/40 border border-slate-200 rounded-2xl text-slate-800 placeholder-slate-400 text-sm font-medium focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-all duration-200 font-[Plus_Jakarta_Sans]";
 
@@ -259,15 +269,18 @@ const Login = () => {
           </div>
 
           {/* Google */}
-          <button
-            type="button" onClick={handleGoogleButtonClick} disabled={isGoogleLoading}
-            className="w-full py-3 px-4 rounded-2xl bg-white border border-slate-200 hover:border-indigo-300 hover:bg-indigo-50/30 text-slate-700 font-bold text-xs sm:text-sm shadow-sm flex items-center justify-center gap-3 transition-all duration-200 disabled:opacity-60 cursor-pointer hover:-translate-y-0.5 active:scale-[0.99]"
-          >
-            {isGoogleLoading
-              ? <div className="w-4 h-4 border-2 border-indigo-400 border-t-transparent rounded-full animate-spin" />
-              : <FcGoogle size={20} />}
-            <span>Continue with Google</span>
-          </button>
+          <div className="relative w-full">
+            {!agreed && (
+              <div 
+                className="absolute inset-0 z-10 cursor-pointer" 
+                onClick={() => setError('Please agree to the Terms & Conditions and Privacy Policy.')}
+                title="Please agree to the Terms first"
+              />
+            )}
+            <div id="google-signin-btn-container" className={`w-full flex justify-center ${!agreed ? 'opacity-60 grayscale' : ''}`}>
+              {/* Google Sign-in button will be rendered here */}
+            </div>
+          </div>
 
           {/* Security badge */}
           <div className="mt-6 pt-5 border-t border-slate-100 flex items-center justify-center gap-2 text-center text-[11px] text-slate-400 font-medium">
