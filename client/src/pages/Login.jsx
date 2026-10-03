@@ -70,13 +70,15 @@ const Login = () => {
 
   const handleGoogleResponse = async (response) => {
     if (!agreed) { setError('Please agree to the Terms & Conditions and Privacy Policy.'); return; }
-    setIsGoogleLoading(true);
+    setIsLoading(true);
     setError('');
     try {
       const res = await axios.post(`${import.meta.env.VITE_API_BASE_URL}/auth/google`, { credential: response.credential });
       if (res.data.success) redirectAfterLogin(res.data);
     } catch (err) {
       setError(err.response?.data?.message || 'Google login failed. Please try again.');
+    } finally {
+      setIsLoading(false);
     }
   };
 
