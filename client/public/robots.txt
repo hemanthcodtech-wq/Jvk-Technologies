@@ -1,4 +1,4 @@
-# Robots.txt for Swamy Dwija Foundation
+# Robots.txt for JVK Technologies
 User-agent: *
 Allow: /
 Allow: /courses
@@ -23,4 +23,4 @@ Disallow: /checkout/*
 Disallow: /api/
 
 # Sitemap Location
-Sitemap: https://swamydwija.org/sitemap.xml
+Sitemap: https://jvktechnologies.com/sitemap.xml
